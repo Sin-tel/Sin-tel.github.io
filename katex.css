@@ -1,120 +1,120 @@
 @font-face {
     font-family: MathJax_AMS;
-    src: url(fonts/MathJax_AMS-Regular.woff2) format("woff2"), url(fonts/MathJax_AMS-Regular.woff) format("woff"), url(fonts/MathJax_AMS-Regular.ttf) format("truetype");
+    src: url(fonts/MathJax_AMS-Regular.woff) format("woff"), url(fonts/MathJax_AMS-Regular.ttf) format("truetype");
     font-weight: 400;
     font-style: normal;
 }
 @font-face {
     font-family: MathJax_Caligraphic;
-    src: url(fonts/MathJax_Caligraphic-Bold.woff2) format("woff2"), url(fonts/MathJax_Caligraphic-Bold.woff) format("woff"), url(fonts/MathJax_Caligraphic-Bold.ttf) format("truetype");
+    src: url(fonts/MathJax_Caligraphic-Bold.woff) format("woff"), url(fonts/MathJax_Caligraphic-Bold.ttf) format("truetype");
     font-weight: 700;
     font-style: normal;
 }
 @font-face {
     font-family: MathJax_Caligraphic;
-    src: url(fonts/MathJax_Caligraphic-Regular.woff2) format("woff2"), url(fonts/MathJax_Caligraphic-Regular.woff) format("woff"), url(fonts/MathJax_Caligraphic-Regular.ttf) format("truetype");
+    src: url(fonts/MathJax_Caligraphic-Regular.woff) format("woff"), url(fonts/MathJax_Caligraphic-Regular.ttf) format("truetype");
     font-weight: 400;
     font-style: normal;
 }
 @font-face {
     font-family: MathJax_Fraktur;
-    src: url(fonts/MathJax_Fraktur-Bold.woff2) format("woff2"), url(fonts/MathJax_Fraktur-Bold.woff) format("woff"), url(fonts/MathJax_Fraktur-Bold.ttf) format("truetype");
+    src: url(fonts/MathJax_Fraktur-Bold.woff) format("woff"), url(fonts/MathJax_Fraktur-Bold.ttf) format("truetype");
     font-weight: 700;
     font-style: normal;
 }
 @font-face {
     font-family: MathJax_Fraktur;
-    src: url(fonts/MathJax_Fraktur-Regular.woff2) format("woff2"), url(fonts/MathJax_Fraktur-Regular.woff) format("woff"), url(fonts/MathJax_Fraktur-Regular.ttf) format("truetype");
+    src: url(fonts/MathJax_Fraktur-Regular.woff) format("woff"), url(fonts/MathJax_Fraktur-Regular.ttf) format("truetype");
     font-weight: 400;
     font-style: normal;
 }
 @font-face {
     font-family: MathJax_Main;
-    src: url(fonts/MathJax_Main-Bold.woff2) format("woff2"), url(fonts/MathJax_Main-Bold.woff) format("woff"), url(fonts/MathJax_Main-Bold.ttf) format("truetype");
+    src: url(fonts/MathJax_Main-Bold.woff) format("woff"), url(fonts/MathJax_Main-Bold.ttf) format("truetype");
     font-weight: 700;
     font-style: normal;
 }
 @font-face {
     font-family: MathJax_Main;
-    src: url(fonts/MathJax_Main-BoldItalic.woff2) format("woff2"), url(fonts/MathJax_Main-BoldItalic.woff) format("woff"), url(fonts/MathJax_Main-BoldItalic.ttf) format("truetype");
+    src: url(fonts/MathJax_Main-BoldItalic.woff) format("woff"), url(fonts/MathJax_Main-BoldItalic.ttf) format("truetype");
     font-weight: 700;
     font-style: italic;
 }
 @font-face {
     font-family: MathJax_Main;
-    src: url(fonts/MathJax_Main-Italic.woff2) format("woff2"), url(fonts/MathJax_Main-Italic.woff) format("woff"), url(fonts/MathJax_Main-Italic.ttf) format("truetype");
+    src: url(fonts/MathJax_Main-Italic.woff) format("woff"), url(fonts/MathJax_Main-Italic.ttf) format("truetype");
     font-weight: 400;
     font-style: italic;
 }
 @font-face {
     font-family: MathJax_Main;
-    src: url(fonts/MathJax_Main-Regular.woff2) format("woff2"), url(fonts/MathJax_Main-Regular.woff) format("woff"), url(fonts/MathJax_Main-Regular.ttf) format("truetype");
+    src: url(fonts/MathJax_Main-Regular.woff) format("woff"), url(fonts/MathJax_Main-Regular.ttf) format("truetype");
     font-weight: 400;
     font-style: normal;
 }
 @font-face {
     font-family: MathJax_Math;
-    src: url(fonts/MathJax_Math-BoldItalic.woff2) format("woff2"), url(fonts/MathJax_Math-BoldItalic.woff) format("woff"), url(fonts/MathJax_Math-BoldItalic.ttf) format("truetype");
+    src: url(fonts/MathJax_Math-BoldItalic.woff) format("woff"), url(fonts/MathJax_Math-BoldItalic.ttf) format("truetype");
     font-weight: 700;
     font-style: italic;
 }
 @font-face {
     font-family: MathJax_Math;
-    src: url(fonts/MathJax_Math-Italic.woff2) format("woff2"), url(fonts/MathJax_Math-Italic.woff) format("woff"), url(fonts/MathJax_Math-Italic.ttf) format("truetype");
+    src: url(fonts/MathJax_Math-Italic.woff) format("woff"), url(fonts/MathJax_Math-Italic.ttf) format("truetype");
     font-weight: 400;
     font-style: italic;
 }
 @font-face {
     font-family: "MathJax_SansSerif";
-    src: url(fonts/MathJax_SansSerif-Bold.woff2) format("woff2"), url(fonts/MathJax_SansSerif-Bold.woff) format("woff"), url(fonts/MathJax_SansSerif-Bold.ttf) format("truetype");
+    src: url(fonts/MathJax_SansSerif-Bold.woff) format("woff"), url(fonts/MathJax_SansSerif-Bold.ttf) format("truetype");
     font-weight: 700;
     font-style: normal;
 }
 @font-face {
     font-family: "MathJax_SansSerif";
-    src: url(fonts/MathJax_SansSerif-Italic.woff2) format("woff2"), url(fonts/MathJax_SansSerif-Italic.woff) format("woff"), url(fonts/MathJax_SansSerif-Italic.ttf) format("truetype");
+    src: url(fonts/MathJax_SansSerif-Italic.woff) format("woff"), url(fonts/MathJax_SansSerif-Italic.ttf) format("truetype");
     font-weight: 400;
     font-style: italic;
 }
 @font-face {
     font-family: "MathJax_SansSerif";
-    src: url(fonts/MathJax_SansSerif-Regular.woff2) format("woff2"), url(fonts/MathJax_SansSerif-Regular.woff) format("woff"), url(fonts/MathJax_SansSerif-Regular.ttf) format("truetype");
+    src: url(fonts/MathJax_SansSerif-Regular.woff) format("woff"), url(fonts/MathJax_SansSerif-Regular.ttf) format("truetype");
     font-weight: 400;
     font-style: normal;
 }
 @font-face {
     font-family: MathJax_Script;
-    src: url(fonts/MathJax_Script-Regular.woff2) format("woff2"), url(fonts/MathJax_Script-Regular.woff) format("woff"), url(fonts/MathJax_Script-Regular.ttf) format("truetype");
+    src: url(fonts/MathJax_Script-Regular.woff) format("woff"), url(fonts/MathJax_Script-Regular.ttf) format("truetype");
     font-weight: 400;
     font-style: normal;
 }
 @font-face {
     font-family: MathJax_Size1;
-    src: url(fonts/MathJax_Size1-Regular.woff2) format("woff2"), url(fonts/MathJax_Size1-Regular.woff) format("woff"), url(fonts/MathJax_Size1-Regular.ttf) format("truetype");
+    src: url(fonts/MathJax_Size1-Regular.woff) format("woff"), url(fonts/MathJax_Size1-Regular.ttf) format("truetype");
     font-weight: 400;
     font-style: normal;
 }
 @font-face {
     font-family: MathJax_Size2;
-    src: url(fonts/MathJax_Size2-Regular.woff2) format("woff2"), url(fonts/MathJax_Size2-Regular.woff) format("woff"), url(fonts/MathJax_Size2-Regular.ttf) format("truetype");
+    src: url(fonts/MathJax_Size2-Regular.woff) format("woff"), url(fonts/MathJax_Size2-Regular.ttf) format("truetype");
     font-weight: 400;
     font-style: normal;
 }
 @font-face {
     font-family: MathJax_Size3;
-    src: url(fonts/MathJax_Size3-Regular.woff2) format("woff2"), url(fonts/MathJax_Size3-Regular.woff) format("woff"), url(fonts/MathJax_Size3-Regular.ttf) format("truetype");
+    src: url(fonts/MathJax_Size3-Regular.woff) format("woff"), url(fonts/MathJax_Size3-Regular.ttf) format("truetype");
     font-weight: 400;
     font-style: normal;
 }
 @font-face {
     font-family: MathJax_Size4;
-    src: url(fonts/MathJax_Size4-Regular.woff2) format("woff2"), url(fonts/MathJax_Size4-Regular.woff) format("woff"), url(fonts/MathJax_Size4-Regular.ttf) format("truetype");
+    src: url(fonts/MathJax_Size4-Regular.woff) format("woff"), url(fonts/MathJax_Size4-Regular.ttf) format("truetype");
     font-weight: 400;
     font-style: normal;
 }
 @font-face {
     font-family: MathJax_Typewriter;
-    src: url(fonts/MathJax_Typewriter-Regular.woff2) format("woff2"), url(fonts/MathJax_Typewriter-Regular.woff) format("woff"), url(fonts/MathJax_Typewriter-Regular.ttf) format("truetype");
+    src: url(fonts/MathJax_Typewriter-Regular.woff) format("woff"), url(fonts/MathJax_Typewriter-Regular.ttf) format("truetype");
     font-weight: 400;
     font-style: normal;
 }
