@@ -7,8 +7,8 @@
 --mono: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, Courier, 'Courier New', monospace;
 --c1:#0074d9;
 --c2:#aaa;
---c3:#fff;
---c4:#000;
+--c3:#F5F5F5;
+--c4:#0A0A0A;
 --c5:#fff;
 --m1: 8px;
 --rc: 8px;
@@ -62,6 +62,7 @@ body {
     text-indent: 0;
     text-rendering: auto;
     border-color: currentColor;
+    color: var(--c4);
 }
 
 .katex-display {
