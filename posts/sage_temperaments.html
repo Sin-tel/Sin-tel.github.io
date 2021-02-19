@@ -1,0 +1,1896 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <link rel="shortcut icon" type="image/jpg" href="/media/icon.png"/>
+        <title>Jupyter Notebook SageMath</title>
+        <meta charset="utf-8">
+        <!-- Bootstrap CSS -->
+        <meta name="viewport" content="initial-scale=1">
+        <style>
+.CodeMirror {
+  
+  font-family: monospace;
+  height: 300px;
+  color: black;
+  direction: ltr;
+}
+.CodeMirror-lines {
+  padding: 4px 0; 
+}
+.CodeMirror pre.CodeMirror-line,
+.CodeMirror pre.CodeMirror-line-like {
+  padding: 0 4px; 
+}
+.CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {
+  background-color: white; 
+}
+.CodeMirror-gutters {
+  border-right: 1px solid #ddd;
+  background-color: #f7f7f7;
+  white-space: nowrap;
+}
+.CodeMirror-linenumbers {}
+.CodeMirror-linenumber {
+  padding: 0 3px 0 5px;
+  min-width: 20px;
+  text-align: right;
+  color: #999;
+  white-space: nowrap;
+}
+.CodeMirror-guttermarker { color: black; }
+.CodeMirror-guttermarker-subtle { color: #999; }
+.CodeMirror-cursor {
+  border-left: 1px solid black;
+  border-right: none;
+  width: 0;
+}
+.CodeMirror div.CodeMirror-secondarycursor {
+  border-left: 1px solid silver;
+}
+.cm-fat-cursor .CodeMirror-cursor {
+  width: auto;
+  border: 0 !important;
+  background: #7e7;
+}
+.cm-fat-cursor div.CodeMirror-cursors {
+  z-index: 1;
+}
+.cm-fat-cursor-mark {
+  background-color: rgba(20, 255, 20, 0.5);
+  -webkit-animation: blink 1.06s steps(1) infinite;
+  -moz-animation: blink 1.06s steps(1) infinite;
+  animation: blink 1.06s steps(1) infinite;
+}
+.cm-animate-fat-cursor {
+  width: auto;
+  border: 0;
+  -webkit-animation: blink 1.06s steps(1) infinite;
+  -moz-animation: blink 1.06s steps(1) infinite;
+  animation: blink 1.06s steps(1) infinite;
+  background-color: #7e7;
+}
+@-moz-keyframes blink {
+  0% {}
+  50% { background-color: transparent; }
+  100% {}
+}
+@-webkit-keyframes blink {
+  0% {}
+  50% { background-color: transparent; }
+  100% {}
+}
+@keyframes blink {
+  0% {}
+  50% { background-color: transparent; }
+  100% {}
+}
+.CodeMirror-overwrite .CodeMirror-cursor {}
+.cm-tab { display: inline-block; text-decoration: inherit; }
+.CodeMirror-rulers {
+  position: absolute;
+  left: 0; right: 0; top: -50px; bottom: 0;
+  overflow: hidden;
+}
+.CodeMirror-ruler {
+  border-left: 1px solid #ccc;
+  top: 0; bottom: 0;
+  position: absolute;
+}
+.cm-s-default .cm-header {color: blue;}
+.cm-s-default .cm-quote {color: #090;}
+.cm-negative {color: #d44;}
+.cm-positive {color: #292;}
+.cm-header, .cm-strong {font-weight: bold;}
+.cm-em {font-style: italic;}
+.cm-link {text-decoration: underline;}
+.cm-strikethrough {text-decoration: line-through;}
+.cm-s-default .cm-keyword {color: #708;}
+.cm-s-default .cm-atom {color: #219;}
+.cm-s-default .cm-number {color: #164;}
+.cm-s-default .cm-def {color: #00f;}
+.cm-s-default .cm-variable,
+.cm-s-default .cm-punctuation,
+.cm-s-default .cm-property,
+.cm-s-default .cm-operator {}
+.cm-s-default .cm-variable-2 {color: #05a;}
+.cm-s-default .cm-variable-3, .cm-s-default .cm-type {color: #085;}
+.cm-s-default .cm-comment {color: #a50;}
+.cm-s-default .cm-string {color: #a11;}
+.cm-s-default .cm-string-2 {color: #f50;}
+.cm-s-default .cm-meta {color: #555;}
+.cm-s-default .cm-qualifier {color: #555;}
+.cm-s-default .cm-builtin {color: #30a;}
+.cm-s-default .cm-bracket {color: #997;}
+.cm-s-default .cm-tag {color: #170;}
+.cm-s-default .cm-attribute {color: #00c;}
+.cm-s-default .cm-hr {color: #999;}
+.cm-s-default .cm-link {color: #00c;}
+.cm-s-default .cm-error {color: #f00;}
+.cm-invalidchar {color: #f00;}
+.CodeMirror-composing { border-bottom: 2px solid; }
+div.CodeMirror span.CodeMirror-matchingbracket {color: #0b0;}
+div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #a22;}
+.CodeMirror-matchingtag { background: rgba(255, 150, 0, .3); }
+.CodeMirror-activeline-background {background: #e8f2ff;}
+.CodeMirror {
+  position: relative;
+  overflow: hidden;
+  background: white;
+}
+.CodeMirror-scroll {
+  overflow: scroll !important; 
+  
+  
+  margin-bottom: -50px; margin-right: -50px;
+  padding-bottom: 50px;
+  height: 100%;
+  outline: none; 
+  position: relative;
+}
+.CodeMirror-sizer {
+  position: relative;
+  border-right: 50px solid transparent;
+}
+.CodeMirror-vscrollbar, .CodeMirror-hscrollbar, .CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {
+  position: absolute;
+  z-index: 6;
+  display: none;
+}
+.CodeMirror-vscrollbar {
+  right: 0; top: 0;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+.CodeMirror-hscrollbar {
+  bottom: 0; left: 0;
+  overflow-y: hidden;
+  overflow-x: scroll;
+}
+.CodeMirror-scrollbar-filler {
+  right: 0; bottom: 0;
+}
+.CodeMirror-gutter-filler {
+  left: 0; bottom: 0;
+}
+.CodeMirror-gutters {
+  position: absolute; left: 0; top: 0;
+  min-height: 100%;
+  z-index: 3;
+}
+.CodeMirror-gutter {
+  white-space: normal;
+  height: 100%;
+  display: inline-block;
+  vertical-align: top;
+  margin-bottom: -50px;
+}
+.CodeMirror-gutter-wrapper {
+  position: absolute;
+  z-index: 4;
+  background: none !important;
+  border: none !important;
+}
+.CodeMirror-gutter-background {
+  position: absolute;
+  top: 0; bottom: 0;
+  z-index: 4;
+}
+.CodeMirror-gutter-elt {
+  position: absolute;
+  cursor: default;
+  z-index: 4;
+}
+.CodeMirror-gutter-wrapper ::selection { background-color: transparent }
+.CodeMirror-gutter-wrapper ::-moz-selection { background-color: transparent }
+.CodeMirror-lines {
+  cursor: text;
+  min-height: 1px; 
+}
+.CodeMirror pre.CodeMirror-line,
+.CodeMirror pre.CodeMirror-line-like {
+  
+  -moz-border-radius: 0; -webkit-border-radius: 0; border-radius: 0;
+  border-width: 0;
+  background: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  margin: 0;
+  white-space: pre;
+  word-wrap: normal;
+  line-height: inherit;
+  color: inherit;
+  z-index: 2;
+  position: relative;
+  overflow: visible;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-variant-ligatures: contextual;
+  font-variant-ligatures: contextual;
+}
+.CodeMirror-wrap pre.CodeMirror-line,
+.CodeMirror-wrap pre.CodeMirror-line-like {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  word-break: normal;
+}
+.CodeMirror-linebackground {
+  position: absolute;
+  left: 0; right: 0; top: 0; bottom: 0;
+  z-index: 0;
+}
+.CodeMirror-linewidget {
+  position: relative;
+  z-index: 2;
+  padding: 0.1px; 
+}
+.CodeMirror-widget {}
+.CodeMirror-rtl pre { direction: rtl; }
+.CodeMirror-code {
+  outline: none;
+}
+.CodeMirror-scroll,
+.CodeMirror-sizer,
+.CodeMirror-gutter,
+.CodeMirror-gutters,
+.CodeMirror-linenumber {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+.CodeMirror-measure {
+  position: absolute;
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+}
+.CodeMirror-cursor {
+  position: absolute;
+  pointer-events: none;
+}
+.CodeMirror-measure pre { position: static; }
+div.CodeMirror-cursors {
+  visibility: hidden;
+  position: relative;
+  z-index: 3;
+}
+div.CodeMirror-dragcursors {
+  visibility: visible;
+}
+.CodeMirror-focused div.CodeMirror-cursors {
+  visibility: visible;
+}
+.CodeMirror-selected { background: #d9d9d9; }
+.CodeMirror-focused .CodeMirror-selected { background: #d7d4f0; }
+.CodeMirror-crosshair { cursor: crosshair; }
+.CodeMirror-line::selection, .CodeMirror-line > span::selection, .CodeMirror-line > span > span::selection { background: #d7d4f0; }
+.CodeMirror-line::-moz-selection, .CodeMirror-line > span::-moz-selection, .CodeMirror-line > span > span::-moz-selection { background: #d7d4f0; }
+.cm-searching {
+  background-color: #ffa;
+  background-color: rgba(255, 255, 0, .4);
+}
+.cm-force-border { padding-right: .1px; }
+@media print {
+  
+  .CodeMirror div.CodeMirror-cursors {
+    visibility: hidden;
+  }
+}
+.cm-tab-wrap-hack:after { content: ''; }
+span.CodeMirror-selectedtext { background: none; }
+.CodeMirror-fullscreen {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  height: auto;
+  z-index: 9;
+}
+.CodeMirror-foldmarker {
+  color: blue;
+  text-shadow: #b9f 1px 1px 2px, #b9f -1px -1px 2px, #b9f 1px -1px 2px, #b9f -1px 1px 2px;
+  font-family: arial;
+  line-height: .3;
+  cursor: pointer;
+}
+.CodeMirror-foldgutter {
+  width: .7em;
+}
+.CodeMirror-foldgutter-open,
+.CodeMirror-foldgutter-folded {
+  cursor: pointer;
+}
+.CodeMirror-foldgutter-open:after {
+  content: "\25BE";
+}
+.CodeMirror-foldgutter-folded:after {
+  content: "\25B8";
+}
+.CodeMirror-hints {
+  position: absolute;
+  z-index: 10;
+  overflow: hidden;
+  list-style: none;
+  margin: 0;
+  padding: 2px;
+  -webkit-box-shadow: 2px 3px 5px rgba(0,0,0,.2);
+  -moz-box-shadow: 2px 3px 5px rgba(0,0,0,.2);
+  box-shadow: 2px 3px 5px rgba(0,0,0,.2);
+  border-radius: 3px;
+  border: 1px solid silver;
+  background: white;
+  font-size: 90%;
+  font-family: monospace;
+  max-height: 20em;
+  overflow-y: auto;
+}
+.CodeMirror-hint {
+  margin: 0;
+  padding: 0 4px;
+  border-radius: 2px;
+  white-space: pre;
+  color: black;
+  cursor: pointer;
+}
+li.CodeMirror-hint-active {
+  background: #08f;
+  color: white;
+}
+/*! jQuery UI - v1.12.1 - 2016-09-14
+* http://jqueryui.com
+* Includes: core.css, accordion.css, autocomplete.css, menu.css, button.css, controlgroup.css, checkboxradio.css, datepicker.css, dialog.css, draggable.css, resizable.css, progressbar.css, selectable.css, selectmenu.css, slider.css, sortable.css, spinner.css, tabs.css, tooltip.css, theme.css
+* To view and modify this theme, visit http://jqueryui.com/themeroller/?ffDefault=Verdana%2CArial%2Csans-serif&fwDefault=normal&fsDefault=1.1em&cornerRadius=4px&bgColorHeader=cccccc&bgTextureHeader=highlight_soft&bgImgOpacityHeader=75&borderColorHeader=aaaaaa&fcHeader=222222&iconColorHeader=222222&bgColorContent=ffffff&bgTextureContent=flat&bgImgOpacityContent=75&borderColorContent=aaaaaa&fcContent=222222&iconColorContent=222222&bgColorDefault=e6e6e6&bgTextureDefault=glass&bgImgOpacityDefault=75&borderColorDefault=d3d3d3&fcDefault=555555&iconColorDefault=888888&bgColorHover=dadada&bgTextureHover=glass&bgImgOpacityHover=75&borderColorHover=999999&fcHover=212121&iconColorHover=454545&bgColorActive=ffffff&bgTextureActive=glass&bgImgOpacityActive=65&borderColorActive=aaaaaa&fcActive=212121&iconColorActive=454545&bgColorHighlight=fbf9ee&bgTextureHighlight=glass&bgImgOpacityHighlight=55&borderColorHighlight=fcefa1&fcHighlight=363636&iconColorHighlight=2e83ff&bgColorError=fef1ec&bgTextureError=glass&bgImgOpacityError=95&borderColorError=cd0a0a&fcError=cd0a0a&iconColorError=cd0a0a&bgColorOverlay=aaaaaa&bgTextureOverlay=flat&bgImgOpacityOverlay=0&opacityOverlay=30&bgColorShadow=aaaaaa&bgTextureShadow=flat&bgImgOpacityShadow=0&opacityShadow=30&thicknessShadow=8px&offsetTopShadow=-8px&offsetLeftShadow=-8px&cornerRadiusShadow=8px
+* Copyright jQuery Foundation and other contributors; Licensed MIT */
+.ui-helper-hidden{display:none}.ui-helper-hidden-accessible{border:0;clip:rect(0 0 0 0);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px}.ui-helper-reset{margin:0;padding:0;border:0;outline:0;line-height:1.3;text-decoration:none;font-size:100%;list-style:none}.ui-helper-clearfix:before,.ui-helper-clearfix:after{content:"";display:table;border-collapse:collapse}.ui-helper-clearfix:after{clear:both}.ui-helper-zfix{width:100%;height:100%;top:0;left:0;position:absolute;opacity:0;filter:Alpha(Opacity=0)}.ui-front{z-index:100}.ui-state-disabled{cursor:default!important;pointer-events:none}.ui-icon{display:inline-block;vertical-align:middle;margin-top:-.25em;position:relative;text-indent:-99999px;overflow:hidden;background-repeat:no-repeat}.ui-widget-icon-block{left:50%;margin-left:-8px;display:block}.ui-widget-overlay{position:fixed;top:0;left:0;width:100%;height:100%}.ui-accordion .ui-accordion-header{display:block;cursor:pointer;position:relative;margin:2px 0 0 0;padding:.5em .5em .5em .7em;font-size:100%}.ui-accordion .ui-accordion-content{padding:1em 2.2em;border-top:0;overflow:auto}.ui-autocomplete{position:absolute;top:0;left:0;cursor:default}.ui-menu{list-style:none;padding:0;margin:0;display:block;outline:0}.ui-menu .ui-menu{position:absolute}.ui-menu .ui-menu-item{margin:0;cursor:pointer;list-style-image:url(https://sagecell.sagemath.org/static/"data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7")}.ui-menu .ui-menu-item-wrapper{position:relative;padding:3px 1em 3px .4em}.ui-menu .ui-menu-divider{margin:5px 0;height:0;font-size:0;line-height:0;border-width:1px 0 0 0}.ui-menu .ui-state-focus,.ui-menu .ui-state-active{margin:-1px}.ui-menu-icons{position:relative}.ui-menu-icons .ui-menu-item-wrapper{padding-left:2em}.ui-menu .ui-icon{position:absolute;top:0;bottom:0;left:.2em;margin:auto 0}.ui-menu .ui-menu-icon{left:auto;right:0}.ui-button{padding:.4em 1em;display:inline-block;position:relative;line-height:normal;margin-right:.1em;cursor:pointer;vertical-align:middle;text-align:center;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;overflow:visible}.ui-button,.ui-button:link,.ui-button:visited,.ui-button:hover,.ui-button:active{text-decoration:none}.ui-button-icon-only{width:2em;box-sizing:border-box;text-indent:-9999px;white-space:nowrap}input.ui-button.ui-button-icon-only{text-indent:0}.ui-button-icon-only .ui-icon{position:absolute;top:50%;left:50%;margin-top:-8px;margin-left:-8px}.ui-button.ui-icon-notext .ui-icon{padding:0;width:2.1em;height:2.1em;text-indent:-9999px;white-space:nowrap}input.ui-button.ui-icon-notext .ui-icon{width:auto;height:auto;text-indent:0;white-space:normal;padding:.4em 1em}input.ui-button::-moz-focus-inner,button.ui-button::-moz-focus-inner{border:0;padding:0}.ui-controlgroup{vertical-align:middle;display:inline-block}.ui-controlgroup > .ui-controlgroup-item{float:left;margin-left:0;margin-right:0}.ui-controlgroup > .ui-controlgroup-item:focus,.ui-controlgroup > .ui-controlgroup-item.ui-visual-focus{z-index:9999}.ui-controlgroup-vertical > .ui-controlgroup-item{display:block;float:none;width:100%;margin-top:0;margin-bottom:0;text-align:left}.ui-controlgroup-vertical .ui-controlgroup-item{box-sizing:border-box}.ui-controlgroup .ui-controlgroup-label{padding:.4em 1em}.ui-controlgroup .ui-controlgroup-label span{font-size:80%}.ui-controlgroup-horizontal .ui-controlgroup-label + .ui-controlgroup-item{border-left:none}.ui-controlgroup-vertical .ui-controlgroup-label + .ui-controlgroup-item{border-top:none}.ui-controlgroup-horizontal .ui-controlgroup-label.ui-widget-content{border-right:none}.ui-controlgroup-vertical .ui-controlgroup-label.ui-widget-content{border-bottom:none}.ui-controlgroup-vertical .ui-spinner-input{width:75%;width:calc( 100% - 2.4em )}.ui-controlgroup-vertical .ui-spinner .ui-spinner-up{border-top-style:solid}.ui-checkboxradio-label .ui-icon-background{box-shadow:inset 1px 1px 1px #ccc;border-radius:.12em;border:none}.ui-checkboxradio-radio-label .ui-icon-background{width:16px;height:16px;border-radius:1em;overflow:visible;border:none}.ui-checkboxradio-radio-label.ui-checkboxradio-checked .ui-icon,.ui-checkboxradio-radio-label.ui-checkboxradio-checked:hover .ui-icon{background-image:none;width:8px;height:8px;border-width:4px;border-style:solid}.ui-checkboxradio-disabled{pointer-events:none}.ui-datepicker{width:17em;padding:.2em .2em 0;display:none}.ui-datepicker .ui-datepicker-header{position:relative;padding:.2em 0}.ui-datepicker .ui-datepicker-prev,.ui-datepicker .ui-datepicker-next{position:absolute;top:2px;width:1.8em;height:1.8em}.ui-datepicker .ui-datepicker-prev-hover,.ui-datepicker .ui-datepicker-next-hover{top:1px}.ui-datepicker .ui-datepicker-prev{left:2px}.ui-datepicker .ui-datepicker-next{right:2px}.ui-datepicker .ui-datepicker-prev-hover{left:1px}.ui-datepicker .ui-datepicker-next-hover{right:1px}.ui-datepicker .ui-datepicker-prev span,.ui-datepicker .ui-datepicker-next span{display:block;position:absolute;left:50%;margin-left:-8px;top:50%;margin-top:-8px}.ui-datepicker .ui-datepicker-title{margin:0 2.3em;line-height:1.8em;text-align:center}.ui-datepicker .ui-datepicker-title select{font-size:1em;margin:1px 0}.ui-datepicker select.ui-datepicker-month,.ui-datepicker select.ui-datepicker-year{width:45%}.ui-datepicker table{width:100%;font-size:.9em;border-collapse:collapse;margin:0 0 .4em}.ui-datepicker th{padding:.7em .3em;text-align:center;font-weight:bold;border:0}.ui-datepicker td{border:0;padding:1px}.ui-datepicker td span,.ui-datepicker td a{display:block;padding:.2em;text-align:right;text-decoration:none}.ui-datepicker .ui-datepicker-buttonpane{background-image:none;margin:.7em 0 0 0;padding:0 .2em;border-left:0;border-right:0;border-bottom:0}.ui-datepicker .ui-datepicker-buttonpane button{float:right;margin:.5em .2em .4em;cursor:pointer;padding:.2em .6em .3em .6em;width:auto;overflow:visible}.ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current{float:left}.ui-datepicker.ui-datepicker-multi{width:auto}.ui-datepicker-multi .ui-datepicker-group{float:left}.ui-datepicker-multi .ui-datepicker-group table{width:95%;margin:0 auto .4em}.ui-datepicker-multi-2 .ui-datepicker-group{width:50%}.ui-datepicker-multi-3 .ui-datepicker-group{width:33.3%}.ui-datepicker-multi-4 .ui-datepicker-group{width:25%}.ui-datepicker-multi .ui-datepicker-group-last .ui-datepicker-header,.ui-datepicker-multi .ui-datepicker-group-middle .ui-datepicker-header{border-left-width:0}.ui-datepicker-multi .ui-datepicker-buttonpane{clear:left}.ui-datepicker-row-break{clear:both;width:100%;font-size:0}.ui-datepicker-rtl{direction:rtl}.ui-datepicker-rtl .ui-datepicker-prev{right:2px;left:auto}.ui-datepicker-rtl .ui-datepicker-next{left:2px;right:auto}.ui-datepicker-rtl .ui-datepicker-prev:hover{right:1px;left:auto}.ui-datepicker-rtl .ui-datepicker-next:hover{left:1px;right:auto}.ui-datepicker-rtl .ui-datepicker-buttonpane{clear:right}.ui-datepicker-rtl .ui-datepicker-buttonpane button{float:left}.ui-datepicker-rtl .ui-datepicker-buttonpane button.ui-datepicker-current,.ui-datepicker-rtl .ui-datepicker-group{float:right}.ui-datepicker-rtl .ui-datepicker-group-last .ui-datepicker-header,.ui-datepicker-rtl .ui-datepicker-group-middle .ui-datepicker-header{border-right-width:0;border-left-width:1px}.ui-datepicker .ui-icon{display:block;text-indent:-99999px;overflow:hidden;background-repeat:no-repeat;left:.5em;top:.3em}.ui-dialog{position:absolute;top:0;left:0;padding:.2em;outline:0}.ui-dialog .ui-dialog-titlebar{padding:.4em 1em;position:relative}.ui-dialog .ui-dialog-title{float:left;margin:.1em 0;white-space:nowrap;width:90%;overflow:hidden;text-overflow:ellipsis}.ui-dialog .ui-dialog-titlebar-close{position:absolute;right:.3em;top:50%;width:20px;margin:-10px 0 0 0;padding:1px;height:20px}.ui-dialog .ui-dialog-content{position:relative;border:0;padding:.5em 1em;background:none;overflow:auto}.ui-dialog .ui-dialog-buttonpane{text-align:left;border-width:1px 0 0 0;background-image:none;margin-top:.5em;padding:.3em 1em .5em .4em}.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset{float:right}.ui-dialog .ui-dialog-buttonpane button{margin:.5em .4em .5em 0;cursor:pointer}.ui-dialog .ui-resizable-n{height:2px;top:0}.ui-dialog .ui-resizable-e{width:2px;right:0}.ui-dialog .ui-resizable-s{height:2px;bottom:0}.ui-dialog .ui-resizable-w{width:2px;left:0}.ui-dialog .ui-resizable-se,.ui-dialog .ui-resizable-sw,.ui-dialog .ui-resizable-ne,.ui-dialog .ui-resizable-nw{width:7px;height:7px}.ui-dialog .ui-resizable-se{right:0;bottom:0}.ui-dialog .ui-resizable-sw{left:0;bottom:0}.ui-dialog .ui-resizable-ne{right:0;top:0}.ui-dialog .ui-resizable-nw{left:0;top:0}.ui-draggable .ui-dialog-titlebar{cursor:move}.ui-draggable-handle{-ms-touch-action:none;touch-action:none}.ui-resizable{position:relative}.ui-resizable-handle{position:absolute;font-size:0.1px;display:block;-ms-touch-action:none;touch-action:none}.ui-resizable-disabled .ui-resizable-handle,.ui-resizable-autohide .ui-resizable-handle{display:none}.ui-resizable-n{cursor:n-resize;height:7px;width:100%;top:-5px;left:0}.ui-resizable-s{cursor:s-resize;height:7px;width:100%;bottom:-5px;left:0}.ui-resizable-e{cursor:e-resize;width:7px;right:-5px;top:0;height:100%}.ui-resizable-w{cursor:w-resize;width:7px;left:-5px;top:0;height:100%}.ui-resizable-se{cursor:se-resize;width:12px;height:12px;right:1px;bottom:1px}.ui-resizable-sw{cursor:sw-resize;width:9px;height:9px;left:-5px;bottom:-5px}.ui-resizable-nw{cursor:nw-resize;width:9px;height:9px;left:-5px;top:-5px}.ui-resizable-ne{cursor:ne-resize;width:9px;height:9px;right:-5px;top:-5px}.ui-progressbar{height:2em;text-align:left;overflow:hidden}.ui-progressbar .ui-progressbar-value{margin:-1px;height:100%}.ui-progressbar .ui-progressbar-overlay{background:url(https://sagecell.sagemath.org/static/"data:image/gif;base64,R0lGODlhKAAoAIABAAAAAP///yH/C05FVFNDQVBFMi4wAwEAAAAh+QQJAQABACwAAAAAKAAoAAACkYwNqXrdC52DS06a7MFZI+4FHBCKoDeWKXqymPqGqxvJrXZbMx7Ttc+w9XgU2FB3lOyQRWET2IFGiU9m1frDVpxZZc6bfHwv4c1YXP6k1Vdy292Fb6UkuvFtXpvWSzA+HycXJHUXiGYIiMg2R6W459gnWGfHNdjIqDWVqemH2ekpObkpOlppWUqZiqr6edqqWQAAIfkECQEAAQAsAAAAACgAKAAAApSMgZnGfaqcg1E2uuzDmmHUBR8Qil95hiPKqWn3aqtLsS18y7G1SzNeowWBENtQd+T1JktP05nzPTdJZlR6vUxNWWjV+vUWhWNkWFwxl9VpZRedYcflIOLafaa28XdsH/ynlcc1uPVDZxQIR0K25+cICCmoqCe5mGhZOfeYSUh5yJcJyrkZWWpaR8doJ2o4NYq62lAAACH5BAkBAAEALAAAAAAoACgAAAKVDI4Yy22ZnINRNqosw0Bv7i1gyHUkFj7oSaWlu3ovC8GxNso5fluz3qLVhBVeT/Lz7ZTHyxL5dDalQWPVOsQWtRnuwXaFTj9jVVh8pma9JjZ4zYSj5ZOyma7uuolffh+IR5aW97cHuBUXKGKXlKjn+DiHWMcYJah4N0lYCMlJOXipGRr5qdgoSTrqWSq6WFl2ypoaUAAAIfkECQEAAQAsAAAAACgAKAAAApaEb6HLgd/iO7FNWtcFWe+ufODGjRfoiJ2akShbueb0wtI50zm02pbvwfWEMWBQ1zKGlLIhskiEPm9R6vRXxV4ZzWT2yHOGpWMyorblKlNp8HmHEb/lCXjcW7bmtXP8Xt229OVWR1fod2eWqNfHuMjXCPkIGNileOiImVmCOEmoSfn3yXlJWmoHGhqp6ilYuWYpmTqKUgAAIfkECQEAAQAsAAAAACgAKAAAApiEH6kb58biQ3FNWtMFWW3eNVcojuFGfqnZqSebuS06w5V80/X02pKe8zFwP6EFWOT1lDFk8rGERh1TTNOocQ61Hm4Xm2VexUHpzjymViHrFbiELsefVrn6XKfnt2Q9G/+Xdie499XHd2g4h7ioOGhXGJboGAnXSBnoBwKYyfioubZJ2Hn0RuRZaflZOil56Zp6iioKSXpUAAAh+QQJAQABACwAAAAAKAAoAAACkoQRqRvnxuI7kU1a1UU5bd5tnSeOZXhmn5lWK3qNTWvRdQxP8qvaC+/yaYQzXO7BMvaUEmJRd3TsiMAgswmNYrSgZdYrTX6tSHGZO73ezuAw2uxuQ+BbeZfMxsexY35+/Qe4J1inV0g4x3WHuMhIl2jXOKT2Q+VU5fgoSUI52VfZyfkJGkha6jmY+aaYdirq+lQAACH5BAkBAAEALAAAAAAoACgAAAKWBIKpYe0L3YNKToqswUlvznigd4wiR4KhZrKt9Upqip61i9E3vMvxRdHlbEFiEXfk9YARYxOZZD6VQ2pUunBmtRXo1Lf8hMVVcNl8JafV38aM2/Fu5V16Bn63r6xt97j09+MXSFi4BniGFae3hzbH9+hYBzkpuUh5aZmHuanZOZgIuvbGiNeomCnaxxap2upaCZsq+1kAACH5BAkBAAEALAAAAAAoACgAAAKXjI8By5zf4kOxTVrXNVlv1X0d8IGZGKLnNpYtm8Lr9cqVeuOSvfOW79D9aDHizNhDJidFZhNydEahOaDH6nomtJjp1tutKoNWkvA6JqfRVLHU/QUfau9l2x7G54d1fl995xcIGAdXqMfBNadoYrhH+Mg2KBlpVpbluCiXmMnZ2Sh4GBqJ+ckIOqqJ6LmKSllZmsoq6wpQAAAh+QQJAQABACwAAAAAKAAoAAAClYx/oLvoxuJDkU1a1YUZbJ59nSd2ZXhWqbRa2/gF8Gu2DY3iqs7yrq+xBYEkYvFSM8aSSObE+ZgRl1BHFZNr7pRCavZ5BW2142hY3AN/zWtsmf12p9XxxFl2lpLn1rseztfXZjdIWIf2s5dItwjYKBgo9yg5pHgzJXTEeGlZuenpyPmpGQoKOWkYmSpaSnqKileI2FAAACH5BAkBAAEALAAAAAAoACgAAAKVjB+gu+jG4kORTVrVhRlsnn2dJ3ZleFaptFrb+CXmO9OozeL5VfP99HvAWhpiUdcwkpBH3825AwYdU8xTqlLGhtCosArKMpvfa1mMRae9VvWZfeB2XfPkeLmm18lUcBj+p5dnN8jXZ3YIGEhYuOUn45aoCDkp16hl5IjYJvjWKcnoGQpqyPlpOhr3aElaqrq56Bq7VAAAOw==");height:100%;filter:alpha(opacity=25);opacity:0.25}.ui-progressbar-indeterminate .ui-progressbar-value{background-image:none}.ui-selectable{-ms-touch-action:none;touch-action:none}.ui-selectable-helper{position:absolute;z-index:100;border:1px dotted black}.ui-selectmenu-menu{padding:0;margin:0;position:absolute;top:0;left:0;display:none}.ui-selectmenu-menu .ui-menu{overflow:auto;overflow-x:hidden;padding-bottom:1px}.ui-selectmenu-menu .ui-menu .ui-selectmenu-optgroup{font-size:1em;font-weight:bold;line-height:1.5;padding:2px 0.4em;margin:0.5em 0 0 0;height:auto;border:0}.ui-selectmenu-open{display:block}.ui-selectmenu-text{display:block;margin-right:20px;overflow:hidden;text-overflow:ellipsis}.ui-selectmenu-button.ui-button{text-align:left;white-space:nowrap;width:14em}.ui-selectmenu-icon.ui-icon{float:right;margin-top:0}.ui-slider{position:relative;text-align:left}.ui-slider .ui-slider-handle{position:absolute;z-index:2;width:1.2em;height:1.2em;cursor:default;-ms-touch-action:none;touch-action:none}.ui-slider .ui-slider-range{position:absolute;z-index:1;font-size:.7em;display:block;border:0;background-position:0 0}.ui-slider.ui-state-disabled .ui-slider-handle,.ui-slider.ui-state-disabled .ui-slider-range{filter:inherit}.ui-slider-horizontal{height:.8em}.ui-slider-horizontal .ui-slider-handle{top:-.3em;margin-left:-.6em}.ui-slider-horizontal .ui-slider-range{top:0;height:100%}.ui-slider-horizontal .ui-slider-range-min{left:0}.ui-slider-horizontal .ui-slider-range-max{right:0}.ui-slider-vertical{width:.8em;height:100px}.ui-slider-vertical .ui-slider-handle{left:-.3em;margin-left:0;margin-bottom:-.6em}.ui-slider-vertical .ui-slider-range{left:0;width:100%}.ui-slider-vertical .ui-slider-range-min{bottom:0}.ui-slider-vertical .ui-slider-range-max{top:0}.ui-sortable-handle{-ms-touch-action:none;touch-action:none}.ui-spinner{position:relative;display:inline-block;overflow:hidden;padding:0;vertical-align:middle}.ui-spinner-input{border:none;background:none;color:inherit;padding:.222em 0;margin:.2em 0;vertical-align:middle;margin-left:.4em;margin-right:2em}.ui-spinner-button{width:1.6em;height:50%;font-size:.5em;padding:0;margin:0;text-align:center;position:absolute;cursor:default;display:block;overflow:hidden;right:0}.ui-spinner a.ui-spinner-button{border-top-style:none;border-bottom-style:none;border-right-style:none}.ui-spinner-up{top:0}.ui-spinner-down{bottom:0}.ui-tabs{position:relative;padding:.2em}.ui-tabs .ui-tabs-nav{margin:0;padding:.2em .2em 0}.ui-tabs .ui-tabs-nav li{list-style:none;float:left;position:relative;top:0;margin:1px .2em 0 0;border-bottom-width:0;padding:0;white-space:nowrap}.ui-tabs .ui-tabs-nav .ui-tabs-anchor{float:left;padding:.5em 1em;text-decoration:none}.ui-tabs .ui-tabs-nav li.ui-tabs-active{margin-bottom:-1px;padding-bottom:1px}.ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor,.ui-tabs .ui-tabs-nav li.ui-state-disabled .ui-tabs-anchor,.ui-tabs .ui-tabs-nav li.ui-tabs-loading .ui-tabs-anchor{cursor:text}.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor{cursor:pointer}.ui-tabs .ui-tabs-panel{display:block;border-width:0;padding:1em 1.4em;background:none}.ui-tooltip{padding:8px;position:absolute;z-index:9999;max-width:300px}body .ui-tooltip{border-width:2px}.ui-widget{font-family:Verdana,Arial,sans-serif;font-size:1.1em}.ui-widget .ui-widget{font-size:1em}.ui-widget input,.ui-widget select,.ui-widget textarea,.ui-widget button{font-family:Verdana,Arial,sans-serif;font-size:1em}.ui-widget.ui-widget-content{border:1px solid #d3d3d3}.ui-widget-content{border:1px solid #aaa;background:#fff;color:#222}.ui-widget-content a{color:#222}.ui-widget-header{border:1px solid #aaa;background:#ccc url(https://sagecell.sagemath.org/static/images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x;color:#222;font-weight:bold}.ui-widget-header a{color:#222}.ui-state-default,.ui-widget-content .ui-state-default,.ui-widget-header .ui-state-default,.ui-button,html .ui-button.ui-state-disabled:hover,html .ui-button.ui-state-disabled:active{border:1px solid #d3d3d3;background:#e6e6e6 url(https://sagecell.sagemath.org/static/images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x;font-weight:normal;color:#555}.ui-state-default a,.ui-state-default a:link,.ui-state-default a:visited,a.ui-button,a:link.ui-button,a:visited.ui-button,.ui-button{color:#555;text-decoration:none}.ui-state-hover,.ui-widget-content .ui-state-hover,.ui-widget-header .ui-state-hover,.ui-state-focus,.ui-widget-content .ui-state-focus,.ui-widget-header .ui-state-focus,.ui-button:hover,.ui-button:focus{border:1px solid #999;background:#dadada url(https://sagecell.sagemath.org/static/images/ui-bg_glass_75_dadada_1x400.png) 50% 50% repeat-x;font-weight:normal;color:#212121}.ui-state-hover a,.ui-state-hover a:hover,.ui-state-hover a:link,.ui-state-hover a:visited,.ui-state-focus a,.ui-state-focus a:hover,.ui-state-focus a:link,.ui-state-focus a:visited,a.ui-button:hover,a.ui-button:focus{color:#212121;text-decoration:none}.ui-visual-focus{box-shadow:0 0 3px 1px rgb(94,158,214)}.ui-state-active,.ui-widget-content .ui-state-active,.ui-widget-header .ui-state-active,a.ui-button:active,.ui-button:active,.ui-button.ui-state-active:hover{border:1px solid #aaa;background:#fff url(https://sagecell.sagemath.org/static/images/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x;font-weight:normal;color:#212121}.ui-icon-background,.ui-state-active .ui-icon-background{border:#aaa;background-color:#212121}.ui-state-active a,.ui-state-active a:link,.ui-state-active a:visited{color:#212121;text-decoration:none}.ui-state-highlight,.ui-widget-content .ui-state-highlight,.ui-widget-header .ui-state-highlight{border:1px solid #fcefa1;background:#fbf9ee url(https://sagecell.sagemath.org/static/images/ui-bg_glass_55_fbf9ee_1x400.png) 50% 50% repeat-x;color:#363636}.ui-state-checked{border:1px solid #fcefa1;background:#fbf9ee}.ui-state-highlight a,.ui-widget-content .ui-state-highlight a,.ui-widget-header .ui-state-highlight a{color:#363636}.ui-state-error,.ui-widget-content .ui-state-error,.ui-widget-header .ui-state-error{border:1px solid #cd0a0a;background:#fef1ec url(https://sagecell.sagemath.org/static/images/ui-bg_glass_95_fef1ec_1x400.png) 50% 50% repeat-x;color:#cd0a0a}.ui-state-error a,.ui-widget-content .ui-state-error a,.ui-widget-header .ui-state-error a{color:#cd0a0a}.ui-state-error-text,.ui-widget-content .ui-state-error-text,.ui-widget-header .ui-state-error-text{color:#cd0a0a}.ui-priority-primary,.ui-widget-content .ui-priority-primary,.ui-widget-header .ui-priority-primary{font-weight:bold}.ui-priority-secondary,.ui-widget-content .ui-priority-secondary,.ui-widget-header .ui-priority-secondary{opacity:.7;filter:Alpha(Opacity=70);font-weight:normal}.ui-state-disabled,.ui-widget-content .ui-state-disabled,.ui-widget-header .ui-state-disabled{opacity:.35;filter:Alpha(Opacity=35);background-image:none}.ui-state-disabled .ui-icon{filter:Alpha(Opacity=35)}.ui-icon{width:16px;height:16px}.ui-icon,.ui-widget-content .ui-icon{background-image:url(https://sagecell.sagemath.org/static/images/ui-icons_222222_256x240.png)}.ui-widget-header .ui-icon{background-image:url(https://sagecell.sagemath.org/static/images/ui-icons_222222_256x240.png)}.ui-state-hover .ui-icon,.ui-state-focus .ui-icon,.ui-button:hover .ui-icon,.ui-button:focus .ui-icon{background-image:url(https://sagecell.sagemath.org/static/images/ui-icons_454545_256x240.png)}.ui-state-active .ui-icon,.ui-button:active .ui-icon{background-image:url(https://sagecell.sagemath.org/static/images/ui-icons_454545_256x240.png)}.ui-state-highlight .ui-icon,.ui-button .ui-state-highlight.ui-icon{background-image:url(https://sagecell.sagemath.org/static/images/ui-icons_2e83ff_256x240.png)}.ui-state-error .ui-icon,.ui-state-error-text .ui-icon{background-image:url(https://sagecell.sagemath.org/static/images/ui-icons_cd0a0a_256x240.png)}.ui-button .ui-icon{background-image:url(https://sagecell.sagemath.org/static/images/ui-icons_888888_256x240.png)}.ui-icon-blank{background-position:16px 16px}.ui-icon-caret-1-n{background-position:0 0}.ui-icon-caret-1-ne{background-position:-16px 0}.ui-icon-caret-1-e{background-position:-32px 0}.ui-icon-caret-1-se{background-position:-48px 0}.ui-icon-caret-1-s{background-position:-65px 0}.ui-icon-caret-1-sw{background-position:-80px 0}.ui-icon-caret-1-w{background-position:-96px 0}.ui-icon-caret-1-nw{background-position:-112px 0}.ui-icon-caret-2-n-s{background-position:-128px 0}.ui-icon-caret-2-e-w{background-position:-144px 0}.ui-icon-triangle-1-n{background-position:0 -16px}.ui-icon-triangle-1-ne{background-position:-16px -16px}.ui-icon-triangle-1-e{background-position:-32px -16px}.ui-icon-triangle-1-se{background-position:-48px -16px}.ui-icon-triangle-1-s{background-position:-65px -16px}.ui-icon-triangle-1-sw{background-position:-80px -16px}.ui-icon-triangle-1-w{background-position:-96px -16px}.ui-icon-triangle-1-nw{background-position:-112px -16px}.ui-icon-triangle-2-n-s{background-position:-128px -16px}.ui-icon-triangle-2-e-w{background-position:-144px -16px}.ui-icon-arrow-1-n{background-position:0 -32px}.ui-icon-arrow-1-ne{background-position:-16px -32px}.ui-icon-arrow-1-e{background-position:-32px -32px}.ui-icon-arrow-1-se{background-position:-48px -32px}.ui-icon-arrow-1-s{background-position:-65px -32px}.ui-icon-arrow-1-sw{background-position:-80px -32px}.ui-icon-arrow-1-w{background-position:-96px -32px}.ui-icon-arrow-1-nw{background-position:-112px -32px}.ui-icon-arrow-2-n-s{background-position:-128px -32px}.ui-icon-arrow-2-ne-sw{background-position:-144px -32px}.ui-icon-arrow-2-e-w{background-position:-160px -32px}.ui-icon-arrow-2-se-nw{background-position:-176px -32px}.ui-icon-arrowstop-1-n{background-position:-192px -32px}.ui-icon-arrowstop-1-e{background-position:-208px -32px}.ui-icon-arrowstop-1-s{background-position:-224px -32px}.ui-icon-arrowstop-1-w{background-position:-240px -32px}.ui-icon-arrowthick-1-n{background-position:1px -48px}.ui-icon-arrowthick-1-ne{background-position:-16px -48px}.ui-icon-arrowthick-1-e{background-position:-32px -48px}.ui-icon-arrowthick-1-se{background-position:-48px -48px}.ui-icon-arrowthick-1-s{background-position:-64px -48px}.ui-icon-arrowthick-1-sw{background-position:-80px -48px}.ui-icon-arrowthick-1-w{background-position:-96px -48px}.ui-icon-arrowthick-1-nw{background-position:-112px -48px}.ui-icon-arrowthick-2-n-s{background-position:-128px -48px}.ui-icon-arrowthick-2-ne-sw{background-position:-144px -48px}.ui-icon-arrowthick-2-e-w{background-position:-160px -48px}.ui-icon-arrowthick-2-se-nw{background-position:-176px -48px}.ui-icon-arrowthickstop-1-n{background-position:-192px -48px}.ui-icon-arrowthickstop-1-e{background-position:-208px -48px}.ui-icon-arrowthickstop-1-s{background-position:-224px -48px}.ui-icon-arrowthickstop-1-w{background-position:-240px -48px}.ui-icon-arrowreturnthick-1-w{background-position:0 -64px}.ui-icon-arrowreturnthick-1-n{background-position:-16px -64px}.ui-icon-arrowreturnthick-1-e{background-position:-32px -64px}.ui-icon-arrowreturnthick-1-s{background-position:-48px -64px}.ui-icon-arrowreturn-1-w{background-position:-64px -64px}.ui-icon-arrowreturn-1-n{background-position:-80px -64px}.ui-icon-arrowreturn-1-e{background-position:-96px -64px}.ui-icon-arrowreturn-1-s{background-position:-112px -64px}.ui-icon-arrowrefresh-1-w{background-position:-128px -64px}.ui-icon-arrowrefresh-1-n{background-position:-144px -64px}.ui-icon-arrowrefresh-1-e{background-position:-160px -64px}.ui-icon-arrowrefresh-1-s{background-position:-176px -64px}.ui-icon-arrow-4{background-position:0 -80px}.ui-icon-arrow-4-diag{background-position:-16px -80px}.ui-icon-extlink{background-position:-32px -80px}.ui-icon-newwin{background-position:-48px -80px}.ui-icon-refresh{background-position:-64px -80px}.ui-icon-shuffle{background-position:-80px -80px}.ui-icon-transfer-e-w{background-position:-96px -80px}.ui-icon-transferthick-e-w{background-position:-112px -80px}.ui-icon-folder-collapsed{background-position:0 -96px}.ui-icon-folder-open{background-position:-16px -96px}.ui-icon-document{background-position:-32px -96px}.ui-icon-document-b{background-position:-48px -96px}.ui-icon-note{background-position:-64px -96px}.ui-icon-mail-closed{background-position:-80px -96px}.ui-icon-mail-open{background-position:-96px -96px}.ui-icon-suitcase{background-position:-112px -96px}.ui-icon-comment{background-position:-128px -96px}.ui-icon-person{background-position:-144px -96px}.ui-icon-print{background-position:-160px -96px}.ui-icon-trash{background-position:-176px -96px}.ui-icon-locked{background-position:-192px -96px}.ui-icon-unlocked{background-position:-208px -96px}.ui-icon-bookmark{background-position:-224px -96px}.ui-icon-tag{background-position:-240px -96px}.ui-icon-home{background-position:0 -112px}.ui-icon-flag{background-position:-16px -112px}.ui-icon-calendar{background-position:-32px -112px}.ui-icon-cart{background-position:-48px -112px}.ui-icon-pencil{background-position:-64px -112px}.ui-icon-clock{background-position:-80px -112px}.ui-icon-disk{background-position:-96px -112px}.ui-icon-calculator{background-position:-112px -112px}.ui-icon-zoomin{background-position:-128px -112px}.ui-icon-zoomout{background-position:-144px -112px}.ui-icon-search{background-position:-160px -112px}.ui-icon-wrench{background-position:-176px -112px}.ui-icon-gear{background-position:-192px -112px}.ui-icon-heart{background-position:-208px -112px}.ui-icon-star{background-position:-224px -112px}.ui-icon-link{background-position:-240px -112px}.ui-icon-cancel{background-position:0 -128px}.ui-icon-plus{background-position:-16px -128px}.ui-icon-plusthick{background-position:-32px -128px}.ui-icon-minus{background-position:-48px -128px}.ui-icon-minusthick{background-position:-64px -128px}.ui-icon-close{background-position:-80px -128px}.ui-icon-closethick{background-position:-96px -128px}.ui-icon-key{background-position:-112px -128px}.ui-icon-lightbulb{background-position:-128px -128px}.ui-icon-scissors{background-position:-144px -128px}.ui-icon-clipboard{background-position:-160px -128px}.ui-icon-copy{background-position:-176px -128px}.ui-icon-contact{background-position:-192px -128px}.ui-icon-image{background-position:-208px -128px}.ui-icon-video{background-position:-224px -128px}.ui-icon-script{background-position:-240px -128px}.ui-icon-alert{background-position:0 -144px}.ui-icon-info{background-position:-16px -144px}.ui-icon-notice{background-position:-32px -144px}.ui-icon-help{background-position:-48px -144px}.ui-icon-check{background-position:-64px -144px}.ui-icon-bullet{background-position:-80px -144px}.ui-icon-radio-on{background-position:-96px -144px}.ui-icon-radio-off{background-position:-112px -144px}.ui-icon-pin-w{background-position:-128px -144px}.ui-icon-pin-s{background-position:-144px -144px}.ui-icon-play{background-position:0 -160px}.ui-icon-pause{background-position:-16px -160px}.ui-icon-seek-next{background-position:-32px -160px}.ui-icon-seek-prev{background-position:-48px -160px}.ui-icon-seek-end{background-position:-64px -160px}.ui-icon-seek-start{background-position:-80px -160px}.ui-icon-seek-first{background-position:-80px -160px}.ui-icon-stop{background-position:-96px -160px}.ui-icon-eject{background-position:-112px -160px}.ui-icon-volume-off{background-position:-128px -160px}.ui-icon-volume-on{background-position:-144px -160px}.ui-icon-power{background-position:0 -176px}.ui-icon-signal-diag{background-position:-16px -176px}.ui-icon-signal{background-position:-32px -176px}.ui-icon-battery-0{background-position:-48px -176px}.ui-icon-battery-1{background-position:-64px -176px}.ui-icon-battery-2{background-position:-80px -176px}.ui-icon-battery-3{background-position:-96px -176px}.ui-icon-circle-plus{background-position:0 -192px}.ui-icon-circle-minus{background-position:-16px -192px}.ui-icon-circle-close{background-position:-32px -192px}.ui-icon-circle-triangle-e{background-position:-48px -192px}.ui-icon-circle-triangle-s{background-position:-64px -192px}.ui-icon-circle-triangle-w{background-position:-80px -192px}.ui-icon-circle-triangle-n{background-position:-96px -192px}.ui-icon-circle-arrow-e{background-position:-112px -192px}.ui-icon-circle-arrow-s{background-position:-128px -192px}.ui-icon-circle-arrow-w{background-position:-144px -192px}.ui-icon-circle-arrow-n{background-position:-160px -192px}.ui-icon-circle-zoomin{background-position:-176px -192px}.ui-icon-circle-zoomout{background-position:-192px -192px}.ui-icon-circle-check{background-position:-208px -192px}.ui-icon-circlesmall-plus{background-position:0 -208px}.ui-icon-circlesmall-minus{background-position:-16px -208px}.ui-icon-circlesmall-close{background-position:-32px -208px}.ui-icon-squaresmall-plus{background-position:-48px -208px}.ui-icon-squaresmall-minus{background-position:-64px -208px}.ui-icon-squaresmall-close{background-position:-80px -208px}.ui-icon-grip-dotted-vertical{background-position:0 -224px}.ui-icon-grip-dotted-horizontal{background-position:-16px -224px}.ui-icon-grip-solid-vertical{background-position:-32px -224px}.ui-icon-grip-solid-horizontal{background-position:-48px -224px}.ui-icon-gripsmall-diagonal-se{background-position:-64px -224px}.ui-icon-grip-diagonal-se{background-position:-80px -224px}.ui-corner-all,.ui-corner-top,.ui-corner-left,.ui-corner-tl{border-top-left-radius:4px}.ui-corner-all,.ui-corner-top,.ui-corner-right,.ui-corner-tr{border-top-right-radius:4px}.ui-corner-all,.ui-corner-bottom,.ui-corner-left,.ui-corner-bl{border-bottom-left-radius:4px}.ui-corner-all,.ui-corner-bottom,.ui-corner-right,.ui-corner-br{border-bottom-right-radius:4px}.ui-widget-overlay{background:#aaa;opacity:.3;filter:Alpha(Opacity=30)}.ui-widget-shadow{-webkit-box-shadow:-8px -8px 8px #aaa;box-shadow:-8px -8px 8px #aaa}
+.colorpicker {
+	width: 356px;
+	height: 176px;
+	overflow: hidden;
+	position: absolute;
+	background: url(https://sagecell.sagemath.org/static/colorpicker/images/colorpicker_background.png);
+	font-family: Arial, Helvetica, sans-serif;
+	display: none;
+}
+.colorpicker_color {
+	width: 150px;
+	height: 150px;
+	left: 14px;
+	top: 13px;
+	position: absolute;
+	background: #f00;
+	overflow: hidden;
+	cursor: crosshair;
+}
+.colorpicker_color div {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 150px;
+	height: 150px;
+	background: url(https://sagecell.sagemath.org/static/colorpicker/images/colorpicker_overlay.png);
+}
+.colorpicker_color div div {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 11px;
+	height: 11px;
+	overflow: hidden;
+	background: url(https://sagecell.sagemath.org/static/colorpicker/images/colorpicker_select.gif);
+	margin: -5px 0 0 -5px;
+}
+.colorpicker_hue {
+	position: absolute;
+	top: 13px;
+	left: 171px;
+	width: 35px;
+	height: 150px;
+	cursor: n-resize;
+}
+.colorpicker_hue div {
+	position: absolute;
+	width: 35px;
+	height: 9px;
+	overflow: hidden;
+	background: url(https://sagecell.sagemath.org/static/colorpicker/images/colorpicker_indic.gif) left top;
+	margin: -4px 0 0 0;
+	left: 0px;
+}
+.colorpicker_new_color {
+	position: absolute;
+	width: 60px;
+	height: 30px;
+	left: 213px;
+	top: 13px;
+	background: #f00;
+}
+.colorpicker_current_color {
+	position: absolute;
+	width: 60px;
+	height: 30px;
+	left: 283px;
+	top: 13px;
+	background: #f00;
+}
+.colorpicker input {
+	background-color: transparent;
+	border: 1px solid transparent;
+	position: absolute;
+	font-size: 10px;
+	font-family: Arial, Helvetica, sans-serif;
+	color: #898989;
+	top: 4px;
+	right: 11px;
+	text-align: right;
+	margin: 0;
+	padding: 0;
+	height: 11px;
+}
+.colorpicker_hex {
+	position: absolute;
+	width: 72px;
+	height: 22px;
+	background: url(https://sagecell.sagemath.org/static/colorpicker/images/colorpicker_hex.png) top;
+	left: 212px;
+	top: 142px;
+}
+.colorpicker_hex input {
+	right: 6px;
+}
+.colorpicker_field {
+	height: 22px;
+	width: 62px;
+	background-position: top;
+	position: absolute;
+}
+.colorpicker_field span {
+	position: absolute;
+	width: 12px;
+	height: 22px;
+	overflow: hidden;
+	top: 0;
+	right: 0;
+	cursor: n-resize;
+}
+.colorpicker_rgb_r {
+	background-image: url(https://sagecell.sagemath.org/static/colorpicker/images/colorpicker_rgb_r.png);
+	top: 52px;
+	left: 212px;
+}
+.colorpicker_rgb_g {
+	background-image: url(https://sagecell.sagemath.org/static/colorpicker/images/colorpicker_rgb_g.png);
+	top: 82px;
+	left: 212px;
+}
+.colorpicker_rgb_b {
+	background-image: url(https://sagecell.sagemath.org/static/colorpicker/images/colorpicker_rgb_b.png);
+	top: 112px;
+	left: 212px;
+}
+.colorpicker_hsb_h {
+	background-image: url(https://sagecell.sagemath.org/static/colorpicker/images/colorpicker_hsb_h.png);
+	top: 52px;
+	left: 282px;
+}
+.colorpicker_hsb_s {
+	background-image: url(https://sagecell.sagemath.org/static/colorpicker/images/colorpicker_hsb_s.png);
+	top: 82px;
+	left: 282px;
+}
+.colorpicker_hsb_b {
+	background-image: url(https://sagecell.sagemath.org/static/colorpicker/images/colorpicker_hsb_b.png);
+	top: 112px;
+	left: 282px;
+}
+.colorpicker_submit {
+	position: absolute;
+	width: 22px;
+	height: 22px;
+	background: url(https://sagecell.sagemath.org/static/colorpicker/images/colorpicker_submit.png) top;
+	left: 322px;
+	top: 142px;
+	overflow: hidden;
+}
+.colorpicker_focus {
+	background-position: center;
+}
+.colorpicker_hex.colorpicker_focus {
+	background-position: bottom;
+}
+.colorpicker_submit.colorpicker_focus {
+	background-position: bottom;
+}
+.colorpicker_slider {
+	background-position: bottom;
+}
+/*!
+ *  Font Awesome 3.0.2
+ *  the iconic font designed for use with Twitter Bootstrap
+ *  -------------------------------------------------------
+ *  The full suite of pictographic icons, examples, and documentation
+ *  can be found at: http://fortawesome.github.com/Font-Awesome/
+ *
+ *  License
+ *  -------------------------------------------------------
+ *  - The Font Awesome font is licensed under the SIL Open Font License - http://scripts.sil.org/OFL
+ *  - Font Awesome CSS, LESS, and SASS files are licensed under the MIT License -
+ *    http://opensource.org/licenses/mit-license.html
+ *  - The Font Awesome pictograms are licensed under the CC BY 3.0 License - http://creativecommons.org/licenses/by/3.0/
+ *  - Attribution is no longer required in Font Awesome 3.0, but much appreciated:
+ *    "Font Awesome by Dave Gandy - http://fortawesome.github.com/Font-Awesome"
+ *  Contact
+ *  -------------------------------------------------------
+ *  Email: dave@davegandy.com
+ *  Twitter: http://twitter.com/fortaweso_me
+ *  Work: Lead Product Designer @ http://kyruus.com
+ */
+@font-face {
+  font-family: 'FontAwesomeSagecell';
+  src: url(https://sagecell.sagemath.org/static/fontawesome-webfont.eot?v=3.0.1);
+  src: url(https://sagecell.sagemath.org/static/fontawesome-webfont.eot?#iefix&v=3.0.1) format('embedded-opentype'),
+    url(https://sagecell.sagemath.org/static/fontawesome-webfont.woff?v=3.0.1) format('woff'),
+    url(https://sagecell.sagemath.org/static/fontawesome-webfont.ttf?v=3.0.1) format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+.sagecell [class^="sagecell_icon-"],
+.sagecell [class*=" sagecell_icon-"] {
+  font-family: FontAwesomeSagecell;
+  font-weight: normal;
+  font-style: normal;
+  text-decoration: inherit;
+  -webkit-font-smoothing: antialiased;
+  font-size: 125%;
+  background: transparent;
+  
+  display: inline;
+  width: auto;
+  height: auto;
+  line-height: normal;
+  vertical-align: baseline;
+  margin-top: 0;
+}
+.sagecell [class^="sagecell_icon-"]:before,
+.sagecell [class*=" sagecell_icon-"]:before {
+  text-decoration: inherit;
+  display: inline-block;
+  speak: none;
+}
+.sagecell .sagecell_icon-resize-full:before		{ content: "\f021"; }
+.sagecell .sagecell_icon-resize-small:before		{ content: "\f022"; }
+.sagecell_messages div {
+    margin-bottom: 12pt;
+}
+.sagecell_sliderControl {
+    max-width: 40em;
+    margin-right: 1.0em;
+    margin-left: 0.5em;
+}
+.sagecell_multiSliderContainer {
+    margin-left: 1.0em;
+    whitespace: nowrap;
+}
+.sagecell_multiSliderControl {
+    display: inline-block;
+    margin-right: 0.5em;
+    margin-left: 0.5em;
+    margin-top: 0.25em;
+}
+.sagecell_colorSelector {
+    display: inline-block;
+    width: 2em;
+    height: 2em;
+    border: 2px solid gray;
+    border-radius: 3px;
+    padding: 1px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+.sagecell .error, .sagecell .stderr {
+    color: red;
+}
+.sagecell .colorpicker {
+    z-index: 10;
+}
+.sagecell .CodeMirror {
+    border: 1px solid;
+    height: auto;
+}
+.sagecell .CodeMirror-scroll {
+    min-height: 3em;
+    max-height: 14em;
+}
+.sagecell .CodeMirror-fullscreen .CodeMirror-scroll {
+    max-height: none;
+}
+.sagecell .CodeMirror-hints {
+    padding-right: 10px;
+}
+.sagecell .ui-dialog-content {
+    font-size: 80%;
+}
+.sagecell_input {
+    overflow: hidden;
+    padding-right: 2px;
+}
+.sagecell button.sagecell_evalButton {
+    cursor: default;
+}
+.sagecell_output {
+    padding-right: 2px;
+}
+.sagecell_output_elements {
+    margin-top: 0.5em;
+}
+.sagecell_permalink {
+    padding-right: 5px;
+    text-align: right;
+    position: relative;
+}
+.sagecell_permalink_result {
+    position: absolute;
+    padding-right: 5px;
+    text-align: right;
+    right: 3px;
+    z-index: 100;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 3px;
+    padding: 5px;
+}
+.sagecell_permalink_result a:not([href]) {
+    color: gray;
+    text-decoration: none;
+    cursor: default;
+}
+.sagecell_permalink_result img {
+    display: inline-block;
+    background-color: lightgray;
+    width: 200px;
+    height: 200px;
+}
+.sagecell_sessionContainer {
+    position: relative;
+}
+.sagecell_sessionContainer:after {
+    display: table;
+    content: " ";
+    clear: both;
+}
+.sagecell_sessionOutput {
+    position: relative;
+    border: 2px solid;
+    padding: 5px;
+    margin-top: 2px;
+    min-height: 16px;
+    overflow-x: auto;
+}
+.sagecell_sessionOutput pre {
+    margin: 0px;
+}
+.sagecell_sessionOutput.sagecell_active {
+    border-color: #080;
+}
+.sagecell_poweredBy {
+    float: right;
+    padding: 3px 5px 5px 0px;
+    text-align: right;
+    overflow: visible;
+    font-size: 80%;
+}
+.sagecell_poweredBy img {
+    vertical-align: -5px;
+    border-style: none;
+    text-decoration: none;
+}
+.sagecell_spinner {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
+.sagecell_sessionFiles {
+    width: 80%;
+    padding-bottom: 1.0em;
+}
+.sagecell_interactContainer {
+    position: relative;
+    padding: 15px 5px 5px 5px;
+    border: 2px solid lightgray;
+    margin-bottom: 2px;
+}
+.sagecell_bookmarks {
+    cursor: default;
+}
+.sagecell_interactContainer .sagecell_bookmarks {
+    position: absolute;
+    right: 3px;
+    top: 3px;
+}
+.sagecell_bookmarks div {
+    display: inline-block;
+    height: 1.5em;
+    vertical-align: bottom;
+    overflow-y: hidden;
+    font-size: 1.3em;
+    font-family: Arial;
+    color: #8c8c8c;
+    transition: color 0.25s ease-out;
+}
+.sagecell_bookmarks div:first-child {
+    color: transparent;
+    visibility: hidden;
+}
+.sagecell_bookmarks div:last-child {
+    margin-left: 10px;
+    width: 1.5em;
+}
+.sagecell_bookmarks div:last-child:before {
+    display: inline-block;
+    content: "\2605";
+}
+.sagecell_bookmarks div.sagecell_export {
+    visibility: visible;
+    transition: color 0.5s 0.5s;
+    color: inherit;
+    cursor: pointer;
+}
+.sagecell_export:before {
+    content: "\22ef";
+}
+.sagecell_bookmarks input {
+    border: 1px solid black;
+    border-radius: 3px;
+    vertical-align: 50%;
+    background-color: rgba(0, 0, 0, 0.1);
+    font-family: monospace;
+}
+.sagecell_sessionOutput.sagecell_active .sagecell_bookmarks div:last-child:hover {
+    color: #ffa500;
+    cursor: pointer;
+}
+.sagecell_bookmarks_list.ui-menu {
+    display: inline-block;
+    min-width: 15em;
+    cursor: default;
+    z-index: 99;
+}
+.sagecell_bookmarks_list.ui-menu li.ui-state-disabled {
+    opacity: 1;
+    margin: 0px;
+}
+.sagecell_bookmarks_list > li > a > input,
+.sagecell_bookmarks_list > li > a > div:first-child {
+    display: inline-block;
+    width: 85%;
+    border: none;
+    border-radius: 3px;
+}
+.sagecell_bookmarks_list > li > a > div:last-child {
+    float: right;
+    width: 1.5em;
+    text-align: center;
+    font-weight: bold;
+    color: #777;
+    cursor: pointer;
+    transition: 0.25s color;
+}
+.sagecell_bookmarks_list > li:not(:last-child):not(:hover) > a > div:last-child {
+     display: none;
+}
+.sagecell_bookmarks_list > li > a > div:last-child:hover {
+    color: darkred;
+}
+.sagecell_bookmarks_list > li > a > div:last-child:before {
+    content: "\2716";
+}
+.sagecell_bookmarks_list > li:last-child > a > div:hover {
+    color: darkblue;
+}
+.sagecell_bookmarks_list > li:last-child > a > div:before {
+    content: "+";
+}
+.sagecell_interactOutput {
+    padding: 10px;
+    padding-right: 2em;
+    padding-left: 2em;
+    overflow-x: auto;
+    vertical-align: top;
+}
+.sagecell_interactValueBox {
+    border: 1px solid transparent;
+    background-color: transparent;
+    vertical-align: baseline;
+    font-family: monospace;  
+    max-width: 10ex;
+}
+.sagecell_interactValueBox:hover {
+    border-color: lightgray;
+}
+.sagecell_interactValueBox:focus {
+    border-color: gray;
+}
+.sagecell_interactControlCell {
+    display: inline-table;
+    vertical-align: top;
+    min-width: 200px;
+}
+.sagecell_interactControlLabel {
+    display: table-cell;
+    text-align: right !important;
+    vertical-align: middle !important;
+    padding-right: 0.5ex !important;
+    padding-top: 0.6ex !important;
+    padding-bottom: 0.6ex !important;
+    min-width: 10ex;
+    overflow-wrap: break-word;
+}
+.sagecell_interactControl {
+    display: table-cell;
+    width: 100%;
+    height: 100%;
+    vertical-align: middle;
+}
+.sagecell_interactContainer .sagecell_interactControl {
+    
+    padding: 1ex;
+}
+.sagecell_sliderContainer {
+    display: table;
+    width: 100%;
+    height: 100%;
+    max-width: 700px;
+    min-width: 200px;
+}
+.sagecell_sliderContainer > div:first-child {
+    display: table-cell;
+    width: 100%;
+    vertical-align: middle;
+}
+.sagecell_sliderContainer > div:first-child + div {
+    display: table-cell;
+    min-width: 11ex;
+}
+.sagecell_interactTextbox[size="0"] {
+    width: 100%;
+    max-width: 40em;
+}
+.sagecell_dirtyControl {
+    box-shadow: 0px 0px 2px 1px #c00;
+    transition: box-shadow 1s;
+    border-radius: 2px;
+}
+.sagecell_commands, .sagecell .ui-widget .sagecell_commands {
+    width: 100%;
+    height: 200px;
+    border: 1px solid;
+    font-family: monospace;
+    font-size: 10pt;
+}
+.sagecell_editor {
+    margin-bottom: 8px;
+}
+.sagecell_options {
+    display: inline-block;
+    margin-right: 2px;
+    float: right;
+    text-align: right;
+    font-size: 80%;
+}
+.sagecell_fullScreen {
+    position: absolute;
+    right: 1.5em;
+    top: 0.5em;
+    z-index: 10;
+    padding: 2px;
+    color: rgb(128,128,128);
+}
+.sagecell_editor div.ui-accordion-content.ui-helper-reset {
+    padding: 1em 0.5em;
+    font-size: 90.9%;
+}
+.sagecell_advancedFrame {
+    border-radius: 5px;
+    background-color: #ddf;
+    border: 1px solid;
+    padding: 0.2em;
+    display: inline-block;
+    width: 300px;
+    overflow: hidden;
+    margin-left: 3em;
+    margin-bottom: 1em;
+    vertical-align: top;
+}
+.sagecell_advancedTitle {
+    cursor: default;
+}
+.sagecell_advancedFields {
+    border: 1px solid gray;
+    background-color: white;
+    padding: 5px;
+}
+.sagecell_fileList li {
+    list-style: none;
+    position: relative;
+}
+.sagecell_fileName {
+    position: relative;
+    display: inline-block;
+    white-space: nowrap;
+    width: 230px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.sagecell_deleteButton {
+    position: absolute;
+    left: -1.2em;
+    cursor: pointer;
+    margin-right: 5px;
+}
+.sagecell_deleteButton:hover {
+    color: red;
+}
+.sagecell_deleteButton:active {
+    color: darkred;
+}
+.sagecell_deleteButton:before {
+    content: "\2716";
+}
+.sagecell table.table_form tr.row-a {
+    background-color: #f8f8f8;
+}
+.sagecell table.table_form tr.row-b {
+    background-color: #efefef;
+}
+.sagecell table.table_form td {
+    padding: 5px 15px;
+    color: #00a;
+}
+.sagecell .sagecell-templates .hide {
+ display: none;   
+}
+.sagecell .sagecell-templates .pull-right {
+    float: right;
+}
+.sagecell .sagecell-templates .lighten {
+    color: gray;
+}
+.sagecell .ansi-black-fg {color: #3E424D;}
+.sagecell .ansi-black-bg {background-color: #3E424D;}
+.sagecell .ansi-black-intense-fg {color: #282C36;}
+.sagecell .ansi-black-intense-bg {background-color: #282C36;}
+.sagecell .ansi-red-fg {color: #E75C58;}
+.sagecell .ansi-red-bg {background-color: #E75C58;}
+.sagecell .ansi-red-intense-fg {color: #B22B31;}
+.sagecell .ansi-red-intense-bg {background-color: #B22B31;}
+.sagecell .ansi-green-fg {color: #00A250;}
+.sagecell .ansi-green-bg {background-color: #00A250;}
+.sagecell .ansi-green-intense-fg {color: #007427;}
+.sagecell .ansi-green-intense-bg {background-color: #007427;}
+.sagecell .ansi-yellow-fg {color: #DDB62B;}
+.sagecell .ansi-yellow-bg {background-color: #DDB62B;}
+.sagecell .ansi-yellow-intense-fg {color: #B27D12;}
+.sagecell .ansi-yellow-intense-bg {background-color: #B27D12;}
+.sagecell .ansi-blue-fg {color: #208FFB;}
+.sagecell .ansi-blue-bg {background-color: #208FFB;}
+.sagecell .ansi-blue-intense-fg {color: #0065CA;}
+.sagecell .ansi-blue-intense-bg {background-color: #0065CA;}
+.sagecell .ansi-magenta-fg {color: #D160C4;}
+.sagecell .ansi-magenta-bg {background-color: #D160C4;}
+.sagecell .ansi-magenta-intense-fg {color: #A03196;}
+.sagecell .ansi-magenta-intense-bg {background-color: #A03196;}
+.sagecell .ansi-cyan-fg {color: #60C6C8;}
+.sagecell .ansi-cyan-bg {background-color: #60C6C8;}
+.sagecell .ansi-cyan-intense-fg {color: #258F8F;}
+.sagecell .ansi-cyan-intense-bg {background-color: #258F8F;}
+.sagecell .ansi-white-fg {color: #C5C1B4;}
+.sagecell .ansi-white-bg {background-color: #C5C1B4;}
+.sagecell .ansi-white-intense-fg {color: #A1A6B2;}
+.sagecell .ansi-white-intense-bg {background-color: #A1A6B2;}
+.sagecell .ansi-default-inverse-fg {color: #FFFFFF;}
+.sagecell .ansi-default-inverse-bg {background-color: #000000;}
+.sagecell .ansi-bold {font-weight: bold;}
+.sagecell .ansi-underline {text-decoration: underline;}
+</style><script type="text/x-mathjax-config;executed=true">MathJax.Hub.Config({"extensions":["jsMath2jax.js","tex2jax.js"],"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"displayMath":[["$$","$$"],["\\[","\\]"]],"processEscapes":true,"processEnvironments":true},"TeX":{"extensions":["color.js"]}});</script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><script type="text/javascript" async="" src="https://ssl.google-analytics.com/ga.js"></script><script src="https://dahn-research.eu/nbplayer/vendor/js/vendor/es5-shim.min.js"></script>
+        <script src="https://dahn-research.eu/nbplayer/vendor/js/vendor/marked.min.js"></script>
+        <script src="https://dahn-research.eu/nbplayer/vendor/js/vendor/purify.min.js"></script>
+        <script src="https://dahn-research.eu/nbplayer/vendor/js/vendor/ansi_up.min.js"></script>
+        <script src="https://dahn-research.eu/nbplayer/vendor/js/vendor/prism.min.js"></script>
+        <script src="https://dahn-research.eu/nbplayer/vendor/js/vendor/katex.min.js"></script>
+        <script src="https://dahn-research.eu/nbplayer/vendor/js/vendor/katex-auto-render.min.js"></script>
+        <script src="https://dahn-research.eu/nbplayer/vendor/js/vendor/notebook.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://dahn-research.eu/nbplayer/vendor/css/vendor/katex.min.css">
+        <link rel="stylesheet" href="https://dahn-research.eu/nbplayer/vendor/css/vendor/prism.css">
+        <link rel="stylesheet" href="https://dahn-research.eu/nbplayer/vendor/css/notebook.css">
+        <link rel="stylesheet" href="https://dahn-research.eu/nbplayer/vendor/css/nbpreview.css">
+        <link rel="stylesheet" href="https://dahn-research.eu/nbplayer/css/nbplayer.css">
+        <link rel="stylesheet" href="custom.css">
+
+    <script type="text/javascript" async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 2px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 2px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: 1em}
+.MathJax_MenuRadioCheck.RTL {right: 1em; left: auto}
+.MathJax_MenuLabel {padding: 2px 2em 4px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #CCCCCC; margin: 4px 1px 0px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: Highlight; color: HighlightText}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover, .MJXp-munder {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > *, .MJXp-munder > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style><style type="text/css">.output_b8db302364cb4f5c8f5d6084eb3fee48 .sagecell_messages, .output_b8db302364cb4f5c8f5d6084eb3fee48 .sagecell_permalink {display: none;}</style><style type="text/css">.output_aea938149ccf4e93853c6ff7c8c91f4f .sagecell_messages, .output_aea938149ccf4e93853c6ff7c8c91f4f .sagecell_permalink {display: none;}</style><style type="text/css">.output_14f062af02894f9db32e98d0ee1a4ad8 .sagecell_messages, .output_14f062af02894f9db32e98d0ee1a4ad8 .sagecell_permalink {display: none;}</style><style type="text/css">.output_2eff61328770421a8acf0560d943a216 .sagecell_messages, .output_2eff61328770421a8acf0560d943a216 .sagecell_permalink {display: none;}</style><style type="text/css">.output_0dc8b65eb82848ee9d595be0658013d1 .sagecell_messages, .output_0dc8b65eb82848ee9d595be0658013d1 .sagecell_permalink {display: none;}</style><style type="text/css">.output_a3890894502b4601878f6d8f97239dd8 .sagecell_messages, .output_a3890894502b4601878f6d8f97239dd8 .sagecell_permalink {display: none;}</style><style type="text/css">.output_659f036466284446955c0759364e5074 .sagecell_messages, .output_659f036466284446955c0759364e5074 .sagecell_permalink {display: none;}</style><style type="text/css">.output_d19a0a436a9044bd84e233637ea6ebe2 .sagecell_messages, .output_d19a0a436a9044bd84e233637ea6ebe2 .sagecell_permalink {display: none;}</style><style type="text/css">.output_a780d62faa6c4e11894727127ff24c00 .sagecell_messages, .output_a780d62faa6c4e11894727127ff24c00 .sagecell_permalink {display: none;}</style><style type="text/css">.output_6a778b6972eb4c7589c6a26a8dbbaae6 .sagecell_messages, .output_6a778b6972eb4c7589c6a26a8dbbaae6 .sagecell_permalink {display: none;}</style><style type="text/css">.output_0efaba14e81f4fc9a8b3d905357ebc4d .sagecell_messages, .output_0efaba14e81f4fc9a8b3d905357ebc4d .sagecell_permalink {display: none;}</style><style type="text/css">.output_20809b9e187448a3ae9fd08f15e0c98c .sagecell_messages, .output_20809b9e187448a3ae9fd08f15e0c98c .sagecell_permalink {display: none;}</style><style type="text/css">.output_5c08e2c8dbce484788a8ca474c1a529c .sagecell_messages, .output_5c08e2c8dbce484788a8ca474c1a529c .sagecell_permalink {display: none;}</style><style type="text/css">.output_4754bbceae434f92b35b372c3194aada .sagecell_messages, .output_4754bbceae434f92b35b372c3194aada .sagecell_permalink {display: none;}</style><style type="text/css">.output_ea7c676842da49018c503ee9c736bd3d .sagecell_messages, .output_ea7c676842da49018c503ee9c736bd3d .sagecell_permalink {display: none;}</style></head>
+<body>
+<div id="main">
+            
+            
+            
+            <div id="notebook-holder"><div class="nb-notebook"><div class="nb-worksheet"><div class="nb-cell nb-markdown-cell"><h1 id="temperament-calculations-in-sagemath">Temperament calculations in SageMath</h1>
+</div><div class="nb-cell nb-markdown-cell"><h2 id="setup">setup</h2>
+<p>Just run this once. Sets up basic functionality for temperament calculations.</p>
+</div><div class="nb-cell nb-code-cell"><div class="nb-input" data-prompt-number="82" style="display: none;"><pre class=" language-sage"><code class=" language-sage" data-language="sage"># set p-limit module to use
+# this should probably be a class instead of some globals, but its good enough for a notebook
+def set_limit(p):
+    n_dim = prime_pi(p);
+    
+    print("basis: ")
+    print(prime_range(p+1))
+
+    global log2
+    def log2(x):
+        return log(x)/log(2)
+
+    # prime matrix
+    global P
+    P = matrix(RR, 1, n_dim, lambda i, j: log2(Primes().unrank(j)));
+
+    # canonical map for n-edo
+    global edo_map
+    def edo_map(n):
+        return matrix(ZZ, 1, n_dim, lambda i, j: round(n*log2(Primes().unrank(j))));
+
+    # vector -&gt; ratio
+    global ratio
+    def ratio(v):
+        if not isinstance(v, list):
+            v = v.list()
+        res = 1/1;
+        for i in range(len(v)):
+            res *= Primes().unrank(i) ^ v[i]
+        return res
+
+    # ratio -&gt; vector
+    global factors
+    def factors(x):
+        F = list(x.factor())
+        d = dict(F)
+
+        solution = []
+        for p in primes(1,stop = Primes().unrank(n_dim)):
+            if p in d:
+                solution.append(d[p])
+            else:
+                solution.append(0)
+        assert (x == ratio(solution)), "Interval not contained in p-limit"
+        return Matrix(n_dim,1,solution)
+
+    global cents
+    def cents(x):
+        return 1200*x;</code></pre></div>
+  <div class="compute sagecell output_b8db302364cb4f5c8f5d6084eb3fee48" style="display: none;">
+
+<div class="sagecell-templates hide">
+</div>
+
+
+<div class="sagecell_output_elements" style="display: none;">
+  
+  <div class="sagecell_messages">
+    <hr>
+    <span style="font-size:large;font-weight:bold">Messages</span>
+    <br><br>
+  </div>
+</div></div>
+  <div class="compute" style="display: none;">
+    <script type="text/x-sage"># set p-limit module to use
+# this should probably be a class instead of some globals, but its good enough for a notebook
+def set_limit(p):
+    n_dim = prime_pi(p);
+    
+    print("basis: ")
+    print(prime_range(p+1))
+
+    global log2
+    def log2(x):
+        return log(x)/log(2)
+
+    # prime matrix
+    global P
+    P = matrix(RR, 1, n_dim, lambda i, j: log2(Primes().unrank(j)));
+
+    # canonical map for n-edo
+    global edo_map
+    def edo_map(n):
+        return matrix(ZZ, 1, n_dim, lambda i, j: round(n*log2(Primes().unrank(j))));
+
+    # vector -> ratio
+    global ratio
+    def ratio(v):
+        if not isinstance(v, list):
+            v = v.list()
+        res = 1/1;
+        for i in range(len(v)):
+            res *= Primes().unrank(i) ^ v[i]
+        return res
+
+    # ratio -> vector
+    global factors
+    def factors(x):
+        F = list(x.factor())
+        d = dict(F)
+
+        solution = []
+        for p in primes(1,stop = Primes().unrank(n_dim)):
+            if p in d:
+                solution.append(d[p])
+            else:
+                solution.append(0)
+        assert (x == ratio(solution)), "Interval not contained in p-limit"
+        return Matrix(n_dim,1,solution)
+
+    global cents
+    def cents(x):
+        return 1200*x;
+</script>
+  </div></div><div class="nb-cell nb-markdown-cell"><p>Use <span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi mathvariant="double-struck">J</mi><mn>5</mn></msup></mrow><annotation encoding="application/x-tex"> \mathbb{J}^{5} </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.980778em; vertical-align: -0.16667em;"></span><span class="mord"><span class="mord"><span class="mord mathbb">J</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.814108em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">5</span></span></span></span></span></span></span></span></span></span></span></span></span>:</p>
+</div><div class="nb-cell nb-code-cell"><div class="nb-input" data-prompt-number="83" style="display: none;"><pre class=" language-sage"><code class=" language-sage" data-language="sage">set_limit(5)</code></pre></div><div class="nb-output" data-prompt-number="83" style="display: none;"><pre class="nb-stdout">basis: 
+[2, 3, 5]
+</pre></div>
+  <div class="compute sagecell output_aea938149ccf4e93853c6ff7c8c91f4f" style="display: none;">
+
+<div class="sagecell-templates hide">
+</div>
+
+
+<div class="sagecell_output_elements" style="display: none;">
+  
+  <div class="sagecell_messages">
+    <hr>
+    <span style="font-size:large;font-weight:bold">Messages</span>
+    <br><br>
+  </div>
+</div></div>
+  <div class="compute" style="display: none;">
+    <script type="text/x-sage">set_limit(5)
+</script>
+  </div></div><div class="nb-cell nb-markdown-cell"><p>Some basic functionality</p>
+</div><div class="nb-cell nb-code-cell"><div class="nb-input" data-prompt-number="91" style="display: none;"><pre class=" language-sage"><code class=" language-sage" data-language="sage">print("Vector form of 45/32:")
+print(factors(45/32))
+print("Ratio corresponding to [1 1 -1]:")
+m3 = matrix([1,1,-1]).transpose()
+print(ratio(m3))
+print("Interval size:")
+print("octaves:", P*m3)
+print("cents:",cents(P*m3))
+print("Get canonical 12-EDO map:")
+print(edo_map(12
+             ))</code></pre></div><div class="nb-output" data-prompt-number="91" style="display: none;"><pre class="nb-stdout">Vector form of 45/32:
+[-5]
+[ 2]
+[ 1]
+Ratio corresponding to [1 1 -1]:
+6/5
+Interval size:
+octaves: [0.263034405833794]
+cents: [315.641287000553]
+Get canonical 12-EDO map:
+[12 19 28]
+</pre></div>
+  <div class="compute sagecell output_14f062af02894f9db32e98d0ee1a4ad8" style="display: none;">
+
+<div class="sagecell-templates hide">
+</div>
+
+
+<div class="sagecell_output_elements" style="display: none;">
+  
+  <div class="sagecell_messages">
+    <hr>
+    <span style="font-size:large;font-weight:bold">Messages</span>
+    <br><br>
+  </div>
+</div></div>
+  <div class="compute" style="display: none;">
+    <script type="text/x-sage">print("Vector form of 45/32:")
+print(factors(45/32))
+print("Ratio corresponding to [1 1 -1]:")
+m3 = matrix([1,1,-1]).transpose()
+print(ratio(m3))
+print("Interval size:")
+print("octaves:", P*m3)
+print("cents:",cents(P*m3))
+print("Get canonical 12-EDO map:")
+print(edo_map(12
+             ))
+</script>
+  </div></div><div class="nb-cell nb-markdown-cell"><p>Meantone map</p>
+</div><div class="nb-cell nb-code-cell"><div class="nb-input" data-prompt-number="3" style="display: none;"><pre class=" language-sage"><code class=" language-sage" data-language="sage">T = matrix([[1, 1, 0], [0, 1, 4]])</code></pre></div>
+  <div class="compute sagecell output_2eff61328770421a8acf0560d943a216" style="display: none;">
+
+<div class="sagecell-templates hide">
+</div>
+
+
+<div class="sagecell_output_elements" style="display: none;">
+  
+  <div class="sagecell_messages">
+    <hr>
+    <span style="font-size:large;font-weight:bold">Messages</span>
+    <br><br>
+  </div>
+</div></div>
+  <div class="compute" style="display: none;">
+    <script type="text/x-sage">T = matrix([[1, 1, 0], [0, 1, 4]])
+</script>
+  </div></div><div class="nb-cell nb-code-cell"><div class="nb-input" data-prompt-number="3" style="display: none;"><pre class=" language-sage"><code class=" language-sage" data-language="sage">#definte temperament from 7 &amp; 12
+T = block_matrix(ZZ, [[edo_map(19)], [edo_map(12)]],subdivide=False);
+print(T);
+print("\nHNF reduction:");
+T = T.echelon_form();
+
+#this is just to octave reduce the generator
+T = copy(T).with_added_multiple_of_row(0,1,1)
+print(T);</code></pre></div><div class="nb-output" data-prompt-number="3" style="display: none;"><pre class="nb-stdout">[19 30 44]
+[12 19 28]
+
+HNF reduction:
+[1 1 0]
+[0 1 4]
+</pre></div>
+  <div class="compute sagecell output_0dc8b65eb82848ee9d595be0658013d1" style="display: none;">
+
+<div class="sagecell-templates hide">
+</div>
+
+
+<div class="sagecell_output_elements" style="display: none;">
+  
+  <div class="sagecell_messages">
+    <hr>
+    <span style="font-size:large;font-weight:bold">Messages</span>
+    <br><br>
+  </div>
+</div></div>
+  <div class="compute" style="display: none;">
+    <script type="text/x-sage">#definte temperament from 7 & 12
+T = block_matrix(ZZ, [[edo_map(19)], [edo_map(12)]],subdivide=False);
+print(T);
+print("\nHNF reduction:");
+T = T.echelon_form();
+
+#this is just to octave reduce the generator
+T = copy(T).with_added_multiple_of_row(0,1,1)
+print(T);
+</script>
+  </div></div><div class="nb-cell nb-code-cell"><div class="nb-input" data-prompt-number="19" style="display: none;"><pre class=" language-sage"><code class=" language-sage" data-language="sage">#calculate quarter comma meantone (just 2/1, 5/4)
+J = block_matrix([[factors(2/1), factors(5/4)]],subdivide=False);
+
+A = (T*J);
+b = (P*J);
+
+# wwe want to solve left: xA = b
+gen = A.solve_left(b);
+cents(gen)
+
+#print(cents(P*factors(6/5)))  #Just minor third
+#print(cents(gen*T*factors(6/5)))  #Factored through the temperament</code></pre></div><div class="nb-output" data-prompt-number="19" style="display: none;"><pre class="nb-text-output">[1200.00000000000 696.578428466209]</pre></div>
+  <div class="compute sagecell output_a3890894502b4601878f6d8f97239dd8" style="display: none;">
+
+<div class="sagecell-templates hide">
+</div>
+
+
+<div class="sagecell_output_elements" style="display: none;">
+  
+  <div class="sagecell_messages">
+    <hr>
+    <span style="font-size:large;font-weight:bold">Messages</span>
+    <br><br>
+  </div>
+</div></div>
+  <div class="compute" style="display: none;">
+    <script type="text/x-sage">#calculate quarter comma meantone (just 2/1, 5/4)
+J = block_matrix([[factors(2/1), factors(5/4)]],subdivide=False);
+
+A = (T*J);
+b = (P*J);
+
+# wwe want to solve left: xA = b
+gen = A.solve_left(b);
+cents(gen)
+
+#print(cents(P*factors(6/5)))  #Just minor third
+#print(cents(gen*T*factors(6/5)))  #Factored through the temperament
+</script>
+  </div></div><div class="nb-cell nb-code-cell"><div class="nb-input" data-prompt-number="20" style="display: none;"><pre class=" language-sage"><code class=" language-sage" data-language="sage"># calculate least squares optimal tuning wrt some intervals
+
+J = block_matrix([[factors(2/1), factors(3/2), factors(5/4), factors(6/5)]], subdivide=False);
+
+A = (T*J).transpose();
+b = (P*J).transpose();
+
+#OLS solve   (A^t A)^-1 A^t b
+gen = (A.transpose() * A).inverse() * (A.transpose() * b);
+gen = gen.transpose();
+print(cents(gen))</code></pre></div><div class="nb-output" data-prompt-number="20" style="display: none;"><pre class="nb-stdout">[1203.39572993632 697.993315939677]
+</pre></div>
+  <div class="compute sagecell output_659f036466284446955c0759364e5074" style="display: none;">
+
+<div class="sagecell-templates hide">
+</div>
+
+
+<div class="sagecell_output_elements" style="display: none;">
+  
+  <div class="sagecell_messages">
+    <hr>
+    <span style="font-size:large;font-weight:bold">Messages</span>
+    <br><br>
+  </div>
+</div></div>
+  <div class="compute" style="display: none;">
+    <script type="text/x-sage"># calculate least squares optimal tuning wrt some intervals
+
+J = block_matrix([[factors(2/1), factors(3/2), factors(5/4), factors(6/5)]], subdivide=False);
+
+A = (T*J).transpose();
+b = (P*J).transpose();
+
+#OLS solve   (A^t A)^-1 A^t b
+gen = (A.transpose() * A).inverse() * (A.transpose() * b);
+gen = gen.transpose();
+print(cents(gen))
+</script>
+  </div></div><div class="nb-cell nb-code-cell"><div class="nb-input" data-prompt-number="21" style="display: none;"><pre class=" language-sage"><code class=" language-sage" data-language="sage">#calculate least squares optimal tuning wrt some intervals, with added constraint of pure octaves
+J = block_matrix([[factors(3/2), factors(5/4), factors(5/3)]], subdivide=False);
+
+A = (T*J).transpose();
+b = (P*J).transpose();
+
+# constraint matrix
+# this says: 1*x + 0*y = 1
+# aka the first generator is a just octave
+C = matrix([1,0]);
+d = matrix([1]);
+
+E = block_matrix([[A.transpose() * A, C.transpose()], [C, 0]]);
+f = block_matrix([[A.transpose() * b], [d]]);
+
+#solve, the last number is the lagrange multiplier, which can be ignored
+gen = (E.inverse()) * f;
+gen = gen.transpose();
+cents(gen)</code></pre></div><div class="nb-output" data-prompt-number="21" style="display: none;"><pre class="nb-text-output">[ 1200.00000000000  696.164845973964 0.827164984489093]</pre></div>
+  <div class="compute sagecell output_d19a0a436a9044bd84e233637ea6ebe2" style="display: none;">
+
+<div class="sagecell-templates hide">
+</div>
+
+
+<div class="sagecell_output_elements" style="display: none;">
+  
+  <div class="sagecell_messages">
+    <hr>
+    <span style="font-size:large;font-weight:bold">Messages</span>
+    <br><br>
+  </div>
+</div></div>
+  <div class="compute" style="display: none;">
+    <script type="text/x-sage">#calculate least squares optimal tuning wrt some intervals, with added constraint of pure octaves
+J = block_matrix([[factors(3/2), factors(5/4), factors(5/3)]], subdivide=False);
+
+A = (T*J).transpose();
+b = (P*J).transpose();
+
+# constraint matrix
+# this says: 1*x + 0*y = 1
+# aka the first generator is a just octave
+C = matrix([1,0]);
+d = matrix([1]);
+
+E = block_matrix([[A.transpose() * A, C.transpose()], [C, 0]]);
+f = block_matrix([[A.transpose() * b], [d]]);
+
+#solve, the last number is the lagrange multiplier, which can be ignored
+gen = (E.inverse()) * f;
+gen = gen.transpose();
+cents(gen)
+</script>
+  </div></div><div class="nb-cell nb-code-cell"><div class="nb-input" data-prompt-number="22" style="display: none;"><pre class=" language-sage"><code class=" language-sage" data-language="sage">#find the nullspace (= tempered commas)
+T = block_matrix(ZZ, [[edo_map(12)]],subdivide=False);
+K = T.right_kernel().matrix();
+
+def tenney(v):
+    res = 0.0;
+    for i in range(len(v)):
+        res += log2(Primes().unrank(i)) * abs(v[i])
+    return float(res)
+
+# LLL reduction to get short commas
+K = K.LLL();
+
+commas = []
+for x in range(0,10):
+    for y in range(0,10):
+        if x!=0 or y!=0 :
+            v = x*K[0] + y*K[1]
+            if P*v &lt; 0:
+                v = -v
+            commas.append(v)
+
+commas.sort(key = tenney)
+for i in range(4):
+    c = commas[i]
+    print(c, ratio(c), cents(P*c))
+
+#this operation is (usually) reversible
+K.right_kernel().matrix()
+
+</code></pre></div><div class="nb-output" data-prompt-number="22" style="display: none;"><pre class="nb-stdout">(-4, 4, -1) 81/80 (21.5062895967156)
+(7, 0, -3) 128/125 (41.0588584054956)
+(3, 4, -4) 648/625 (62.5651480022107)
+(11, -4, -2) 2048/2025 (19.5525688087805)
+</pre></div><div class="nb-output" data-prompt-number="22" style="display: none;"><pre class="nb-text-output">[12 19 28]</pre></div>
+  <div class="compute sagecell output_a780d62faa6c4e11894727127ff24c00" style="display: none;">
+
+<div class="sagecell-templates hide">
+</div>
+
+
+<div class="sagecell_output_elements" style="display: none;">
+  
+  <div class="sagecell_messages">
+    <hr>
+    <span style="font-size:large;font-weight:bold">Messages</span>
+    <br><br>
+  </div>
+</div></div>
+  <div class="compute" style="display: none;">
+    <script type="text/x-sage">#find the nullspace (= tempered commas)
+T = block_matrix(ZZ, [[edo_map(12)]],subdivide=False);
+K = T.right_kernel().matrix();
+
+def tenney(v):
+    res = 0.0;
+    for i in range(len(v)):
+        res += log2(Primes().unrank(i)) * abs(v[i])
+    return float(res)
+
+# LLL reduction to get short commas
+K = K.LLL();
+
+commas = []
+for x in range(0,10):
+    for y in range(0,10):
+        if x!=0 or y!=0 :
+            v = x*K[0] + y*K[1]
+            if P*v < 0:
+                v = -v
+            commas.append(v)
+
+commas.sort(key = tenney)
+for i in range(4):
+    c = commas[i]
+    print(c, ratio(c), cents(P*c))
+
+#this operation is (usually) reversible
+K.right_kernel().matrix()
+</script>
+  </div></div><div class="nb-cell nb-code-cell"><div class="nb-input" data-prompt-number="23" style="display: none;"><pre class=" language-sage"><code class=" language-sage" data-language="sage">#find the temperament matrix corresponding to some commas
+print("81/80 gives:")
+print(block_matrix(ZZ, [[factors(81/80)]]).left_kernel().matrix())
+print("81/80 and 128/125 gives:")
+print(block_matrix(ZZ, [[factors(81/80), factors(128/125)]]).left_kernel().matrix())</code></pre></div><div class="nb-output" data-prompt-number="23" style="display: none;"><pre class="nb-stdout">81/80 gives:
+[ 1  0 -4]
+[ 0  1  4]
+81/80 and 128/125 gives:
+[12 19 28]
+</pre></div>
+  <div class="compute sagecell output_6a778b6972eb4c7589c6a26a8dbbaae6" style="display: none;">
+
+<div class="sagecell-templates hide">
+</div>
+
+
+<div class="sagecell_output_elements" style="display: none;">
+  
+  <div class="sagecell_messages">
+    <hr>
+    <span style="font-size:large;font-weight:bold">Messages</span>
+    <br><br>
+  </div>
+</div></div>
+  <div class="compute" style="display: none;">
+    <script type="text/x-sage">#find the temperament matrix corresponding to some commas
+print("81/80 gives:")
+print(block_matrix(ZZ, [[factors(81/80)]]).left_kernel().matrix())
+print("81/80 and 128/125 gives:")
+print(block_matrix(ZZ, [[factors(81/80), factors(128/125)]]).left_kernel().matrix())
+</script>
+  </div></div><div class="nb-cell nb-code-cell"><div class="nb-input" data-prompt-number="24" style="display: none;"><pre class=" language-sage"><code class=" language-sage" data-language="sage"># sage has no troubles calculating the correct kernel when theres torsion
+# (81/80)^3
+T = block_matrix(ZZ, [[factors(81/80)*3]])
+
+print("quotient group: ")
+A = ZZ^3;
+V = A.span(T.transpose());
+M = A.quotient(V)
+print(M)
+print(M.optimized()[0].V())
+
+print("mapping matrix from kernel: ")
+K = T.left_kernel().matrix()
+print(K)</code></pre></div><div class="nb-output" data-prompt-number="24" style="display: none;"><pre class="nb-stdout">quotient group: 
+Finitely generated module V/W over Integer Ring with invariants (3, 0, 0)
+Free module of degree 3 and rank 3 over Integer Ring
+User basis matrix:
+[ 4 -4  1]
+[ 1 -1  0]
+[ 0  1  0]
+mapping matrix from kernel: 
+[ 1  0 -4]
+[ 0  1  4]
+</pre></div>
+  <div class="compute sagecell output_0efaba14e81f4fc9a8b3d905357ebc4d" style="display: none;">
+
+<div class="sagecell-templates hide">
+</div>
+
+
+<div class="sagecell_output_elements" style="display: none;">
+  
+  <div class="sagecell_messages">
+    <hr>
+    <span style="font-size:large;font-weight:bold">Messages</span>
+    <br><br>
+  </div>
+</div></div>
+  <div class="compute" style="display: none;">
+    <script type="text/x-sage"># sage has no troubles calculating the correct kernel when theres torsion
+# (81/80)^3
+T = block_matrix(ZZ, [[factors(81/80)*3]])
+
+print("quotient group: ")
+A = ZZ^3;
+V = A.span(T.transpose());
+M = A.quotient(V)
+print(M)
+print(M.optimized()[0].V())
+
+print("mapping matrix from kernel: ")
+K = T.left_kernel().matrix()
+print(K)
+</script>
+  </div></div><div class="nb-cell nb-code-cell"><div class="nb-input" data-prompt-number="25" style="display: none;"><pre class=" language-sage"><code class=" language-sage" data-language="sage">#removing contorsion by going to nullspace and back
+T = block_matrix(ZZ, [[edo_map(5)], [edo_map(19)]],subdivide=False);
+print("5&amp;19 map: ")
+print(T)
+T = T.echelon_form();
+print("HNF: ")
+print(T)
+K = T.right_kernel().matrix();
+
+print("removing contorsion: ")
+print(K.right_kernel().matrix())</code></pre></div><div class="nb-output" data-prompt-number="25" style="display: none;"><pre class="nb-stdout">5&amp;19 map: 
+[ 5  8 12]
+[19 30 44]
+HNF: 
+[ 1  0 -4]
+[ 0  2  8]
+removing contorsion: 
+[ 1  0 -4]
+[ 0  1  4]
+</pre></div>
+  <div class="compute sagecell output_20809b9e187448a3ae9fd08f15e0c98c" style="display: none;">
+
+<div class="sagecell-templates hide">
+</div>
+
+
+<div class="sagecell_output_elements" style="display: none;">
+  
+  <div class="sagecell_messages">
+    <hr>
+    <span style="font-size:large;font-weight:bold">Messages</span>
+    <br><br>
+  </div>
+</div></div>
+  <div class="compute" style="display: none;">
+    <script type="text/x-sage">#removing contorsion by going to nullspace and back
+T = block_matrix(ZZ, [[edo_map(5)], [edo_map(19)]],subdivide=False);
+print("5&19 map: ")
+print(T)
+T = T.echelon_form();
+print("HNF: ")
+print(T)
+K = T.right_kernel().matrix();
+
+print("removing contorsion: ")
+print(K.right_kernel().matrix())
+</script>
+  </div></div><div class="nb-cell nb-code-cell"><div class="nb-input" data-prompt-number="27" style="display: none;"><pre class=" language-sage"><code class=" language-sage" data-language="sage">#some higher 11-limit temperaments
+set_limit(11)
+
+T1 = block_matrix(ZZ, [[edo_map(31)], [edo_map(22)]]).echelon_form()
+print("Orwell:")
+print(T1)
+
+T2 = block_matrix(ZZ, [[edo_map(12)], [edo_map(15)]]).echelon_form()
+print("Augene:")
+print(T2)
+
+print("Orwell &amp; Augene:")
+T = block_matrix(ZZ, [[T1], [T2]]).echelon_form()
+
+print("comma:")
+ratio(T.right_kernel().matrix()[0])</code></pre></div><div class="nb-output" data-prompt-number="27" style="display: none;"><pre class="nb-stdout">basis: 
+[2, 3, 5, 7, 11]
+Orwell:
+[ 1  0  3  1  3]
+[ 0  7 -3  8  2]
+Augene:
+[ 3  0  7 18 20]
+[ 0  1  0 -2 -2]
+Orwell &amp; Augene:
+comma:
+</pre></div><div class="nb-output" data-prompt-number="27" style="display: none;"><pre class="nb-text-output">176/175</pre></div>
+  <div class="compute sagecell output_5c08e2c8dbce484788a8ca474c1a529c" style="display: none;">
+
+<div class="sagecell-templates hide">
+</div>
+
+
+<div class="sagecell_output_elements" style="display: none;">
+  
+  <div class="sagecell_messages">
+    <hr>
+    <span style="font-size:large;font-weight:bold">Messages</span>
+    <br><br>
+  </div>
+</div></div>
+  <div class="compute" style="display: none;">
+    <script type="text/x-sage">#some higher 11-limit temperaments
+set_limit(11)
+
+T1 = block_matrix(ZZ, [[edo_map(31)], [edo_map(22)]]).echelon_form()
+print("Orwell:")
+print(T1)
+
+T2 = block_matrix(ZZ, [[edo_map(12)], [edo_map(15)]]).echelon_form()
+print("Augene:")
+print(T2)
+
+print("Orwell & Augene:")
+T = block_matrix(ZZ, [[T1], [T2]]).echelon_form()
+
+print("comma:")
+ratio(T.right_kernel().matrix()[0])
+</script>
+  </div></div><div class="nb-cell nb-code-cell"><div class="nb-input" data-prompt-number="29" style="display: none;"><pre class=" language-sage"><code class=" language-sage" data-language="sage">## change of basis
+set_limit(5)
+T = block_matrix(ZZ, [[edo_map(19)], [edo_map(12)]]).echelon_form();
+
+M = matrix([[1,2],[5,11]])
+print(det(M))
+T1 = M*T
+
+#calculate quarter comma meantone (just 2/1, 5/4)
+J = block_matrix([[factors(2/1), factors(5/4)]],subdivide=False);
+
+A = (T*J);
+b = (P*J);
+
+# wwe want to solve left: xA = b
+gen = A.solve_left(b);
+print(cents(gen*(M.inverse())))
+
+A = (T1*J);
+b = (P*J);
+
+# wwe want to solve left: xA = b
+gen = A.solve_left(b);
+print(cents(gen))
+
+#print(cents(P*factors(6/5)))  #Just minor third
+#print(cents(gen*T*factors(6/5)))  #Factored through the temperament</code></pre></div><div class="nb-output" data-prompt-number="29" style="display: none;"><pre class="nb-stdout">basis: 
+[2, 3, 5]
+1
+[ 3717.10785766896 -503.421571533792]
+[ 3717.10785766896 -503.421571533791]
+</pre></div>
+  <div class="compute sagecell output_4754bbceae434f92b35b372c3194aada" style="display: none;">
+
+<div class="sagecell-templates hide">
+</div>
+
+
+<div class="sagecell_output_elements" style="display: none;">
+  
+  <div class="sagecell_messages">
+    <hr>
+    <span style="font-size:large;font-weight:bold">Messages</span>
+    <br><br>
+  </div>
+</div></div>
+  <div class="compute" style="display: none;">
+    <script type="text/x-sage">## change of basis
+set_limit(5)
+T = block_matrix(ZZ, [[edo_map(19)], [edo_map(12)]]).echelon_form();
+
+M = matrix([[1,2],[5,11]])
+print(det(M))
+T1 = M*T
+
+#calculate quarter comma meantone (just 2/1, 5/4)
+J = block_matrix([[factors(2/1), factors(5/4)]],subdivide=False);
+
+A = (T*J);
+b = (P*J);
+
+# wwe want to solve left: xA = b
+gen = A.solve_left(b);
+print(cents(gen*(M.inverse())))
+
+A = (T1*J);
+b = (P*J);
+
+# wwe want to solve left: xA = b
+gen = A.solve_left(b);
+print(cents(gen))
+
+#print(cents(P*factors(6/5)))  #Just minor third
+#print(cents(gen*T*factors(6/5)))  #Factored through the temperament
+</script>
+  </div></div><div class="nb-cell nb-code-cell"><div class="nb-input" data-prompt-number="30" style="display: none;"><pre class=" language-sage"><code class=" language-sage" data-language="sage"># get unimodular matrix from HNF
+T = block_matrix(ZZ, [[edo_map(19)], [edo_map(12)]]);
+V,U = T.echelon_form(transformation=True)
+U</code></pre></div><div class="nb-output" data-prompt-number="30" style="display: none;"><pre class="nb-text-output">[ 19 -30]
+[-12  19]</pre></div>
+  <div class="compute sagecell output_ea7c676842da49018c503ee9c736bd3d" style="display: none;">
+
+<div class="sagecell-templates hide">
+</div>
+
+
+<div class="sagecell_output_elements" style="display: none;">
+  
+  <div class="sagecell_messages">
+    <hr>
+    <span style="font-size:large;font-weight:bold">Messages</span>
+    <br><br>
+  </div>
+</div></div>
+  <div class="compute" style="display: none;">
+    <script type="text/x-sage"># get unimodular matrix from HNF
+T = block_matrix(ZZ, [[edo_map(19)], [edo_map(12)]]);
+V,U = T.echelon_form(transformation=True)
+U
+</script>
+  </div></div></div></div></div>
+
+
+            
+        </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://sagecell.sagemath.org/embedded_sagecell.js"></script>
+  <script src="https://dahn-research.eu/nbplayer/vendor/js/FileSaver.min.js"></script>
+  <script src="https://dahn-research.eu/nbplayer/nbplayerConfig.js"></script>
+  <script src="https://dahn-research.eu/nbplayer/js/nbrunner.min.js"></script>
+  <script>
+    playerConfig={"panes":"ExecRead","lang":"sage","linked":true,"eval":false,"hide":["fullScreen"],"execute":true,"showRead":true,"collapsable":false,"playerPath":"https://dahn-research.eu/nbplayer","name":"temperaments"};
+    playerMode={"showSage":true,"showNotebookInput":true,"showSageInput":true};
+    makeMenu();
+    localize();
+    loadStatus();
+    makeSageCells(playerConfig);
+    launchPlayer();
+  </script>
+  </body></html>
