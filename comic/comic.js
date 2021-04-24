@@ -1406,17 +1406,93 @@
 
 const images = [
   {
-    small: "img/sintel-med.jpg",
-    big: "img/sintel-big.png"
+    small: "img/doctor-med.png",
+    big: "img/doctor-big.png"
   },
   {
-    small: "img/vaaru-med.jpg",
-    big: "img/vaaru-big.png"
+    small: "img/kncn-med.jpg",
+    big: "img/kncn-big.jpg"
+  },
+  {
+    small: "img/keffie-med.png",
+    big: "img/keffie-big.png"
+  },
+  {
+    small: "img/sofa-med.jpg",
+    big: "img/sofa-big.jpg"
   },
   {
     small: "img/neuume-med.jpg",
     big: "img/neuume-big.png"
-  }
+  },
+  {
+    small: "img/zones-med.png",
+    big: "img/zones-med.png"
+  },
+  {
+    small: "img/sintel-med.jpg",
+    big: "img/sintel-big.jpg"
+  },
+  {
+    small: "img/bitfox-med.jpg",
+    big: "img/bitfox-med.jpg"
+  },
+  {
+    small: "img/razerek-med.jpg",
+    big: "img/razerek-big.png"
+  },
+  {
+    small: "img/loni-med.png",
+    big: "img/loni-med.png"
+  },
+  {
+    small: "img/fabric-med.png",
+    big: "img/fabric-big.png"
+  },
+  {
+    small: "img/ncb0-med.png",
+    big: "img/ncb0-big.png"
+  },
+  {
+    small: "img/ph418c-med.jpg",
+    big: "img/ph418c-big.jpg"
+  },
+  {
+    small: "img/oisyl-med.jpg",
+    big: "img/oisyl-big.jpg"
+  },
+  {
+    small: "img/wooxer-med.jpg",
+    big: "img/wooxer-big.jpg"
+  },
+  {
+    small: "img/deuveir-med.jpg",
+    big: "img/deuveir-big.jpg"
+  },
+  {
+    small: "img/vaaruin-med.jpg",
+    big: "img/vaaruin-big.jpg"
+  },
+  {
+    small: "img/jade-med.jpg",
+    big: "img/jade-big.jpg"
+  },
+  {
+    small: "img/flown-med.jpg",
+    big: "img/flown-big.jpg"
+  },
+  {
+    small: "img/ryan-med.jpg",
+    big: "img/ryan-big.jpg"
+  },
+  {
+    small: "img/boku-med.jpg",
+    big: "img/boku-big.jpg"
+  },
+  {
+    small: "img/mushbuh-med.jpg",
+    big: "img/mushbuh-big.jpg"
+  },
 ];
 
 const total = images.length;
@@ -1454,3 +1530,16 @@ document.querySelector(".prev").addEventListener("click", function(evt) {
   if (curImageIdx < 0) curImageIdx = total-1;
   showImage();
 });
+
+
+document.onkeyup = function(e) {
+  if (e.which == 37) {
+    curImageIdx--;
+    if (curImageIdx < 0) curImageIdx = total-1;
+    showImage();
+  } else if (e.which == 39) {
+    curImageIdx++;
+    if (curImageIdx >= total) curImageIdx = 0;
+    showImage();
+  }
+}

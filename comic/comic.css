@@ -1,22 +1,24 @@
 body {
     display: flex;
+    margin: 5px;
     margin-top: 32px;
-    background-color: #eee;
+
+    background-color: #ccc;
 }
 
 .gallery {
   /*background-color: red;*/
-  max-width: 900px;
+  max-width: 700px;
   display: inline-flex;
   flex-wrap: wrap;
-  width: 66%;
+  width: 100%;
   margin: auto;
   justify-content: center;
   padding: 0 4px;
 }
 
 .gallery img {
-  margin: 8px;
+  margin: 3px;
   cursor: pointer;
 }
 
