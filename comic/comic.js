@@ -1,6 +1,3 @@
-//import { FullScreenViewer } from "./iv-viewer/dist/iv-viewer.js";
-
-//import "./iv-viewer/dist/iv-viewer.css";
 /**
  * iv-viewer - 2.0.1
  * Author : Sudhanshu Yadav
@@ -8,7 +5,7 @@
  * git+https://github.com/s-yadav/iv-viewer.git
  */
 
-
+iv = function() {
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
@@ -454,6 +451,10 @@
         var maxZoom = _options.maxZoom;
         perc = Math.round(Math.max(100, perc));
         perc = Math.min(maxZoom, perc);
+
+
+
+
         point = point || {
           x: containerDim.w / 2,
           y: containerDim.h / 2
@@ -475,6 +476,7 @@
           if (step < 16) {
             _this._frames.zoomFrame = requestAnimationFrame(zoom);
           }
+
 
           var tickZoom = easeOutQuart(step, curPerc, perc - curPerc, 16);
           var ratio = tickZoom / curPerc;
@@ -969,6 +971,8 @@
             var newDist = getTouchPointsDistance(eMove.touches);
             var zoomValue = startZoomValue + (newDist - startDist) / 2;
 
+
+
             _this6.zoom(zoomValue, center);
           };
 
@@ -1019,11 +1023,21 @@
             changedDelta = 0;
           }
 
+
+
           e.preventDefault();
           if (changedDelta > MOUSE_WHEEL_COUNT) return;
           var contOffset = container.getBoundingClientRect();
-          var x = (e.pageX || e.pageX) - (contOffset.left + document.body.scrollLeft);
-          var y = (e.pageY || e.pageY) - (contOffset.top + document.body.scrollTop);
+
+
+          //var x = (e.pageX || e.pageX) - (contOffset.left + document.body.scrollLeft);
+          //var y = (e.pageY || e.pageY) - (contOffset.top + document.body.scrollTop);
+
+          // fix
+          var x = (e.pageX || e.pageX) - (contOffset.left + window.scrollX);
+          var y = (e.pageY || e.pageY) - (contOffset.top + window.scrollY);
+
+          //console.log(window.scrollY)
 
           _this7.zoom(newZoomValue, {
             x: x,
@@ -1201,6 +1215,8 @@
         var snapViewWidth = snapView.clientWidth;
         var snapViewHeight = snapView.clientHeight; // set the container dimension
 
+
+
         this._state.containerDim = {
           w: contWidth,
           h: contHeight
@@ -1215,6 +1231,8 @@
           w: imgWidth,
           h: imgHeight
         }; // reset image position and zoom
+
+
 
         css(image, {
           width: "".concat(imgWidth, "px"),
@@ -1244,9 +1262,11 @@
         var animate = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
         var zoomValue = this._options.zoomValue;
 
-        if (!animate) {
+
+
+        //if (!animate) {
           this._state.zoomValue = zoomValue;
-        }
+        //}
 
         this.zoom(zoomValue);
       }
@@ -1313,7 +1333,7 @@
     zoomOnMouseWheel: true
   };
 
-  var fullScreenHtml = "\n  <div class=\"iv-fullscreen-container\"></div>\n  <div class=\"iv-fullscreen-close\"></div>\n<img src=\"img/left.svg\" class=\"prev\" />\n<img src=\"img/right.svg\" class=\"next\" />";
+  var fullScreenHtml = "\n  <div class=\"iv-fullscreen-container\"></div>\n  <div class=\"iv-fullscreen-close\"></div>\n<img src=\"img/left.svg\" class=\"prev\" />\n<img src=\"img/right.svg\" class=\"next\" />\n<div class=\"attribution\">\n&nbsp;by:&nbsp;<a href=\"url\" target=\"_blank\">name</a>&nbsp;\n</div>";
 
   var FullScreenViewer =
   /*#__PURE__*/
@@ -1401,97 +1421,142 @@
 
   ImageViewer.FullScreenViewer = FullScreenViewer;
 
- //return ImageViewer;
+ return ImageViewer;
+}();
 
 
 const images = [
   {
     small: "img/doctor-med.png",
-    big: "img/doctor-big.png"
+    big: "img/doctor-big.png",
+    name: "doctor",
+    link: "idk",
   },
   {
     small: "img/kncn-med.jpg",
-    big: "img/kncn-big.jpg"
+    big: "img/kncn-big.jpg",
+    name: "kncn paradise",
+    link: "idk",
   },
   {
     small: "img/keffie-med.png",
-    big: "img/keffie-big.png"
+    big: "img/keffie-big.png",
+    name: "kfaraday",
+    link: "https://twitter.com/konataform",
   },
   {
     small: "img/sofa-med.jpg",
-    big: "img/sofa-big.jpg"
+    big: "img/sofa-big.jpg",
+    name: "sofa",
+    link: "https://twitter.com/yogurt200",
   },
   {
     small: "img/neuume-med.jpg",
-    big: "img/neuume-big.png"
+    big: "img/neuume-big.png",
+    name: "Neuume",
+    link: "https://twitter.com/neuume",
   },
   {
     small: "img/zones-med.png",
-    big: "img/zones-med.png"
+    big: "img/zones-big.png",
+    name: "zones",
+    link: "https://twitter.com/totalzones",
   },
   {
     small: "img/sintel-med.jpg",
-    big: "img/sintel-big.jpg"
+    big: "img/sintel-big.jpg",
+    name: "sintel",
+    link: "https://twitter.com/Sin_tel",
   },
   {
     small: "img/bitfox-med.jpg",
-    big: "img/bitfox-big.jpg"
+    big: "img/bitfox-big.jpg",
+    name: "Bitfox",
+    link: "https://twitter.com/doripoji",
   },
   {
     small: "img/razerek-med.jpg",
-    big: "img/razerek-big.png"
+    big: "img/razerek-big.png",
+    name: "Razerek",
+    link: "https://twitter.com/Razerek_",
   },
   {
     small: "img/loni-med.png",
-    big: "img/loni-big.png"
+    big: "img/loni-big.png",
+    name: "loni",
+    link: "https://twitter.com/loni_art",
   },
   {
     small: "img/fabric-med.png",
-    big: "img/fabric-big.png"
+    big: "img/fabric-big.png",
+    name: "fabric",
+    link: "https://twitter.com/fabricicici",
   },
   {
     small: "img/ncb0-med.png",
-    big: "img/ncb0-big.png"
+    big: "img/ncb0-big.png",
+    name: "ncb0",
+    link: "https://twitter.com/ncb0_",
   },
   {
     small: "img/ph418c-med.jpg",
-    big: "img/ph418c-big.png"
+    big: "img/ph418c-big.png",
+    name: "ph4_18c",
+    link: "https://twitter.com/ph4_18c",
   },
   {
     small: "img/oisyl-med.jpg",
-    big: "img/oisyl-big.jpg"
+    big: "img/oisyl-big.jpg",
+    name: "oisyl",
+    link: "https://oisyl.bandcamp.com/",
   },
   {
     small: "img/wooxer-med.jpg",
-    big: "img/wooxer-big.jpg"
+    big: "img/wooxer-big.jpg",
+    name: "wooxer",
+    link: "https://twitter.com/wooxxer",
   },
   {
     small: "img/deuveir-med.jpg",
-    big: "img/deuveir-big.jpg"
+    big: "img/deuveir-big.jpg",
+    name: "deuveir",
+    link: "https://twitter.com/deuveir",
   },
   {
     small: "img/vaaruin-med.jpg",
-    big: "img/vaaruin-big.jpg"
+    big: "img/vaaruin-big.jpg",
+    name: "vaaruin",
+    link: "https://twitter.com/vaarui",
   },
   {
     small: "img/jade-med.jpg",
-    big: "img/jade-big.jpg"
+    big: "img/jade-big.jpg",
+    name: "jade",
+    link: "https://twitter.com/internetjade",
   },
   {
     small: "img/flown-med.jpg",
-    big: "img/flown-big.jpg"
+    big: "img/flown-big.jpg",
+    name: "Flown",
+    link: "https://twitter.com/flownflownflown",
   },
   {
     small: "img/ryan-med.jpg",
-    big: "img/ryan-big.jpg"
+    big: "img/ryan-big.jpg",
+    name: "ryan salamander",
+    link: "https://twitter.com/ryansalamanda",
   },
   {
     small: "img/boku-med.jpg",
-    big: "img/boku-big.jpg"
+    big: "img/boku-big.jpg",
+    name: "BOKU",
+    link: "https://twitter.com/Taco_Sakurambo",
   },
   {
     small: "img/mushbuh-med.jpg",
-    big: "img/mushbuh-big.jpg"
+    big: "img/mushbuh-big.jpg",
+    name: "mushbuh",
+    link: "https://twitter.com/mushbuh",
   },
 ];
 
@@ -1499,19 +1564,36 @@ const total = images.length;
 
 let curImageIdx = 0;
 
-const viewer = new FullScreenViewer();
+const viewer = new iv.FullScreenViewer();
+
+//showImage();
 
 function showImage() {
-  const lowres = images[curImageIdx].small
-  const highres = images[curImageIdx].big
-  console.log(lowres, highres);
+  const imgobj = images[curImageIdx]
+  const lowres = imgobj.small
+  const highres = imgobj.big
+
+  const link = imgobj.link
+  const name = imgobj.name
+
+  // console.log(lowres, highres, link, name);
+
 
   viewer.show(lowres, highres);
+
+
+  const linkelem = document.getElementsByClassName('attribution')[0].getElementsByTagName('a')[0];
+
+  linkelem.setAttribute("href", link);
+  linkelem.innerHTML = name
 }
 
 Array.from(document.querySelectorAll(".gallery-items")).forEach(elem => {
   elem.addEventListener("click", function(ev) {
     curImageIdx = elem.getAttribute("index");
+
+
+    //viewer = new iv.FullScreenViewer();
 
     showImage();
     
