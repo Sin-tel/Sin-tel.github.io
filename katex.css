@@ -6,13 +6,13 @@
 }
 @font-face {
     font-family: MathJax_Caligraphic;
-    src: url(fonts/MathJax_Caligraphic-Bold.woff) format("woff"), url(fonts/MathJax_Caligraphic-Bold.ttf) format("truetype");
+    src: url(fonts/MathJax_Calligraphic-Bold.woff) format("woff"), url(fonts/MathJax_Caligraphic-Bold.ttf) format("truetype");
     font-weight: 700;
     font-style: normal;
 }
 @font-face {
     font-family: MathJax_Caligraphic;
-    src: url(fonts/MathJax_Caligraphic-Regular.woff) format("woff"), url(fonts/MathJax_Caligraphic-Regular.ttf) format("truetype");
+    src: url(fonts/MathJax_Calligraphic-Regular.woff) format("woff"), url(fonts/MathJax_Caligraphic-Regular.ttf) format("truetype");
     font-weight: 400;
     font-style: normal;
 }
