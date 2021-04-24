@@ -3,12 +3,13 @@ body {
     margin: 5px;
     margin-top: 32px;
 
-    background-color: #ccc;
+    background-color: #eee;
 }
 
 .gallery {
   /*background-color: red;*/
   max-width: 700px;
+  min-width: 700px;
   display: inline-flex;
   flex-wrap: wrap;
   width: 100%;

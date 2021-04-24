@@ -1435,7 +1435,7 @@ const images = [
   },
   {
     small: "img/bitfox-med.jpg",
-    big: "img/bitfox-med.jpg"
+    big: "img/bitfox-big.jpg"
   },
   {
     small: "img/razerek-med.jpg",
@@ -1443,7 +1443,7 @@ const images = [
   },
   {
     small: "img/loni-med.png",
-    big: "img/loni-med.png"
+    big: "img/loni-big.png"
   },
   {
     small: "img/fabric-med.png",
