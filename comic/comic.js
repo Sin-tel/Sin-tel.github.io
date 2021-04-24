@@ -1455,7 +1455,7 @@ const images = [
   },
   {
     small: "img/ph418c-med.jpg",
-    big: "img/ph418c-big.jpg"
+    big: "img/ph418c-big.png"
   },
   {
     small: "img/oisyl-med.jpg",
