@@ -1029,6 +1029,8 @@ iv = function() {
           if (changedDelta > MOUSE_WHEEL_COUNT) return;
           var contOffset = container.getBoundingClientRect();
 
+          
+
 
           //var x = (e.pageX || e.pageX) - (contOffset.left + document.body.scrollLeft);
           //var y = (e.pageY || e.pageY) - (contOffset.top + document.body.scrollTop);
@@ -1036,6 +1038,12 @@ iv = function() {
           // fix
           var x = (e.pageX || e.pageX) - (contOffset.left + window.scrollX);
           var y = (e.pageY || e.pageY) - (contOffset.top + window.scrollY);
+
+          // somehow this does get called on mobile??
+          if (isMobile) {
+            x = (e.pageX || e.pageX) - (contOffset.left + document.body.scrollLeft);
+            y = (e.pageY || e.pageY) - (contOffset.top + document.body.scrollTop);
+          }
 
           //console.log(window.scrollY)
 
