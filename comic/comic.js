@@ -1430,13 +1430,13 @@ const images = [
     small: "img/doctor-med.png",
     big: "img/doctor-big.png",
     name: "doctor",
-    link: "idk",
+    link: "https://twitter.com/doctor54923658",
   },
   {
     small: "img/kncn-med.jpg",
     big: "img/kncn-big.jpg",
     name: "kncn paradise",
-    link: "idk",
+    link: "https://www.pixiv.net/en/users/23541910",
   },
   {
     small: "img/keffie-med.png",
