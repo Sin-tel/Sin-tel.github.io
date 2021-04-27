@@ -1568,6 +1568,10 @@ const viewer = new iv.FullScreenViewer();
 
 //showImage();
 
+const isMobile = (window.innerWidth < 1000);
+
+console.log(isMobile)
+
 function showImage() {
   const imgobj = images[curImageIdx]
   const lowres = imgobj.small
@@ -1579,7 +1583,14 @@ function showImage() {
   // console.log(lowres, highres, link, name);
 
 
-  viewer.show(lowres, highres);
+  //
+  
+
+  if (isMobile) {
+    viewer.show(lowres);
+  }else{
+    viewer.show(lowres, highres);
+  }
 
 
   const linkelem = document.getElementsByClassName('attribution')[0].getElementsByTagName('a')[0];
