@@ -961,9 +961,15 @@ iv = function() {
 
           var startDist = getTouchPointsDistance(eStart.touches); // find the center for the zoom
 
-          var center = {
+          // fix 2
+          /*var center = {
             x: (touch1.pageX + touch0.pageX) / 2 - (contOffset.left + document.body.scrollLeft),
             y: (touch1.pageY + touch0.pageY) / 2 - (contOffset.top + document.body.scrollTop)
+          };*/
+
+          var center = {
+            x: (touch1.pageX + touch0.pageX) / 2 - (contOffset.left + window.scrollX),
+            y: (touch1.pageY + touch0.pageY) / 2 - (contOffset.top + window.scrollY)
           };
 
           var moveListener = function moveListener(eMove) {
@@ -1039,11 +1045,6 @@ iv = function() {
           var x = (e.pageX || e.pageX) - (contOffset.left + window.scrollX);
           var y = (e.pageY || e.pageY) - (contOffset.top + window.scrollY);
 
-          // somehow this does get called on mobile??
-          if (isMobile) {
-            x = (e.pageX || e.pageX) - (contOffset.left + document.body.scrollLeft);
-            y = (e.pageY || e.pageY) - (contOffset.top + document.body.scrollTop);
-          }
 
           //console.log(window.scrollY)
 
