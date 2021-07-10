@@ -2,20 +2,30 @@
 <html>
 <head>
 <link rel="stylesheet" href="comic.css">
-<link rel="stylesheet" href="iv-viewer.css">
+<!-- <link rel="stylesheet" href="iv-viewer.css"> -->
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <!-- <meta name="viewport" content="user-scalable=0" /> -->
+<!-- <script src="./openseadragon.min.js"></script> -->
 
 <title>comic</title>
 </head>
-
 <body>
-<div class="gallery">
-    <img 
-      src="img/sintel-med.jpg"
-      index = 6
-      class="gallery-items"
-    >
-</div>
-<script src="./comic.js"></script>
+
+<div id="openseadragon1" class = "openseadragon"></div>
+
+<script src="openseadragon/openseadragon.min.js"></script>
+<script type="text/javascript">
+    OpenSeadragon({
+        id:             "openseadragon1",
+        prefixUrl:      "openseadragon/images/",
+        showNavigator:  true,
+        tileSources:    [{
+            type:       "zoomifytileservice",
+            width:      4000,
+            height:     4000,
+            tilesUrl:   "img/sintel-big/"
+        }]
+    });
+</script>
+
 </body>
