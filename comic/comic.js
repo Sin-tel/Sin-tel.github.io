@@ -962,15 +962,15 @@ iv = function() {
           var startDist = getTouchPointsDistance(eStart.touches); // find the center for the zoom
 
           // fix 2
-          /*var center = {
+          var center = {
             x: (touch1.pageX + touch0.pageX) / 2 - (contOffset.left + document.body.scrollLeft),
             y: (touch1.pageY + touch0.pageY) / 2 - (contOffset.top + document.body.scrollTop)
-          };*/
-
-          var center = {
-            x: (touch1.pageX + touch0.pageX) / 2 - (contOffset.left + window.scrollX),
-            y: (touch1.pageY + touch0.pageY) / 2 - (contOffset.top + window.scrollY)
           };
+
+          // var center = {
+          //   x: (touch1.pageX + touch0.pageX) / 2 - (contOffset.left + window.scrollX),
+          //   y: (touch1.pageY + touch0.pageY) / 2 - (contOffset.top + window.scrollY)
+          // };
 
           var moveListener = function moveListener(eMove) {
             // eMove.preventDefault();
@@ -1038,12 +1038,12 @@ iv = function() {
           
 
 
-          //var x = (e.pageX || e.pageX) - (contOffset.left + document.body.scrollLeft);
-          //var y = (e.pageY || e.pageY) - (contOffset.top + document.body.scrollTop);
+          var x = (e.pageX || e.pageX) - (contOffset.left + document.body.scrollLeft);
+          var y = (e.pageY || e.pageY) - (contOffset.top + document.body.scrollTop);
 
           // fix
-          var x = (e.pageX || e.pageX) - (contOffset.left + window.scrollX);
-          var y = (e.pageY || e.pageY) - (contOffset.top + window.scrollY);
+          //var x = (e.pageX || e.pageX) - (contOffset.left + window.scrollX);
+          //var y = (e.pageY || e.pageY) - (contOffset.top + window.scrollY);
 
 
           //console.log(window.scrollY)
