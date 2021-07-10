@@ -1342,7 +1342,8 @@ iv = function() {
     zoomOnMouseWheel: true
   };
 
-  var fullScreenHtml = "\n  <div class=\"iv-fullscreen-container\"></div>\n  <div class=\"iv-fullscreen-close\"></div>\n<img src=\"img/left.svg\" class=\"prev\" />\n<img src=\"img/right.svg\" class=\"next\" />\n<div class=\"attribution\">\n&nbsp;by:&nbsp;<a href=\"url\" target=\"_blank\">name</a>&nbsp;\n</div>";
+  //var fullScreenHtml = "\n  <div class=\"iv-fullscreen-container\"></div>\n  <div class=\"iv-fullscreen-close\"></div>\n<img src=\"img/left.svg\" class=\"prev\" />\n<img src=\"img/right.svg\" class=\"next\" />\n<div class=\"attribution\">\n&nbsp;by:&nbsp;<a href=\"url\" target=\"_blank\">name</a>&nbsp;\n</div>";
+  var fullScreenHtml = "\n  <div class=\"iv-fullscreen-container\"></div>\n";
 
   var FullScreenViewer =
   /*#__PURE__*/
@@ -1390,9 +1391,10 @@ iv = function() {
       key: "_initFullScreenEvents",
       value: function _initFullScreenEvents() {
         var fullScreen = this._elements.fullScreen;
-        var closeBtn = fullScreen.querySelector('.iv-fullscreen-close'); // add close button event
+        // REMOVE CLOSE BUTTON
+        //var closeBtn = fullScreen.querySelector('.iv-fullscreen-close'); // add close button event
 
-        this._events.onCloseBtnClick = assignEvent(closeBtn, 'click', this.hide);
+        //this._events.onCloseBtnClick = assignEvent(closeBtn, 'click', this.hide);
       }
     }, {
       key: "show",
@@ -1433,145 +1435,14 @@ iv = function() {
  return ImageViewer;
 }();
 
-
-const images = [
-  {
-    small: "img/doctor-med.png",
-    big: "img/doctor-big.png",
-    name: "doctor",
-    link: "https://twitter.com/doctor54923658",
-  },
-  {
-    small: "img/kncn-med.jpg",
-    big: "img/kncn-big.jpg",
-    name: "kncn paradise",
-    link: "https://www.pixiv.net/en/users/23541910",
-  },
-  {
-    small: "img/keffie-med.png",
-    big: "img/keffie-big.png",
-    name: "kfaraday",
-    link: "https://twitter.com/konataform",
-  },
-  {
-    small: "img/sofa-med.jpg",
-    big: "img/sofa-big.jpg",
-    name: "sofa",
-    link: "https://twitter.com/yogurt200",
-  },
-  {
-    small: "img/neuume-med.jpg",
-    big: "img/neuume-big.png",
-    name: "Neuume",
-    link: "https://twitter.com/neuume",
-  },
-  {
-    small: "img/zones-med.png",
-    big: "img/zones-big.png",
-    name: "zones",
-    link: "https://twitter.com/totalzones",
-  },
+/*
   {
     small: "img/sintel-med.jpg",
     big: "img/sintel-big.jpg",
     name: "sintel",
     link: "https://twitter.com/Sin_tel",
   },
-  {
-    small: "img/bitfox-med.jpg",
-    big: "img/bitfox-big.jpg",
-    name: "Bitfox",
-    link: "https://twitter.com/doripoji",
-  },
-  {
-    small: "img/razerek-med.jpg",
-    big: "img/razerek-big.png",
-    name: "Razerek",
-    link: "https://twitter.com/Razerek_",
-  },
-  {
-    small: "img/loni-med.png",
-    big: "img/loni-big.png",
-    name: "loni",
-    link: "https://twitter.com/loni_art",
-  },
-  {
-    small: "img/fabric-med.png",
-    big: "img/fabric-big.png",
-    name: "fabric",
-    link: "https://twitter.com/fabricicici",
-  },
-  {
-    small: "img/ncb0-med.png",
-    big: "img/ncb0-big.png",
-    name: "ncb0",
-    link: "https://twitter.com/ncb0_",
-  },
-  {
-    small: "img/ph418c-med.jpg",
-    big: "img/ph418c-big.png",
-    name: "ph4_18c",
-    link: "https://twitter.com/ph4_18c",
-  },
-  {
-    small: "img/oisyl-med.jpg",
-    big: "img/oisyl-big.jpg",
-    name: "oisyl",
-    link: "https://oisyl.bandcamp.com/",
-  },
-  {
-    small: "img/wooxer-med.jpg",
-    big: "img/wooxer-big.jpg",
-    name: "wooxer",
-    link: "https://twitter.com/wooxxer",
-  },
-  {
-    small: "img/deuveir-med.jpg",
-    big: "img/deuveir-big.jpg",
-    name: "deuveir",
-    link: "https://twitter.com/deuveir",
-  },
-  {
-    small: "img/vaaruin-med.jpg",
-    big: "img/vaaruin-big.jpg",
-    name: "vaaruin",
-    link: "https://twitter.com/vaarui",
-  },
-  {
-    small: "img/jade-med.jpg",
-    big: "img/jade-big.jpg",
-    name: "jade",
-    link: "https://twitter.com/internetjade",
-  },
-  {
-    small: "img/flown-med.jpg",
-    big: "img/flown-big.jpg",
-    name: "Flown",
-    link: "https://twitter.com/flownflownflown",
-  },
-  {
-    small: "img/ryan-med.jpg",
-    big: "img/ryan-big.jpg",
-    name: "ryan salamander",
-    link: "https://twitter.com/ryansalamanda",
-  },
-  {
-    small: "img/boku-med.jpg",
-    big: "img/boku-big.jpg",
-    name: "BOKU",
-    link: "https://twitter.com/Taco_Sakurambo",
-  },
-  {
-    small: "img/mushbuh-med.jpg",
-    big: "img/mushbuh-big.jpg",
-    name: "mushbuh",
-    link: "https://twitter.com/mushbuh",
-  },
-];
-
-const total = images.length;
-
-let curImageIdx = 0;
+ */
 
 const viewer = new iv.FullScreenViewer();
 
@@ -1582,14 +1453,13 @@ const isMobile = (window.innerWidth < 1000);
 console.log(isMobile)
 
 function showImage() {
-  const imgobj = images[curImageIdx]
-  const lowres = imgobj.small
-  const highres = imgobj.big
+  //const imgobj = images[curImageIdx]
+  const lowres = "img/sintel-med.jpg"
+  const highres = "img/sintel-big.jpg"
 
-  const link = imgobj.link
-  const name = imgobj.name
 
-  // console.log(lowres, highres, link, name);
+
+  console.log(lowres, highres);
 
 
   //
@@ -1602,46 +1472,11 @@ function showImage() {
   }
 
 
-  const linkelem = document.getElementsByClassName('attribution')[0].getElementsByTagName('a')[0];
+  /*const linkelem = document.getElementsByClassName('attribution')[0].getElementsByTagName('a')[0];
 
   linkelem.setAttribute("href", link);
-  linkelem.innerHTML = name
+  linkelem.innerHTML = name*/
 }
 
-Array.from(document.querySelectorAll(".gallery-items")).forEach(elem => {
-  elem.addEventListener("click", function(ev) {
-    curImageIdx = elem.getAttribute("index");
 
-
-    //viewer = new iv.FullScreenViewer();
-
-    showImage();
-    
-  });
-});
-
-
-document.querySelector(".next").addEventListener("click", function(evt) {
-  curImageIdx++;
-  if (curImageIdx >= total) curImageIdx = 0;
-  showImage();
-});
-
-document.querySelector(".prev").addEventListener("click", function(evt) {
-  curImageIdx--;
-  if (curImageIdx < 0) curImageIdx = total-1;
-  showImage();
-});
-
-
-document.onkeyup = function(e) {
-  if (e.which == 37) {
-    curImageIdx--;
-    if (curImageIdx < 0) curImageIdx = total-1;
-    showImage();
-  } else if (e.which == 39) {
-    curImageIdx++;
-    if (curImageIdx >= total) curImageIdx = 0;
-    showImage();
-  }
-}
+showImage()
