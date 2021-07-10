@@ -1465,11 +1465,11 @@ function showImage() {
   //
   
 
-  if (isMobile) {
-    viewer.show(lowres);
-  }else{
+  //if (isMobile) {
+  //  viewer.show(lowres);
+  //}else{
     viewer.show(lowres, highres);
-  }
+  //}
 
 
   /*const linkelem = document.getElementsByClassName('attribution')[0].getElementsByTagName('a')[0];
