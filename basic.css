@@ -105,7 +105,7 @@ h5,h6 {font-size: 1em; font-weight:bold}
 
 table {border-collapse: collapse; border-spacing: 0; margin:1em 0}
 
-th, td {text-align: left; vertical-align: top; border: 1px solid; padding: 0.4em}
+th, td {text-align: left; vertical-align: top; border: none; padding: 0.4em}
 
 thead,tfoot {background: var(--c2)}
 
@@ -134,3 +134,14 @@ article {background: var(--c2); border-radius: var(--rc); padding: 1em; box-shad
 
 [style*="--c:"]:first-child, section>section:first-child, article:first-child {margin-left:0}
 [style*="--c:"]:last-child, section>section:last-child, article:last-child {margin-right:0}
+
+audio {
+    width: 300px;
+    height: 40px;
+}
+
+audio::-webkit-media-controls-play-button,
+audio::-webkit-media-controls-panel {
+  background-color: #DDD;
+  color: #DDD;
+}

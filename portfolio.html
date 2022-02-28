@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="basic.css">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>sintel.website</title>
+<link rel="shortcut icon" type="image/jpg" href="/media/icon.png"/>
+</head>
+
+<body>
+
+<div class="normal">
+	<h3><a href="../">home</a></h3>
+</div>
+
+<hr>
+
+<div class="normal">
+<h1>Portfolio</h1>
+<small>A selection of personal projects</small>
+
+<!-- -------------------------- -->
+<hr>
+<h2>PETRI</h2>
+
+<p>
+	Petri is an audiovisual art project that explores emergent behaviour. 
+	Populations of cells through simple rules that determine their attraction or repulsion towards eachother.
+	These interaction can be either attractive or repulsive. 
+	The motion is coupled to a viscous fluid, simulated by solving the <a href="https://en.wikipedia.org/wiki/Navier%E2%80%93Stokes_equations">Navier–Stokes equations</a>.
+	To user can interact with the digital organisms by poking or stirring the fluid.
+	The visuals are accompanied by musical fragments react directly to the resulting motion.
+</p>
+
+<iframe width="480" height="360"
+src="https://www.youtube.com/embed/_295GWJ6z4k?modestbranding=1&autohide=1&showinfo=0&fs=0&controls=1">
+</iframe>
+
+<p>[<a href="https://sintel.itch.io/petri">Project page</a>]</p>
+
+<!-- -------------------------- -->
+<hr>
+<h2>Physical modeling audio synthesis</h2>
+
+<p>
+	When we want to recreate the sound of a real instrument on a computer, the typical approach is to pre-record every note on a real instrument. This can be quite expensive, and it also often fails to sound realistic. Recorded sounds can never replicate the expressivity of a human player. An alternative approach is physical modeling synthesis. Here, a digital model of the instrument is simulated in real time. Because the acoustics of instruments can be quite complex, this is hard to achieve. However, with some effort the results can be amazing. 
+</p>
+<p>
+	I have implemented several of such models. Below are some audio demos:
+</p>
+
+<table>
+<tr>
+	<td>
+	Violin<br>
+	<audio controls="controls">
+		<source src="media/strings.mp3" type="audio/mpeg">
+	</audio><!-- <br> -->
+	</td>
+
+	<td>
+	Flute<br>
+	<audio controls="controls">
+		<source src="media/flute.mp3" type="audio/mpeg">
+	</audio>
+	<!-- <br> -->
+	</td>
+</tr>
+<tr>
+	<td>
+	Trumpet<br>
+	<audio controls="controls">
+		<source src="media/trumpet.mp3" type="audio/mpeg">
+	</audio><!-- <br> -->
+	</td>
+
+	<td>
+	Guitar<br>
+	<audio controls="controls">
+		<source src="media/guitar.mp3" type="audio/mpeg">
+	</audio><!-- <br> -->
+	</td>
+</tr>
+</table>
+
+
+<p>[<a href="https://github.com/Sin-tel/protoplug">Github repository</a>]</p>
+
+<!-- -------------------------- -->
+<hr>
+<h2>Spectral paint</h2>
+
+<p>
+	Many artists use digital painting software these days. The way color is digitally represented, by the RGB color model, can not accurately represent real pigments. For example, when mixing blue and yellow in most painting software, the result is not the expected green, but instead a dark gray. To solve this, I built a painting app that simulates pigments in the whole visual spectrum and models their mixing using <a href="https://en.wikipedia.org/wiki/Kubelka-Munk_theory">Kubelka-Munk theory</a>. The result is a digital color model that is intuitive to people who are used to real paints.
+</p>
+
+<img src="media/paint1.png">
+<img src="media/paint2.png">
+
+<!-- <embed src="media/paint_mix.mp4" autostart="false" height="300" width="450" /></embed> -->
+
+
+
+<p>[<a href="https://github.com/Sin-tel/spectral_draw">Github repository</a>]</p>
+
+<!-- -------------------------- -->
+<hr>
+<h2>Justidraw</h2>
+
+<p>
+	An experimental audio app where people can draw notes freely. Inspired by composer <a href="https://en.wikipedia.org/wiki/Iannis_Xenakis">Iannis Xenakis</a>.
+</p>
+
+<iframe width="480" height="360"
+src="https://www.youtube.com/embed/JhLQWR3zdeU?modestbranding=1&autohide=1&showinfo=0&fs=0&controls=1">
+</iframe>
+
+<p>[<a href="https://github.com/sin-tel/justidraw">Github repository</a>]</p>
+
+<!-- -------------------------- -->
+<hr>
+<h2>Fallspire</h2>
+
+<p>A collaboration between my friend <a href="https://twitter.com/retropetet">petet</a> and me. Fallspire is a demo <a href="https://en.wikipedia.org/wiki/Demoscene">demo</a> for a retro-inspired virtual console called TIC-80. It received a honorable mention in category 'new talent' and was nominated for category 'best direction' at the 2020 <a href="https://2020.meteoriks.org/laureates">Meteoriks awards</a>. </p>
+
+<iframe width="480" height="360"
+src="https://www.youtube.com/embed/tWEU-bOT90w?rel=0&modestbranding=1&autohide=1&showinfo=0&controls=1">
+</iframe>
+
+<p>[<a href="http://tic80.com/play?cart=806">Online demo</a>]</p>
+
+<!-- -------------------------- -->
+<!-- hr>
+<h2>Music</h2>
+<p>[<a href="https://sintel.bandcamp.com/">Bandcamp</a>]</p>
+<p>[<a href="https://soundcloud.com/sintel-music">Soundcloud</a>]</p>
+
+<iframe width="480" height="360"
+src="https://www.youtube.com/embed/hM7p_VVyeQ0?rel=0&modestbranding=1&autohide=1&showinfo=0&controls=1">
+</iframe> -->
+
+</body>
+</html>
