@@ -25,6 +25,15 @@
 }
 */
 
+table {
+  width: 100%;
+}
+.hscroll {
+  overflow-x: auto;
+}
+.example {
+  white-space: nowrap;
+}
 html {
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
