@@ -13,9 +13,7 @@
 * {box-sizing: border-box}
 
 :root{
-/*--sans: 400 17px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";*/
-/*--sans: 400 16px/1.5 "Open Sans", sans-serif;*/
---sans: 400 16px/1.5 "Open Sans", Courier;
+--sans: 400 16px/1.5 "Open Sans", sans-serif;
 --mono: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, Courier, 'Courier New', monospace;
 --c1:#0074d9;
 --c2:#aaa;
