@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+    body {
+        background-color: #111;
+        color: #eee;
+        /*        height: 100vh;*/
+        height: 100vh;
+
+        font-family: monospace;
+    }
+
+    .triangle-container {
+        /*        width: 800px;*/
+        height: 100vh;
+        /*        width: max-width;*/
+        aspect-ratio: 1;
+        margin-bottom: 20px;
+        align: center;
+        margin: 0 auto;
+        display: grid;
+    }
+
+    .layer1,
+    .layer2 {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    #controls {
+        position: fixed;
+        top: 10px;
+        align: left;
+        gap: 20px;
+        padding: 15px;
+    }
+
+    button {
+        padding: 10px 30px;
+        border: none;
+        border-radius: 4px;
+        background: #4CAF50;
+        color: white;
+        cursor: pointer;
+    }
+
+    #coordinates {
+        white-space: pre;
+        font-size: 28px;
+        padding: 10px 30px;
+
+    }
+    </style>
+</head>
+
+<body>
+    <div id="controls">
+        <!-- <button id="button">Play</button> -->
+        <div id="coordinates"> </div>
+    </div>
+    <div class="triangle-container">
+        <div class="layer1">
+            <img src="media/3he.png" width="100%">
+        </div>
+        <div class="layer2">
+            <svg id="triangle" viewBox="-5 -5 110 110" width="100%" height="100%">
+                <path d="M50 0 L100 86.6 L0 86.6 Z" fill="none" stroke="#000" stroke-width="0.3" stroke-linejoin="round" />
+            </svg>
+        </div>
+    </div>
+    <script>
+    const triangle = document.getElementById('triangle');
+    const coordsDisplay = document.getElementById('coordinates');
+
+    let audioCtx;
+    let oscillator1;
+    let oscillator2;
+    let oscillator3;
+    let gainNode;
+    let is_playing = false;
+    let audio_init = false;
+
+    let freq1 = 256;
+    let freq2 = 256;
+    let freq3 = 256;
+
+    // const button = document.getElementById('button');
+    const pitchDisplay = document.getElementById('pitch');
+    const playground = document.getElementById('playground');
+
+    const SMOOTHING_TIME = 0.01;
+
+    const VOLUME = 0.1
+
+    function pitch_to_freq(pitch) {
+        return 256 * Math.pow(2, pitch / 1200);
+    }
+
+    function createCustomWave(context) {
+        const n_harmonics = 32;
+        const real = new Float32Array(n_harmonics + 1);
+        const imag = new Float32Array(n_harmonics + 1);
+
+        real[0] = 0;
+        imag[0] = 0;
+
+        for (let n = 1; n <= n_harmonics; n++) {
+            real[n] = 0;
+            imag[n] = 1.0 / (n * n) * (n % 2 ? 1 : -1);
+        }
+
+        return context.createPeriodicWave(real, imag);
+    }
+
+    function init() {
+        audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+
+        const customWave = createCustomWave(audioCtx);
+
+        gainNode = audioCtx.createGain();
+        gainNode.gain.value = 0.0;
+
+        oscillator1 = audioCtx.createOscillator();
+        oscillator2 = audioCtx.createOscillator();
+        oscillator3 = audioCtx.createOscillator();
+
+        oscillator1.setPeriodicWave(customWave);
+        oscillator2.setPeriodicWave(customWave);
+        oscillator3.setPeriodicWave(customWave);
+        oscillator1.frequency.setValueAtTime(freq1, audioCtx.currentTime);
+        oscillator2.frequency.setValueAtTime(freq2, audioCtx.currentTime);
+        oscillator3.frequency.setValueAtTime(freq3, audioCtx.currentTime);
+
+        oscillator1.connect(gainNode);
+        oscillator2.connect(gainNode);
+        oscillator3.connect(gainNode);
+
+        gainNode.connect(audioCtx.destination);
+
+        oscillator1.start();
+        oscillator2.start();
+        oscillator3.start();
+    }
+
+    // button.addEventListener('click', () => {
+    //     if (!audio_init) {
+    //         audio_init = true;
+    //         init();
+    //     }
+    //     if (is_playing) {
+    //         is_playing = false;
+    //         gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.02);
+    //         button.textContent = "Play"
+    //     } else {
+    //         is_playing = true;
+    //         gainNode.gain.setTargetAtTime(VOLUME, audioCtx.currentTime, 0.02);
+    //         button.textContent = "Pause"
+    //     }
+    // });
+
+    document.addEventListener('mousedown', (event) => {
+        if (!audio_init) {
+            audio_init = true;
+            init();
+        }
+        gainNode.gain.setTargetAtTime(VOLUME, audioCtx.currentTime, 0.02);
+    })
+
+    document.addEventListener('mouseup', (event) => {
+        gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.02);
+    })
+
+
+    document.addEventListener('mousemove', (event) => {
+        const bbox = triangle.getBoundingClientRect();
+
+        // Calculate mouse position relative to SVG
+        const mouseX = event.clientX - bbox.left;
+        const mouseY = event.clientY - bbox.top;
+
+        // Convert to SVG coordinate space (accounting for the padding in viewBox)
+        const svgX = (mouseX / bbox.width) * 110 - 5;
+        const svgY = (mouseY / bbox.height) * 110 - 5;
+
+        // Barycentric coordinates
+        const rx = svgX / 100
+        const ry = (86.6 - svgY) / 86.6
+
+        const cx = (rx - 0.5 * ry) * 1200
+        const cy = (ry) * 1200
+
+        // Update display
+        // coordsDisplay.textContent = `${cx.toFixed(0).padStart(5)}c\n${cy.toFixed(0).padStart(5)}c\n${(cx+cy).toFixed(0).padStart(5)}c`;
+        coordsDisplay.textContent = `${cx.toFixed(0).padStart(5)}c\n${(cx + cy).toFixed(0).padStart(5)}c`;
+
+
+        freq1 = pitch_to_freq(0);
+        freq2 = pitch_to_freq(cx);
+        freq3 = pitch_to_freq(cx + cy);
+
+        if (audio_init) {
+            const rampEndTime = audioCtx.currentTime + SMOOTHING_TIME;
+
+            oscillator1.frequency.linearRampToValueAtTime(freq1, rampEndTime);
+            oscillator2.frequency.linearRampToValueAtTime(freq2, rampEndTime);
+            oscillator3.frequency.linearRampToValueAtTime(freq3, rampEndTime);
+        }
+    });
+    </script>
+</body>
+
+</html>
