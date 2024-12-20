@@ -398,15 +398,22 @@
 
     triangle.addEventListener("touchstart", (event) => {
         const touches = event.changedTouches;
-        touch = touches[0];
-        handleStart(touch.pageX, touch.pageY);
-        handleMove(touch.pageX, touch.pageY);
+        console.log(touches.length);
+        if (touches.length == 1) {
+            touch = touches[0];
+            handleStart(touch.pageX, touch.pageY);
+            handleMove(touch.pageX, touch.pageY);
+
+        }
     });
     triangle.addEventListener("touchend", handleEnd);
+
     triangle.addEventListener('touchmove', (event) => {
         const touches = event.changedTouches;
-        touch = touches[0];
-        handleMove(touch.pageX, touch.pageY);
+        if (touches.length == 1) {
+            touch = touches[0];
+            handleMove(touch.pageX, touch.pageY);
+        }
     });
 
 
@@ -419,6 +426,7 @@
     document.addEventListener('mousemove', (event) => {
         handleMove(event.clientX, event.clientY)
     });
+
     </script>
 </body>
 
