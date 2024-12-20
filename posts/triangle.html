@@ -6,21 +6,19 @@
     body {
         background-color: #111;
         color: #eee;
-        /*        height: 100vh;*/
-        height: 100vh;
-
+        height: 90vh;
         font-family: monospace;
     }
 
     .triangle-container {
-        /*        width: 800px;*/
-        height: 100vh;
-        /*        width: max-width;*/
+        width: min(90vh, 90vw);
         aspect-ratio: 1;
         margin-bottom: 20px;
         align: center;
         margin: 0 auto;
         display: grid;
+        padding: 15px;
+
     }
 
     .layer1,
@@ -117,6 +115,7 @@
     function init() {
         audioCtx = new(window.AudioContext || window.webkitAudioContext)();
 
+
         const customWave = createCustomWave(audioCtx);
 
         gainNode = audioCtx.createGain();
@@ -160,25 +159,28 @@
     //     }
     // });
 
-    document.addEventListener('mousedown', (event) => {
+    function handleStart() {
         if (!audio_init) {
             audio_init = true;
             init();
         }
+        if (audioCtx.state === "suspended") {
+            audioCtx.resume();
+        }
         gainNode.gain.setTargetAtTime(VOLUME, audioCtx.currentTime, 0.02);
-    })
 
-    document.addEventListener('mouseup', (event) => {
+    }
+
+    function handleEnd() {
         gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.02);
-    })
+    }
 
-
-    document.addEventListener('mousemove', (event) => {
+    function handleMove(mx, my) {
         const bbox = triangle.getBoundingClientRect();
 
         // Calculate mouse position relative to SVG
-        const mouseX = event.clientX - bbox.left;
-        const mouseY = event.clientY - bbox.top;
+        const mouseX = mx - bbox.left;
+        const mouseY = my - bbox.top;
 
         // Convert to SVG coordinate space (accounting for the padding in viewBox)
         const svgX = (mouseX / bbox.width) * 110 - 5;
@@ -207,6 +209,30 @@
             oscillator2.frequency.linearRampToValueAtTime(freq2, rampEndTime);
             oscillator3.frequency.linearRampToValueAtTime(freq3, rampEndTime);
         }
+    }
+
+
+    triangle.addEventListener("touchstart",  (event) => {
+        handleStart();
+        const touches = event.changedTouches;
+        touch = touches[0];
+        handleMove(touch.pageX, touch.pageY);
+    });
+    triangle.addEventListener("touchend", handleEnd);
+    triangle.addEventListener('touchmove', (event) => {
+        const touches = event.changedTouches;
+        touch = touches[0];
+        handleMove(touch.pageX, touch.pageY);
+    });
+
+
+    document.addEventListener('mousedown', handleStart)
+
+    document.addEventListener('mouseup', handleEnd)
+
+
+    document.addEventListener('mousemove', (event) => {
+        handleMove(event.clientX, event.clientY)
     });
     </script>
 </body>
