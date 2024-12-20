@@ -2,12 +2,43 @@
 <html>
 
 <head>
+    <!-- <link rel="stylesheet" href="../basic.css"> -->
     <style>
-    body {
+        body {
         background-color: #111;
+        font-size: 16px;
         color: #eee;
         height: 90vh;
-        font-family: monospace;
+        font-family: sans-serif;
+
+        /* no highlighting */
+        caret-color: transparent;
+        touch-action: manipulation;
+    }
+
+    img {
+        /* try to disable save as image when press hold touch */
+        pointer-events: none;
+        user-select: none;
+    }
+
+    select {
+        font-size: 16px;
+        outline: 0;
+        background: #eee;
+        color: black;
+        cursor: pointer;
+        border: 1px solid black;
+        border-radius: 3px;
+    }
+
+    button {
+        padding: 10px 30px;
+        border: none;
+        border-radius: 4px;
+        background: #4CAF50;
+        color: white;
+        cursor: pointer;
     }
 
     .triangle-container {
@@ -32,28 +63,27 @@
         top: 10px;
         align: left;
         gap: 20px;
-        padding: 15px;
-    }
-
-    button {
-        padding: 10px 30px;
-        border: none;
-        border-radius: 4px;
-        background: #4CAF50;
-        color: white;
-        cursor: pointer;
+        padding: 12px;
     }
 
     #coordinates {
+        position: absolute;
         white-space: pre;
-        font-size: 28px;
-        padding: 10px 30px;
-
+        /*        top: 400px;*/
+        top: 48px;
+        left: 80px;
+        color: #eee;
     }
 
-    img {
-        /* try to disable save as image when press hold touch */
-        pointer-events: none;
+    .note {
+        position: absolute;
+        top: -32px;
+        /* init offscreen */
+        left: 32px;
+        width: 40px;
+        height: 10px;
+        background: #AC2F5C;
+        border-radius: 4px;
     }
     </style>
 </head>
@@ -61,8 +91,21 @@
 <body>
     <div id="controls">
         <!-- <button id="button">Play</button> -->
-        <div id="coordinates"> </div>
+        <div id="coordinates" style="font-family: monospace"> </div>
+        <label for="pivot">Pivot:</label>
+        <select name="pivot" id="pivot">
+            <option value="random">Random</option>
+            <option value="lower">Lower</option>
+            <option value="middle">Middle</option>
+            <option value="upper">Upper</option>
+        </select>
+        <input type="checkbox" id="bass" name="bass" value="Bass" checked>
+        <label for="bass"> Bass</label><br>
     </div>
+    <div class="note" id="note1"></div>
+    <div class="note" id="note2"></div>
+    <div class="note" id="note3"></div>
+    <div class="note" id="note4"></div>
     <div class="triangle-container">
         <div class="layer1">
             <img src="media/3he.png" width="100%">
@@ -82,26 +125,38 @@
     let oscillator2;
     let oscillator3;
     let gainNode;
+    let bassGain;
     let is_playing = false;
     let audio_init = false;
 
-    let freq1 = 256;
-    let freq2 = 256;
-    let freq3 = 256;
+    let mouseDown = false;
+
+    let pitch1 = 0;
+    let pitch2 = 498;
+    let pitch3 = 884;
 
     // const button = document.getElementById('button');
+    const bassSwitch = document.getElementById('bass');
     const pitchDisplay = document.getElementById('pitch');
+    const pivotSelector = document.getElementById("pivot");
     const playground = document.getElementById('playground');
+
+    const note1 = document.getElementById('note1');
+    const note2 = document.getElementById('note2');
+    const note3 = document.getElementById('note3');
+
+    let currentPivot = "lower";
+    const PIVOT_LIST = ["lower", "middle", "upper"];
 
     const SMOOTHING_TIME = 0.01;
 
     const VOLUME = 0.1
 
     function pitch_to_freq(pitch) {
-        return 256 * Math.pow(2, pitch / 1200);
+        return 200 * Math.pow(2, pitch / 1200);
     }
 
-    function createCustomWave(context) {
+    function createCustomWave() {
         const n_harmonics = 32;
         const real = new Float32Array(n_harmonics + 1);
         const imag = new Float32Array(n_harmonics + 1);
@@ -111,42 +166,104 @@
 
         for (let n = 1; n <= n_harmonics; n++) {
             real[n] = 0;
-            imag[n] = 1.0 / (n * n) * (n % 2 ? 1 : -1);
+            imag[n] = 1.0 / (n * n);
         }
 
-        return context.createPeriodicWave(real, imag);
+        return audioCtx.createPeriodicWave(real, imag);
     }
 
     function init() {
         audioCtx = new(window.AudioContext || window.webkitAudioContext)();
 
-
-        const customWave = createCustomWave(audioCtx);
+        const customWave = createCustomWave();
 
         gainNode = audioCtx.createGain();
         gainNode.gain.value = 0.0;
 
+        bassGain = audioCtx.createGain();
+        bassGain.gain.value = 1.0;
+
         oscillator1 = audioCtx.createOscillator();
         oscillator2 = audioCtx.createOscillator();
         oscillator3 = audioCtx.createOscillator();
+        oscillator4 = audioCtx.createOscillator();
 
         oscillator1.setPeriodicWave(customWave);
         oscillator2.setPeriodicWave(customWave);
         oscillator3.setPeriodicWave(customWave);
-        oscillator1.frequency.setValueAtTime(freq1, audioCtx.currentTime);
-        oscillator2.frequency.setValueAtTime(freq2, audioCtx.currentTime);
-        oscillator3.frequency.setValueAtTime(freq3, audioCtx.currentTime);
+        oscillator4.setPeriodicWave(customWave);
+
+        oscillator1.frequency.setValueAtTime(pitch_to_freq(pitch1), audioCtx.currentTime);
+        oscillator2.frequency.setValueAtTime(pitch_to_freq(pitch2), audioCtx.currentTime);
+        oscillator3.frequency.setValueAtTime(pitch_to_freq(pitch3), audioCtx.currentTime);
+        oscillator4.frequency.setValueAtTime(pitch_to_freq(pitch1 - 1200), audioCtx.currentTime);
 
         oscillator1.connect(gainNode);
         oscillator2.connect(gainNode);
         oscillator3.connect(gainNode);
-
-        gainNode.connect(audioCtx.destination);
+        oscillator4.connect(bassGain);
+        bassGain.connect(gainNode);
 
         oscillator1.start();
         oscillator2.start();
         oscillator3.start();
+        oscillator4.start();
+
+
+        const delayTime = 0.26
+        const delayFeedback = 0.5
+        const delayGain = 0.12
+
+        // delay left right sum
+        const delaySum = audioCtx.createGain();
+        delaySum.gain.value = delayGain;
+        delaySum.connect(audioCtx.destination)
+
+        // left channel delay
+        const delay1 = audioCtx.createDelay();
+        delay1.delayTime.value = delayTime;
+
+        const feedback1 = audioCtx.createGain();
+        feedback1.gain.value = delayFeedback;
+
+        const pan1 = audioCtx.createStereoPanner();
+        pan1.pan.value = -1.0;
+
+        delay1.connect(feedback1);
+        feedback1.connect(delay1);
+        delay1.connect(pan1);
+        pan1.connect(delaySum);
+
+        // right channel delay
+        const delay2 = audioCtx.createDelay();
+        delay2.delayTime.value = delayTime * 1.2;
+
+        const feedback2 = audioCtx.createGain();
+        feedback2.gain.value = delayFeedback;
+
+        const pan2 = audioCtx.createStereoPanner();
+        pan2.pan.value = 1.0;
+
+        delay2.connect(feedback2);
+        feedback2.connect(delay2);
+        delay2.connect(pan2);
+        pan2.connect(delaySum);
+
+        // Routing
+
+        gainNode.connect(delay1);
+        gainNode.connect(delay2);
+        gainNode.connect(audioCtx.destination);
     }
+
+
+    bassSwitch.addEventListener('click', () => {
+        if (bassSwitch.checked) {
+            bassGain.gain.value = 1.0;
+        } else {
+            bassGain.gain.value = 0.0;
+        }
+    });
 
     // button.addEventListener('click', () => {
     //     if (!audio_init) {
@@ -164,7 +281,16 @@
     //     }
     // });
 
-    function handleStart() {
+    function mouse_ok(mx, my) {
+        const bbox_selector = pivotSelector.getBoundingClientRect();
+        return (mx - bbox_selector.right > 0 && my - bbox_selector.bottom > 0)
+    }
+
+    function pitch_to_coord(x) {
+        return 500 - 0.28 * x
+    }
+
+    function handleStart(mx, my) {
         if (!audio_init) {
             audio_init = true;
             init();
@@ -172,55 +298,105 @@
         if (audioCtx.state === "suspended") {
             audioCtx.resume();
         }
-        gainNode.gain.setTargetAtTime(VOLUME, audioCtx.currentTime, 0.02);
 
+        if (mouse_ok(mx, my)) {
+            var pivot = pivotSelector.value;
+            if (pivot == "random") {
+                const random = Math.floor(Math.random() * PIVOT_LIST.length);
+                currentPivot = PIVOT_LIST[random]
+            } else {
+                currentPivot = pivot
+            }
+
+            // Try to get back into nice range if we drifted too much
+            if (pitch2 > 1200) {
+                pitch3 -= 1200;
+                pitch2 -= 1200;
+                pitch1 -= 1200;
+            }
+            if (pitch2 < -600) {
+                pitch3 += 1200;
+                pitch2 += 1200;
+                pitch1 += 1200;
+            }
+
+            mouseDown = true;
+            gainNode.gain.setTargetAtTime(VOLUME, audioCtx.currentTime, 0.02);
+        }
     }
 
     function handleEnd() {
+        mouseDown = false;
         gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.02);
     }
 
     function handleMove(mx, my) {
-        const bbox = triangle.getBoundingClientRect();
-
-        // Calculate mouse position relative to SVG
-        const mouseX = mx - bbox.left;
-        const mouseY = my - bbox.top;
-
-        // Convert to SVG coordinate space (accounting for the padding in viewBox)
-        const svgX = (mouseX / bbox.width) * 110 - 5;
-        const svgY = (mouseY / bbox.height) * 110 - 5;
-
-        // Barycentric coordinates
-        const rx = svgX / 100
-        const ry = (86.6 - svgY) / 86.6
-
-        const cx = (rx - 0.5 * ry) * 1200
-        const cy = (ry) * 1200
-
-        // Update display
-        // coordsDisplay.textContent = `${cx.toFixed(0).padStart(5)}c\n${cy.toFixed(0).padStart(5)}c\n${(cx+cy).toFixed(0).padStart(5)}c`;
-        coordsDisplay.textContent = `${cx.toFixed(0).padStart(5)}c\n${(cx + cy).toFixed(0).padStart(5)}c`;
+        if (mouse_ok(mx, my)) {
+            const bbox = triangle.getBoundingClientRect();
+            // Calculate mouse position relative to SVG
+            const mouseX = mx - bbox.left;
+            const mouseY = my - bbox.top;
 
 
-        freq1 = pitch_to_freq(0);
-        freq2 = pitch_to_freq(cx);
-        freq3 = pitch_to_freq(cx + cy);
+            // Convert to SVG coordinate space (accounting for the padding in viewBox)
+            const svgX = (mouseX / bbox.width) * 110 - 5;
+            const svgY = (mouseY / bbox.height) * 110 - 5;
 
-        if (audio_init) {
-            const rampEndTime = audioCtx.currentTime + SMOOTHING_TIME;
+            // Barycentric coordinates
+            // note: 86.6 = 100 * sqrt(3)/2
+            const rx = svgX / 100
+            const ry = (86.6 - svgY) / 86.6
 
-            oscillator1.frequency.linearRampToValueAtTime(freq1, rampEndTime);
-            oscillator2.frequency.linearRampToValueAtTime(freq2, rampEndTime);
-            oscillator3.frequency.linearRampToValueAtTime(freq3, rampEndTime);
+            const cx = (rx - 0.5 * ry) * 1200
+            const cy = (ry) * 1200
+
+            if (mouseDown) {
+
+                if (currentPivot == "upper") {
+                    const p = pitch3;
+                    pitch1 = p - cx - cy;
+                    pitch2 = p - cy;
+                    pitch3 = p;
+                } else if (currentPivot == "middle") {
+                    const p = pitch2;
+                    pitch1 = p - cx;
+                    pitch2 = p;
+                    pitch3 = p + cy;
+                } else {
+                    const p = pitch1;
+                    pitch1 = p;
+                    pitch2 = p + cx;
+                    pitch3 = p + cx + cy;
+                }
+
+
+                // Update display only when mouse is down
+                // coordsDisplay.textContent = `${pitch3.toFixed(0).padStart(5)}c\n${pitch2.toFixed(0).padStart(5)}c\n${pitch1.toFixed(0).padStart(5)}c`;
+                coordsDisplay.textContent = `${(pitch3-pitch1).toFixed(0).padStart(5)}c\n${(pitch2-pitch1).toFixed(0).padStart(5)}c`;
+
+                note1.style.top = pitch_to_coord(pitch1) + 'px';
+                note2.style.top = pitch_to_coord(pitch2) + 'px';
+                note3.style.top = pitch_to_coord(pitch3) + 'px';
+            }
+
+            // Update audio
+            if (audio_init) {
+                const rampEndTime = audioCtx.currentTime + SMOOTHING_TIME;
+
+                oscillator1.frequency.linearRampToValueAtTime(pitch_to_freq(pitch1), rampEndTime);
+                oscillator2.frequency.linearRampToValueAtTime(pitch_to_freq(pitch2), rampEndTime);
+                oscillator3.frequency.linearRampToValueAtTime(pitch_to_freq(pitch3), rampEndTime);
+                oscillator4.frequency.linearRampToValueAtTime(pitch_to_freq(pitch1 - 1200), rampEndTime);
+            }
         }
     }
 
 
-    triangle.addEventListener("touchstart",  (event) => {
-        handleStart();
+
+    triangle.addEventListener("touchstart", (event) => {
         const touches = event.changedTouches;
         touch = touches[0];
+        handleStart(touch.pageX, touch.pageY);
         handleMove(touch.pageX, touch.pageY);
     });
     triangle.addEventListener("touchend", handleEnd);
@@ -231,10 +407,11 @@
     });
 
 
-    document.addEventListener('mousedown', handleStart)
-
+    document.addEventListener('mousedown', (event) => {
+        handleStart(event.clientX, event.clientY);
+        handleMove(event.clientX, event.clientY);
+    });
     document.addEventListener('mouseup', handleEnd)
-
 
     document.addEventListener('mousemove', (event) => {
         handleMove(event.clientX, event.clientY)
