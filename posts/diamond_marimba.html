@@ -150,7 +150,7 @@
             </div>
             <div class="slider-group">
                 <label for="sustain">Sustain</label>
-                <input type="range" id="sustain" min="50" max="500" value="250" step="1" class="slider">
+                <input type="range" id="sustain" min="-1" max="1.2" value="0" step="0.1" class="slider">
                 <!-- <span class="value-display" id="sustainValue">250</span> -->
             </div>
         </div>
@@ -166,7 +166,6 @@
     </div>
 
     <script>
-        // Initialize audio context from marimba.html
         let audioContext;
         let canvasContext;
         let waveform;
@@ -175,7 +174,6 @@
         let reverbGain;
         let masterGain;
         
-        // Track mouse/touch state from diamond.html
         let isDragging = false;
         let lastPlayedCell = null;
         const playedCellsInDrag = new Set();
@@ -185,11 +183,11 @@
 
         for (var x = 0; x < overtones.length; x++) {
             for (var y = 0; y < overtones.length; y++) {
-            // Things[i]
                 const ratio_str = `${overtones[x]}/${overtones[y]}`
                 layout.push({ ratio: ratio_str, x: x, y: y})
             }
         }
+
         // Store active sound components to prevent garbage collection
         let activeSounds = [];
 
@@ -234,11 +232,14 @@
 
         // Load impulse responses for reverb
         async function loadImpulseResponse() {
-            // convolver.buffer = createImpulseResponse();
-
-            let response = await fetch("media/ir.wav");
-            let arraybuffer = await response.arrayBuffer();
-            convolver.buffer = await audioContext.decodeAudioData(arraybuffer);
+            try {
+                let response = await fetch("media/ir.wav");
+                let arraybuffer = await response.arrayBuffer();
+                convolver.buffer = await audioContext.decodeAudioData(arraybuffer);
+            } catch (error) {
+                // fallback
+                convolver.buffer = createImpulseResponse();
+            }
         }
 
         // Create a simple artificial impulse response
@@ -264,11 +265,12 @@
             initAudio();
 
             // Get parameter values
-            const sustain = parseFloat(document.getElementById('sustain').value);
+            const sustain_param = parseFloat(document.getElementById('sustain').value);
+            const sustain = 250 * Math.exp(sustain_param);
 
             // Create noise burst (excitation)
             const excitationLength = 0.04;
-            const bufferLength = 10.0;
+            const bufferLength = 5.0;
             const excitationBuffer = audioContext.createBuffer(
                 1,
                 audioContext.sampleRate * bufferLength,
@@ -322,8 +324,7 @@
 
                 let f_adjust = Math.sqrt(440/frequency);
                 f_adjust = Math.min(Math.max(f_adjust, 0.5), 2.0);
-                console.log(f_adjust);
-                modeGain.gain.value = mode.gain * mode.q * (440/f) / 2;
+                modeGain.gain.value = mode.gain * mode.q * f_adjust / 2;
 
                 malletFilter.connect(filter);
                 filter.connect(modeGain);
