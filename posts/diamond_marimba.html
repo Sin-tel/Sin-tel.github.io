@@ -170,8 +170,7 @@
         let animationFrame;
         let convolver;
         let reverbGain;
-        let dryGain;
-        let delayGain;
+        let masterGain;
 
         let isDragging = false;
         let lastPlayedCell = null;
@@ -226,64 +225,15 @@
                 reverbGain.gain.value = balance;
 
                 // Create gain node for master volume
-                dryGain = audioContext.createGain();
-                dryGain.gain.value = 1.0 - balance;
+                masterGain = audioContext.createGain();
+                masterGain.gain.value = 1.0 - balance;
 
                 // Connect analyzer to convolver and destination
                 waveform.connect(convolver);
-                waveform.connect(dryGain);
+                waveform.connect(masterGain);
                 convolver.connect(reverbGain);
-
-                // Setup delays
-                delayGain = audioContext.createGain();
-                delayGain.gain.value = 1.0;
-
-                const delayParamTime = 0.09
-                const delayParamFeedback = 0.30
-                const delayParamGain = 0.03
-
-                // delay left right sum
-                const delaySum = audioContext.createGain();
-                delaySum.gain.value = delayParamGain;
-                delaySum.connect(audioContext.destination)
-
-                // left channel delay
-                const delay1 = audioContext.createDelay();
-                delay1.delayTime.value = delayParamTime;
-
-                const feedback1 = audioContext.createGain();
-                feedback1.gain.value = delayParamFeedback;
-
-                const pan1 = audioContext.createStereoPanner();
-                pan1.pan.value = -1.0;
-
-                delay1.connect(feedback1);
-                feedback1.connect(delay1);
-                delay1.connect(pan1);
-                pan1.connect(delaySum);
-
-                // right channel delay
-                const delay2 = audioContext.createDelay();
-                delay2.delayTime.value = delayParamTime * 1.2;
-
-                const feedback2 = audioContext.createGain();
-                feedback2.gain.value = delayParamFeedback;
-
-                const pan2 = audioContext.createStereoPanner();
-                pan2.pan.value = 1.0;
-
-                delay2.connect(feedback2);
-                feedback2.connect(delay2);
-                delay2.connect(pan2);
-                pan2.connect(delaySum);
-
-                // Routing
-                reverbGain.connect(delayGain);
-                dryGain.connect(delayGain);
-
-                delayGain.connect(delay1);
-                delayGain.connect(delay2);
-                delayGain.connect(audioContext.destination);
+                reverbGain.connect(audioContext.destination);
+                masterGain.connect(audioContext.destination);
 
                 // Load impulse response
                 loadImpulseResponse();
