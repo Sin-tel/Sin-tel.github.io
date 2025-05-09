@@ -146,12 +146,10 @@
             <div class="slider-group">
                 <label for="fundamental">Base Frequency</label>
                 <input type="range" id="fundamental" min="60" max="800" value="440" step="1" class="slider">
-                <!-- <span class="value-display" id="fundamentalValue">440 Hz</span> -->
             </div>
             <div class="slider-group">
                 <label for="sustain">Sustain</label>
                 <input type="range" id="sustain" min="-1" max="1.2" value="0" step="0.1" class="slider">
-                <!-- <span class="value-display" id="sustainValue">250</span> -->
             </div>
         </div>
 
@@ -173,13 +171,21 @@
         let convolver;
         let reverbGain;
         let masterGain;
-        
+
         let isDragging = false;
         let lastPlayedCell = null;
         const playedCellsInDrag = new Set();
-        
+
         const overtones = [4, 5, 6, 7, 9, 11];
         let layout = []
+
+        const polyphonyLimit = 10;
+        const bufferLength = 5.0;
+        const excitationLength = 0.04;
+
+        // Pre-allocated voices
+        let voices = [];
+        let voiceIndex = 0;
 
         for (var x = 0; x < overtones.length; x++) {
             for (var y = 0; y < overtones.length; y++) {
@@ -187,9 +193,6 @@
                 layout.push({ ratio: ratio_str, x: x, y: y})
             }
         }
-
-        // Store active sound components to prevent garbage collection
-        let activeSounds = [];
 
         // Initialize audio system from marimba.html
         function initAudio() {
@@ -224,10 +227,62 @@
 
                 // Load impulse response
                 loadImpulseResponse();
+
+                // Initialize the node pool
+                initVoices();
+
+                setupWaveform();
             }
             if (audioContext.state === 'suspended') {
                 audioContext.resume();
             }
+        }
+
+        // Create and initialize the node pool
+        function initVoices() {
+            for (let i = 0; i < polyphonyLimit; i++) {
+                const node = createVoice();
+                voices.push(node);
+            }
+            console.log(`Created node pool with ${voices.length} nodes`);
+        }
+
+        // Create a single marimba node set (without starting it)
+        function createVoice() {
+            // Create noise buffer
+            const excitationBuffer = audioContext.createBuffer(
+                1,
+                audioContext.sampleRate * bufferLength,
+                audioContext.sampleRate
+            );
+
+            // Add lowpass filter for mallet hardness
+            const malletFilter = audioContext.createBiquadFilter();
+            malletFilter.type = 'lowpass';
+            malletFilter.Q = 0.7;
+            const malletFreq = 3500;
+            malletFilter.frequency.value = malletFreq;
+
+            // Create resonators and connect them
+            let resonators = []
+
+            for (var i = 0; i < 4; i++) {
+                const filter = audioContext.createBiquadFilter();
+                filter.type = 'bandpass';
+
+                const modeGain = audioContext.createGain();
+
+                malletFilter.connect(filter);
+                filter.connect(modeGain);
+                modeGain.connect(waveform);
+
+                resonators.push({ filter, gain: modeGain });
+            }
+            return {
+                excitationBuffer,
+                malletFilter,
+                resonators,
+            };
         }
 
         // Load impulse responses for reverb
@@ -260,7 +315,7 @@
             return buffer;
         }
 
-        // Create a single marimba hit (from marimba.html)
+        // Play a marimba hit using the node pool
         function playMarimbaHit(frequency) {
             initAudio();
 
@@ -268,37 +323,23 @@
             const sustain_param = parseFloat(document.getElementById('sustain').value);
             const sustain = 250 * Math.exp(sustain_param);
 
-            // Create noise burst (excitation)
-            const excitationLength = 0.04;
-            const bufferLength = 5.0;
-            const excitationBuffer = audioContext.createBuffer(
-                1,
-                audioContext.sampleRate * bufferLength,
-                audioContext.sampleRate
-            );
+            const voice = getNextVoice();
 
-            // Fill buffer with noise
-            const excitationData = excitationBuffer.getChannelData(0);
+            // Fill buffer with noise hit
+            const excitationData = voice.excitationBuffer.getChannelData(0);
             for (let i = 0; i < excitationData.length; i++) {
                 const progress = (bufferLength / excitationLength) * i / excitationData.length;
                 excitationData[i] = (Math.random() * 2 - 1) * (0.00001 + Math.exp(-progress * 10));
             }
 
-            // Create noise source
+            // Create a new noise source (these cannot be reused once started)
             const noiseSource = audioContext.createBufferSource();
-            noiseSource.buffer = excitationBuffer;
+            noiseSource.buffer = voice.excitationBuffer;
 
-            // Add lowpass filter for mallet hardness
-            const malletFilter = audioContext.createBiquadFilter();
-            malletFilter.type = 'lowpass';
-            malletFilter.Q = 0.7
-            const malletFreq = 3500;
-            malletFilter.frequency.value = malletFreq;
+            // Connect the noise source to the mallet filter
+            noiseSource.connect(voice.malletFilter);
 
-            // Connect noise source to mallet filter
-            noiseSource.connect(malletFilter);
-
-            // Modal resonator bank - 4 biquad filters for the primary modes
+            // Update resonator frequencies and Q values based on the target frequency
             const modes = [
                 { ratio: 1,  gain: 1.00, q: sustain },
                 { ratio: 4,  gain: 0.14, q: 0.231 * sustain },
@@ -306,51 +347,32 @@
                 { ratio: 19, gain: 0.03, q: 0.015 * sustain },
             ];
 
-            // Create resonators and connect them
-            const resonators = modes.map((mode, index) => {
-                const filter = audioContext.createBiquadFilter();
-                filter.type = 'bandpass';
-
+            voice.resonators.forEach((resonator, index) => {
+                const mode = modes[index];
                 const f = frequency * mode.ratio;
-                if (f > 17000) {
-                    return;
+
+                // Skip frequencies that are too high
+                if (f <= 17000) {
+                    resonator.filter.frequency.value = f;
+                    resonator.filter.Q.value = mode.q;
+
+                    let f_adjust = Math.sqrt(440/frequency);
+                    f_adjust = Math.min(Math.max(f_adjust, 0.5), 2.0);
+                    resonator.gain.gain.value = mode.gain * mode.q * f_adjust / 2;
                 }
-
-                filter.frequency.value = f;
-                filter.Q.value = mode.q;
-
-                const modeGain = audioContext.createGain();
-                // modeGain.gain.value = mode.gain * mode.q / 2;
-
-                let f_adjust = Math.sqrt(440/frequency);
-                f_adjust = Math.min(Math.max(f_adjust, 0.5), 2.0);
-                modeGain.gain.value = mode.gain * mode.q * f_adjust / 2;
-
-                malletFilter.connect(filter);
-                filter.connect(modeGain);
-                modeGain.connect(waveform);
-
-                return { filter, gain: modeGain };
             });
 
+            // Start the sound
             noiseSource.start();
-
-            visualize();
-
-            // Keep track of active sounds
-            const soundComponents = {
-                noiseSource,
-                malletFilter,
-                resonators
-            };
-
-            activeSounds.push(soundComponents);
-            if (activeSounds.length > 10) {
-                activeSounds.shift(); // Remove oldest sound
-            }
         }
 
-        function visualize() {
+        function getNextVoice() {
+            const voice = voices[voiceIndex];
+            voiceIndex = (voiceIndex + 1) % polyphonyLimit;
+            return voice;
+        }
+
+        function setupWaveform() {
             if (!waveform) return;
 
             const canvas = document.getElementById('waveformCanvas');
@@ -531,15 +553,6 @@
             window.addEventListener('mouseup', handleMouseUp);
             window.addEventListener('touchend', handleMouseUp);
         }
-
-        // Initialize slider value displays
-        document.getElementById('fundamental').addEventListener('input', function() {
-            document.getElementById('fundamental').label = `${this.value} Hz`;
-        });
-
-        // document.getElementById('sustain').addEventListener('input', function() {
-        //     document.getElementById('sustainValue').textContent = `${this.value}`;
-        // });
 
         // Render the diamond on load
         renderDiamond();
