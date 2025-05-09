@@ -13,6 +13,11 @@
             flex-direction: column;
             align-items: center;
             padding: 20px;
+
+            /* mobile stuff */
+            user-select: none;
+            caret-color: transparent;
+            touch-action: manipulation;
         }
         .left-bottom {
             position: fixed;
@@ -25,7 +30,8 @@
             position: fixed;
             left: 20px;
             height: 100vh;
-            width: 400px;
+            width: 30vw;
+            max-width: 400px;
             display: flex;
             flex-direction: column;
             overflow-y: auto;
@@ -35,7 +41,8 @@
             position: fixed;
             right: 20px;
             height: 100vh;
-            width: 400px;
+            width: 30vw;
+            max-width: 400px;
             display: flex;
             flex-direction: column;
             pointer-events:none
@@ -54,14 +61,14 @@
         .diamond-container {
             display: flex;
             flex-direction: column;
-            width: 600px;
-            height: 600px;
+            width: 360px;
+            height: 360px;
             overflow: visible;
             position: relative;
         }
         .controls {
             background-color: #333;
-            padding: 20px;
+            padding: 15px;
             border-radius: 8px;
             pointer-events:auto
         }
@@ -70,7 +77,6 @@
             height: 150px;
             background-color: #333;
             border-radius: 8px;
-            margin-top: 20px;
         }
         h2 {
             user-select: none;
@@ -103,23 +109,15 @@
             margin-bottom: 15px;
         }
         .slider {
-/*          -webkit-appearance: none;*/
-/*          width: 100%;*/
-/*          height: 15px;*/
-/*          border-radius: 5px;*/
           background: #000;
           accent-color: #9B251A;
           outline: none;
-/*          filter: invert(100%)*/
-
-/*          opacity: 0.7;*/
-/*          -webkit-transition: .2s;*/
-/*          transition: opacity .2s;*/
         }
 
         label {
             display: block;
             margin-bottom: 5px;
+            font-size: 14px;
             font-weight: bold;
             color: #ddd;
         }
@@ -127,7 +125,7 @@
             width: 100%;
         }
         .value-display {
-            font-size: 14px;
+            font-size: 12px;
             color: #aaa;
         }
         a:link, a:visited {
@@ -146,14 +144,14 @@
     <div class="left-panel">
         <div class="controls">
             <div class="slider-group">
-                <label for="fundamental">Base Frequency (Hz)</label>
+                <label for="fundamental">Base Frequency</label>
                 <input type="range" id="fundamental" min="60" max="800" value="440" step="1" class="slider">
-                <span class="value-display" id="fundamentalValue">440 Hz</span>
+                <!-- <span class="value-display" id="fundamentalValue">440 Hz</span> -->
             </div>
             <div class="slider-group">
                 <label for="sustain">Sustain</label>
                 <input type="range" id="sustain" min="50" max="500" value="250" step="1" class="slider">
-                <span class="value-display" id="sustainValue">250</span>
+                <!-- <span class="value-display" id="sustainValue">250</span> -->
             </div>
         </div>
 
@@ -182,46 +180,16 @@
         let lastPlayedCell = null;
         const playedCellsInDrag = new Set();
         
-        // Diamond layout from diamond.html
-        const layout = [
-            { ratio: "4/11", x: 240, y: 400 },
-            { ratio: "5/11", x: 280, y: 360 },
-            { ratio: "4/9", x: 200, y: 360 },
-            { ratio: "6/11", x: 320, y: 320 },
-            { ratio: "5/9", x: 240, y: 320 },
-            { ratio: "4/7", x: 160, y: 320 },
-            { ratio: "7/11", x: 360, y: 280 },
-            { ratio: "6/9", x: 280, y: 280 },
-            { ratio: "5/7", x: 200, y: 280 },
-            { ratio: "4/6", x: 120, y: 280 },
-            { ratio: "9/11", x: 400, y: 240 },
-            { ratio: "7/9", x: 320, y: 240 },
-            { ratio: "6/7", x: 240, y: 240 },
-            { ratio: "5/6", x: 160, y: 240 },
-            { ratio: "4/5", x: 80, y: 240 },
-            { ratio: "11/11", x: 440, y: 200 },
-            { ratio: "9/9", x: 360, y: 200 },
-            { ratio: "7/7", x: 280, y: 200 },
-            { ratio: "6/6", x: 200, y: 200 },
-            { ratio: "5/5", x: 120, y: 200 },
-            { ratio: "4/4", x: 40, y: 200 },
-            { ratio: "11/9", x: 400, y: 160 },
-            { ratio: "9/7", x: 320, y: 160 },
-            { ratio: "7/6", x: 240, y: 160 },
-            { ratio: "6/5", x: 160, y: 160 },
-            { ratio: "5/4", x: 80, y: 160 },
-            { ratio: "11/7", x: 360, y: 120 },
-            { ratio: "9/6", x: 280, y: 120 },
-            { ratio: "7/5", x: 200, y: 120 },
-            { ratio: "6/4", x: 120, y: 120 },
-            { ratio: "11/6", x: 320, y: 80 },
-            { ratio: "9/5", x: 240, y: 80 },
-            { ratio: "7/4", x: 160, y: 80 },
-            { ratio: "11/5", x: 280, y: 40 },
-            { ratio: "9/4", x: 200, y: 40 },
-            { ratio: "11/4", x: 240, y: 0 },
-        ];
+        const overtones = [4, 5, 6, 7, 9, 11];
+        let layout = []
 
+        for (var x = 0; x < overtones.length; x++) {
+            for (var y = 0; y < overtones.length; y++) {
+            // Things[i]
+                const ratio_str = `${overtones[x]}/${overtones[y]}`
+                layout.push({ ratio: ratio_str, x: x, y: y})
+            }
+        }
         // Store active sound components to prevent garbage collection
         let activeSounds = [];
 
@@ -350,7 +318,12 @@
                 filter.Q.value = mode.q;
 
                 const modeGain = audioContext.createGain();
-                modeGain.gain.value = mode.gain * mode.q / 2;
+                // modeGain.gain.value = mode.gain * mode.q / 2;
+
+                let f_adjust = Math.sqrt(440/frequency);
+                f_adjust = Math.min(Math.max(f_adjust, 0.5), 2.0);
+                console.log(f_adjust);
+                modeGain.gain.value = mode.gain * mode.q * (440/f) / 2;
 
                 malletFilter.connect(filter);
                 filter.connect(modeGain);
@@ -361,7 +334,6 @@
 
             noiseSource.start();
 
-            // Start visualization
             visualize();
 
             // Keep track of active sounds
@@ -372,12 +344,11 @@
             };
 
             activeSounds.push(soundComponents);
-            if (activeSounds.length > 16) {
+            if (activeSounds.length > 10) {
                 activeSounds.shift(); // Remove oldest sound
             }
         }
 
-        // Visualization function from marimba.html
         function visualize() {
             if (!waveform) return;
 
@@ -433,11 +404,6 @@
         }
 
         function playNote(ratioStr, cell) {
-            // Check if this cell has already been played during this drag session
-            if (isDragging && playedCellsInDrag.has(cell)) {
-                return;
-            }
-
             // Get base frequency from slider
             const baseFreq = parseFloat(document.getElementById('fundamental').value);
             const frequency = baseFreq * parseRatio(ratioStr);
@@ -446,11 +412,6 @@
             playMarimbaHit(frequency);
             
             cell.classList.add('active');
-
-            // Add to the set of played cells during this drag
-            if (isDragging) {
-                playedCellsInDrag.add(cell);
-            }
 
             setTimeout(() => {
                 cell.classList.remove('active');
@@ -475,7 +436,6 @@
         function handleMouseDown(e) {
             e.preventDefault(); // Prevent text selection
             isDragging = true;
-            playedCellsInDrag.clear(); // Clear the set at the start of a new drag
 
             const cell = getCellFromEvent(e);
             if (cell) {
@@ -501,20 +461,46 @@
         function renderDiamond() {
             const diamond = document.getElementById('diamond');
             diamond.innerHTML = "";
-            const containerWidth = 600;
-            const containerHeight = 600;
-            const centerX = containerWidth / 2 - 60;
-            const centerY = containerHeight / 2;
+            const containerWidth = 360;
+            const containerHeight = 360;
 
-            const scale_x = 2.2
-            const scale_y = 1.6
+            // setup adaptive scaling for screen res
+            let sw = Math.max(containerWidth, screen.width);
+            let sh = Math.max(containerHeight, screen.height);
+            let aspect = 1;
+            let pad = 4;
+            let scale = sw;
+
+            // tablet-ish
+            if (sw > 1200) {
+                scale = sw * 0.66;
+                pad = 6;
+            }
+            // desktop
+            if (sw > 1600) {
+                scale = sw * 0.5;
+            }
+            // screen aspect ratio
+            if (sh/sw < 0.9) {
+                aspect = 7/9;
+            }
+
+            const scale_x = scale*0.08;
+            const scale_y = scale_x * aspect;
+
+            const centerX = (containerWidth - scale_x) / 2;
+            const centerY = (containerHeight - scale_y) / 2;
 
             layout.forEach(({ ratio, x, y }) => {
                 const cell = document.createElement('div');
                 cell.className = 'cell';
-                cell.style.left = `${centerX + scale_x * (x - 240)}px`;
-                cell.style.top = `${centerY + scale_y * (y - 200)}px`;
+                cell.style.left = `${centerX + scale_x * (x+y-5.5)}px`;
+                cell.style.top  = `${centerY + scale_y * (y-x)}px`;
                 cell.dataset.ratio = ratio;
+
+                cell.style.width = `${scale_x*2-pad}px`
+                cell.style.height = `${scale_y-pad}px`
+
                 const label = document.createElement('span');
                 label.textContent = ratio;
                 cell.appendChild(label);
@@ -547,12 +533,12 @@
 
         // Initialize slider value displays
         document.getElementById('fundamental').addEventListener('input', function() {
-            document.getElementById('fundamentalValue').textContent = `${this.value} Hz`;
+            document.getElementById('fundamental').label = `${this.value} Hz`;
         });
 
-        document.getElementById('sustain').addEventListener('input', function() {
-            document.getElementById('sustainValue').textContent = `${this.value}`;
-        });
+        // document.getElementById('sustain').addEventListener('input', function() {
+        //     document.getElementById('sustainValue').textContent = `${this.value}`;
+        // });
 
         // Render the diamond on load
         renderDiamond();
