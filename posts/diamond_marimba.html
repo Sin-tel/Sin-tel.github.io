@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Diamond Marimba</title>
+    <style>
+        body {
+            user-select: none;
+            font-family: sans-serif;
+            background: #111;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .left-bottom {
+            position: fixed;
+            left: 20px;
+            bottom: 0px;
+            padding: 20px;
+            color: #ddd;
+        }
+        .left-panel {
+            position: fixed;
+            left: 20px;
+            height: 100vh;
+            width: 400px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        .right-panel {
+            position: fixed;
+            right: 20px;
+            height: 100vh;
+            width: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+        .middle-panel {
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .diamond-container {
+            display: flex;
+            flex-direction: column;
+            width: 600px;
+            height: 600px;
+            overflow: visible;
+            position: relative;
+        }
+        .controls {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        canvas {
+            width: 100%;
+            height: 150px;
+            background-color: #333;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        h2 {
+            user-select: none;
+            margin-bottom: 10px;
+            color: #ddd;
+        }
+        .cell {
+            position: absolute;
+            width: 170px;
+            height: 60px;
+            border-radius: 7px;
+            background: #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .cell span {
+            width: 100%;
+            text-align: center;
+            user-select: none;
+            display: block;
+            color: #ddd;
+        }
+        .cell.active {
+            background: #a22;
+        }
+        .slider-group {
+            margin-bottom: 15px;
+        }
+        .slider {
+/*          -webkit-appearance: none;*/
+/*          width: 100%;*/
+/*          height: 15px;*/
+/*          border-radius: 5px;*/
+          background: #000;
+          accent-color: #9B251A;
+          outline: none;
+/*          filter: invert(100%)*/
+
+/*          opacity: 0.7;*/
+/*          -webkit-transition: .2s;*/
+/*          transition: opacity .2s;*/
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #ddd;
+        }
+        input[type="range"] {
+            width: 100%;
+        }
+        .value-display {
+            font-size: 14px;
+            color: #aaa;
+        }
+        a:link, a:visited {
+          color: #9B251A;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- <h2>Diamond Marimba</h2> -->
+
+    <div class="middle-panel">
+        <div class="diamond-container" id="diamond"></div>
+    </div>
+
+    <div class="left-panel">
+        <div class="controls">
+            <div class="slider-group">
+                <label for="fundamental">Base Frequency (Hz)</label>
+                <input type="range" id="fundamental" min="60" max="800" value="440" step="1" class="slider">
+                <span class="value-display" id="fundamentalValue">440 Hz</span>
+            </div>
+            <div class="slider-group">
+                <label for="sustain">Sustain</label>
+                <input type="range" id="sustain" min="50" max="500" value="250" step="1" class="slider">
+                <span class="value-display" id="sustainValue">250</span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="right-panel">
+        <canvas id="waveformCanvas"></canvas>
+    </div>
+
+    <div class="left-bottom">
+        Diamond Marimba after <a href="https://www.harrypartch.com/instruments">Harry Partch</a>
+    </div>
+
+    <script>
+        // Initialize audio context from marimba.html
+        let audioContext;
+        let canvasContext;
+        let waveform;
+        let animationFrame;
+        let convolver;
+        let reverbGain;
+        let masterGain;
+        
+        // Track mouse/touch state from diamond.html
+        let isDragging = false;
+        let lastPlayedCell = null;
+        const playedCellsInDrag = new Set();
+        
+        // Diamond layout from diamond.html
+        const layout = [
+            { ratio: "4/11", x: 240, y: 400 },
+            { ratio: "5/11", x: 280, y: 360 },
+            { ratio: "4/9", x: 200, y: 360 },
+            { ratio: "6/11", x: 320, y: 320 },
+            { ratio: "5/9", x: 240, y: 320 },
+            { ratio: "4/7", x: 160, y: 320 },
+            { ratio: "7/11", x: 360, y: 280 },
+            { ratio: "6/9", x: 280, y: 280 },
+            { ratio: "5/7", x: 200, y: 280 },
+            { ratio: "4/6", x: 120, y: 280 },
+            { ratio: "9/11", x: 400, y: 240 },
+            { ratio: "7/9", x: 320, y: 240 },
+            { ratio: "6/7", x: 240, y: 240 },
+            { ratio: "5/6", x: 160, y: 240 },
+            { ratio: "4/5", x: 80, y: 240 },
+            { ratio: "11/11", x: 440, y: 200 },
+            { ratio: "9/9", x: 360, y: 200 },
+            { ratio: "7/7", x: 280, y: 200 },
+            { ratio: "6/6", x: 200, y: 200 },
+            { ratio: "5/5", x: 120, y: 200 },
+            { ratio: "4/4", x: 40, y: 200 },
+            { ratio: "11/9", x: 400, y: 160 },
+            { ratio: "9/7", x: 320, y: 160 },
+            { ratio: "7/6", x: 240, y: 160 },
+            { ratio: "6/5", x: 160, y: 160 },
+            { ratio: "5/4", x: 80, y: 160 },
+            { ratio: "11/7", x: 360, y: 120 },
+            { ratio: "9/6", x: 280, y: 120 },
+            { ratio: "7/5", x: 200, y: 120 },
+            { ratio: "6/4", x: 120, y: 120 },
+            { ratio: "11/6", x: 320, y: 80 },
+            { ratio: "9/5", x: 240, y: 80 },
+            { ratio: "7/4", x: 160, y: 80 },
+            { ratio: "11/5", x: 280, y: 40 },
+            { ratio: "9/4", x: 200, y: 40 },
+            { ratio: "11/4", x: 240, y: 0 },
+        ];
+
+        // Store active sound components to prevent garbage collection
+        let activeSounds = [];
+
+        // Initialize audio system from marimba.html
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+                // Setup canvas
+                const canvas = document.getElementById('waveformCanvas');
+                canvasContext = canvas.getContext('2d');
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+
+                // Create analyzer for visualization
+                waveform = audioContext.createAnalyser();
+
+                // Create reverb nodes
+                convolver = audioContext.createConvolver();
+                reverbGain = audioContext.createGain();
+                balance = 0.8;
+                reverbGain.gain.value = balance;
+
+                // Create gain node for master volume
+                masterGain = audioContext.createGain();
+                masterGain.gain.value = 1.0 - balance;
+
+                // Connect analyzer to convolver and destination
+                waveform.connect(convolver);
+                waveform.connect(masterGain);
+                convolver.connect(reverbGain);
+                reverbGain.connect(audioContext.destination);
+                masterGain.connect(audioContext.destination);
+
+                // Load impulse response
+                loadImpulseResponse();
+            }
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+        }
+
+        // Load impulse responses for reverb
+        async function loadImpulseResponse() {
+            // convolver.buffer = createImpulseResponse();
+
+            let response = await fetch("media/ir.wav");
+            let arraybuffer = await response.arrayBuffer();
+            convolver.buffer = await audioContext.decodeAudioData(arraybuffer);
+        }
+
+        // Create a simple artificial impulse response
+        function createImpulseResponse() {
+            const duration = 0.25;
+            const sampleRate = audioContext.sampleRate;
+            const length = sampleRate * duration;
+            const buffer = audioContext.createBuffer(2, length, sampleRate);
+            const leftData = buffer.getChannelData(0);
+            const rightData = buffer.getChannelData(1);
+
+            for (let i = 0; i < length; i++) {
+                const n = i / length;
+                leftData[i] = (Math.random() * 2 - 1) * Math.pow(0.001, n);
+                rightData[i] = (Math.random() * 2 - 1) * Math.pow(0.001, n);
+            }
+
+            return buffer;
+        }
+
+        // Create a single marimba hit (from marimba.html)
+        function playMarimbaHit(frequency) {
+            initAudio();
+
+            // Get parameter values
+            const sustain = parseFloat(document.getElementById('sustain').value);
+
+            // Create noise burst (excitation)
+            const excitationLength = 0.04;
+            const bufferLength = 10.0;
+            const excitationBuffer = audioContext.createBuffer(
+                1,
+                audioContext.sampleRate * bufferLength,
+                audioContext.sampleRate
+            );
+
+            // Fill buffer with noise
+            const excitationData = excitationBuffer.getChannelData(0);
+            for (let i = 0; i < excitationData.length; i++) {
+                const progress = (bufferLength / excitationLength) * i / excitationData.length;
+                excitationData[i] = (Math.random() * 2 - 1) * (0.00001 + Math.exp(-progress * 10));
+            }
+
+            // Create noise source
+            const noiseSource = audioContext.createBufferSource();
+            noiseSource.buffer = excitationBuffer;
+
+            // Add lowpass filter for mallet hardness
+            const malletFilter = audioContext.createBiquadFilter();
+            malletFilter.type = 'lowpass';
+            malletFilter.Q = 0.7
+            const malletFreq = 3500;
+            malletFilter.frequency.value = malletFreq;
+
+            // Connect noise source to mallet filter
+            noiseSource.connect(malletFilter);
+
+            // Modal resonator bank - 4 biquad filters for the primary modes
+            const modes = [
+                { ratio: 1,  gain: 1.00, q: sustain },
+                { ratio: 4,  gain: 0.14, q: 0.231 * sustain },
+                { ratio: 10, gain: 0.08, q: 0.070 * sustain },
+                { ratio: 19, gain: 0.03, q: 0.015 * sustain },
+            ];
+
+            // Create resonators and connect them
+            const resonators = modes.map((mode, index) => {
+                const filter = audioContext.createBiquadFilter();
+                filter.type = 'bandpass';
+
+                const f = frequency * mode.ratio;
+                if (f > 17000) {
+                    return;
+                }
+
+                filter.frequency.value = f;
+                filter.Q.value = mode.q;
+
+                const modeGain = audioContext.createGain();
+                modeGain.gain.value = mode.gain * mode.q / 2;
+
+                malletFilter.connect(filter);
+                filter.connect(modeGain);
+                modeGain.connect(waveform);
+
+                return { filter, gain: modeGain };
+            });
+
+            noiseSource.start();
+
+            // Start visualization
+            visualize();
+
+            // Keep track of active sounds
+            const soundComponents = {
+                noiseSource,
+                malletFilter,
+                resonators
+            };
+
+            activeSounds.push(soundComponents);
+            if (activeSounds.length > 16) {
+                activeSounds.shift(); // Remove oldest sound
+            }
+        }
+
+        // Visualization function from marimba.html
+        function visualize() {
+            if (!waveform) return;
+
+            const canvas = document.getElementById('waveformCanvas');
+            const canvasCtx = canvasContext;
+            const bufferLength = waveform.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+
+            function draw() {
+                animationFrame = requestAnimationFrame(draw);
+
+                waveform.getByteTimeDomainData(dataArray);
+
+                canvasCtx.fillStyle = '#333';
+                canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
+
+                canvasCtx.lineWidth = 2;
+                canvasCtx.strokeStyle = '#a22';
+                canvasCtx.beginPath();
+
+                const sliceWidth = canvas.width / bufferLength;
+                let x = 0;
+
+                for (let i = 0; i < bufferLength; i++) {
+                    const v = dataArray[i] / 128.0;
+                    const y = v * canvas.height / 2;
+
+                    if (i === 0) {
+                        canvasCtx.moveTo(x, y);
+                    } else {
+                        canvasCtx.lineTo(x, y);
+                    }
+
+                    x += sliceWidth;
+                }
+
+                canvasCtx.lineTo(canvas.width, canvas.height / 2);
+                canvasCtx.stroke();
+            }
+
+            // Clear previous animation frame if it exists
+            if (animationFrame) {
+                cancelAnimationFrame(animationFrame);
+            }
+
+            draw();
+        }
+
+        // Parse ratio string from diamond.html
+        function parseRatio(r) {
+            const [num, den] = r.split("/").map(Number);
+            return num / den;
+        }
+
+        function playNote(ratioStr, cell) {
+            // Check if this cell has already been played during this drag session
+            if (isDragging && playedCellsInDrag.has(cell)) {
+                return;
+            }
+
+            // Get base frequency from slider
+            const baseFreq = parseFloat(document.getElementById('fundamental').value);
+            const frequency = baseFreq * parseRatio(ratioStr);
+            
+            // Play marimba sound instead of simple oscillator
+            playMarimbaHit(frequency);
+            
+            cell.classList.add('active');
+
+            // Add to the set of played cells during this drag
+            if (isDragging) {
+                playedCellsInDrag.add(cell);
+            }
+
+            setTimeout(() => {
+                cell.classList.remove('active');
+            }, 400);
+
+            lastPlayedCell = cell;
+        }
+
+        function getCellFromEvent(e) {
+            // Get the element from either mouse or touch event
+            const clientX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : null);
+            const clientY = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : null);
+
+            if (clientX === null || clientY === null) return null;
+
+            // Get the element at the current position
+            const elementsAtPoint = document.elementsFromPoint(clientX, clientY);
+            // Find first .cell element in the list
+            return elementsAtPoint.find(el => el.classList.contains('cell'));
+        }
+
+        function handleMouseDown(e) {
+            e.preventDefault(); // Prevent text selection
+            isDragging = true;
+            playedCellsInDrag.clear(); // Clear the set at the start of a new drag
+
+            const cell = getCellFromEvent(e);
+            if (cell) {
+                playNote(cell.dataset.ratio, cell);
+            }
+        }
+
+        function handleMouseMove(e) {
+            if (!isDragging) return;
+            e.preventDefault();
+
+            const cell = getCellFromEvent(e);
+            if (cell && cell !== lastPlayedCell) {
+                playNote(cell.dataset.ratio, cell);
+            }
+        }
+
+        function handleMouseUp(e) {
+            isDragging = false;
+            lastPlayedCell = null;
+        }
+
+        function renderDiamond() {
+            const diamond = document.getElementById('diamond');
+            diamond.innerHTML = "";
+            const containerWidth = 600;
+            const containerHeight = 600;
+            const centerX = containerWidth / 2 - 60;
+            const centerY = containerHeight / 2;
+
+            const scale_x = 2.2
+            const scale_y = 1.6
+
+            layout.forEach(({ ratio, x, y }) => {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.style.left = `${centerX + scale_x * (x - 240)}px`;
+                cell.style.top = `${centerY + scale_y * (y - 200)}px`;
+                cell.dataset.ratio = ratio;
+                const label = document.createElement('span');
+                label.textContent = ratio;
+                cell.appendChild(label);
+                diamond.appendChild(cell);
+            });
+
+            // Set up the drag handlers after rendering the diamond
+            setupDragHandlers();
+        }
+
+        function setupDragHandlers() {
+            const diamond = document.getElementById('diamond');
+            
+            // Clean up any existing listeners first
+            diamond.removeEventListener('mousedown', handleMouseDown);
+            diamond.removeEventListener('touchstart', handleMouseDown);
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('touchmove', handleMouseMove);
+            window.removeEventListener('mouseup', handleMouseUp);
+            window.removeEventListener('touchend', handleMouseUp);
+
+            // Add event listeners for mouse and touch
+            diamond.addEventListener('mousedown', handleMouseDown);
+            diamond.addEventListener('touchstart', handleMouseDown, { passive: false });
+            window.addEventListener('mousemove', handleMouseMove);
+            window.addEventListener('touchmove', handleMouseMove, { passive: false });
+            window.addEventListener('mouseup', handleMouseUp);
+            window.addEventListener('touchend', handleMouseUp);
+        }
+
+        // Initialize slider value displays
+        document.getElementById('fundamental').addEventListener('input', function() {
+            document.getElementById('fundamentalValue').textContent = `${this.value} Hz`;
+        });
+
+        document.getElementById('sustain').addEventListener('input', function() {
+            document.getElementById('sustainValue').textContent = `${this.value}`;
+        });
+
+        // Render the diamond on load
+        renderDiamond();
+
+        // Handle case when cursor leaves window while dragging
+        window.addEventListener('mouseleave', handleMouseUp);
+        window.addEventListener('blur', handleMouseUp);
+    </script>
+</body>
+</html>
