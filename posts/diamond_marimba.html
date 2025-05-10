@@ -160,7 +160,9 @@
     </div>
 
     <div class="left-bottom">
-        Diamond Marimba after <a href="https://www.harrypartch.com/instruments">Harry Partch</a>.
+        <p>Diamond Marimba after <a href="https://www.harrypartch.com/instruments">Harry Partch</a>.</p>
+        <p>Play using mouse or keyboard.</p>
+        <p><a href="../index.html">Home</a></p>
     </div>
 
     <script>
@@ -248,7 +250,7 @@
             }
         }
 
-        // Create and initialize the node pool
+        // Create and initialize pool of voices
         function initVoices() {
             for (let i = 0; i < polyphonyLimit; i++) {
                 const node = createVoice();
@@ -303,13 +305,12 @@
                 convolver.buffer = await audioContext.decodeAudioData(arraybuffer);
             } catch (error) {
                 // fallback
-                convolver.buffer = createImpulseResponse();
+                convolver.buffer = createImpulseResponse(0.25);
             }
         }
 
         // Create a simple artificial impulse response
-        function createImpulseResponse() {
-            const duration = 0.25;
+        function createImpulseResponse(duration) {
             const sampleRate = audioContext.sampleRate;
             const length = sampleRate * duration;
             const buffer = audioContext.createBuffer(2, length, sampleRate);
@@ -325,7 +326,6 @@
             return buffer;
         }
 
-        // Play a marimba hit using the node pool
         function playMarimbaHit(frequency) {
             initAudio();
 
@@ -372,7 +372,6 @@
                 }
             });
 
-            // Start the sound
             noiseSource.start();
         }
 
@@ -430,7 +429,6 @@
             draw();
         }
 
-        // Parse ratio string from diamond.html
         function parseRatio(r) {
             const [num, den] = r.split("/").map(Number);
             return num / den;

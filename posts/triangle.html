@@ -4,9 +4,9 @@
 <head>
     <!-- <link rel="stylesheet" href="../basic.css"> -->
     <style>
-        body {
+    body {
         background-color: #111;
-        font-size: 16px;
+        font-size: 24px;
         color: #eee;
         height: 90vh;
         font-family: sans-serif;
@@ -15,6 +15,17 @@
         user-select: none;
         caret-color: transparent;
         touch-action: manipulation;
+    }
+    .left-bottom {
+        position: fixed;
+        left: 20px;
+        bottom: 0px;
+        padding: 20px;
+        color: #ddd;
+    }
+
+    a:link, a:visited {
+      color: #9B251A;
     }
 
     img {
@@ -120,6 +131,11 @@
             </svg>
         </div>
     </div>
+
+    <div class="left-bottom">
+        <p><a href="../index.html">Home</a></p>
+    </div>
+
     <script>
     const triangle = document.getElementById('triangle');
     const coordsDisplay = document.getElementById('coordinates');

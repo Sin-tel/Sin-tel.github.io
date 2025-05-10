@@ -66,6 +66,7 @@ body {
     -webkit-font-smoothing: antialiased;
     background-color: var(--c3);
     color: var(--c4);
+    font-size: 1.2em;
 }
 
 .normal {
