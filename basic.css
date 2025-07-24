@@ -15,25 +15,24 @@
 :root{
 --sans: 400 16px/1.5 "Open Sans", sans-serif;
 --mono: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, Courier, 'Courier New', monospace;
---c1:#0074d9;
---c2:#aaa;
---c3:#F5F5F5;
---c4:#0A0A0A;
---c5:#fff;
+--c1:#0059a6;   /* link */
+--c2:#ddd;      /* text field */
+--c3:#F5F5F5;   /* background */
+--c4:#0A0A0A;   /* body text */
+--c5:#fff;      /* text in button */
 --m1: 8px;
 --rc: 8px;
 }
 
-
-/*
 @media (prefers-color-scheme: dark) {
-	:root {
-    --c2:#333;
-    --c3:#1e1f20;
-    --c4:#fff;
-	}
+    :root {
+    --c1:#4780C7; /* link */
+    --c2:#333;    /* text field */
+    --c3:#1A1A1E; /* background */
+    --c4:#eee;    /* body text */
+    --c5:#fff;    /* text in button */
+    }
 }
-*/
 
 /* fix table */
 
