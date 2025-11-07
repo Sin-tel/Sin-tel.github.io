@@ -94,7 +94,7 @@ body {
     text-align: center;
 }
 
-img, iframe {border: none; max-width: 100%}
+img, iframe {border: none; max-width: 100%; height: auto;}
 
 a {color: var(--c1);  text-decoration:none}
 
